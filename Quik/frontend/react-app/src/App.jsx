@@ -13,6 +13,7 @@ import Assinatura from "./pages/recrutador/Assinatura";
 
 export default function App() {
   return (
+    /* Configuração de rotas usando React Router para fins de organização*/
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/home" element={<Home />} />
