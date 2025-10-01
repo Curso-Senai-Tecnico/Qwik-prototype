@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+import Home from "./pages/home/Home";
+import Login from "./pages/Login";
+import CadastroCandidato from "./pages/candidato/CadastroCandidato";
+import DashboardCandidato from "./pages/candidato/DashboardCandidato";
+import PerfilCandidato from "./pages/candidato/PerfilCandidato";
+import CadastroRecrutador from "./pages/recrutador/CadastroRecrutador";
+import DashboardRecrutador from "./pages/recrutador/DashboardRecrutador";
+import CadastrarVagas from "./pages/recrutador/CadastrarVagas";
+import Assinatura from "./pages/recrutador/Assinatura";
+import Separator from "./pages/Separator";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    /* Configuração de rotas usando React Router para fins de organização*/
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/separator" element={<Separator />} />
 
-export default App
+      {/*Grupo candidato */}
+      <Route path="/candidato/cadastro" element={<CadastroCandidato />} />
+      <Route path="/candidato/dashboard" element={<DashboardCandidato />} />
+      <Route path="/candidato/perfil" element={<PerfilCandidato />} />
+      {/*Grupo recrutador */}
+      <Route path="/recrutador/cadastro" element={<CadastroRecrutador />} />
+      <Route path="/recrutador/dashboard" element={<DashboardRecrutador />} />
+      <Route path="/recrutador/vagas" element={<CadastrarVagas />} />
+      <Route path="/recrutador/assinatura" element={<Assinatura />} />
+    </Routes>
+  );
+}
