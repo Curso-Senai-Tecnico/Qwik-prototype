@@ -1,8 +1,16 @@
-import React from "react";
-import { motion } from "motion/react";
+import React, { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { Link } from "react-router-dom";
+import { createPortal } from "react-dom";
+import { ChevronLeft } from "lucide-react";
 
 export default function LandingPage() {
+  const [showModal, setShowModal] = useState(false);
+
+  function retornarButton() {
+    setShowModal(false);
+  }
+
   const vagas = [
     {
       id: 1,
@@ -48,15 +56,18 @@ export default function LandingPage() {
       <div className="bg-white w-300 h-150 rounded-lg">
         <header>
           <nav className="flex justify-end gap-12 pt-6">
-            <Link to="/login" className="italic cursor-pointer font-space mt-3">
+            <Link
+              to={"/login"}
+              className="italic cursor-pointer font-space mt-3 hover:underline"
+            >
               Entrar
             </Link>
-            <Link
-              to="/separator"
-              className="mr-10 bg-blue-700 text-white p-3 rounded-full italic cursor-pointer"
+            <button
+              onClick={() => setShowModal(true)}
+              className="mr-10 bg-[#ffab4b] text-white font-bold p-3 rounded-full italic cursor-pointer hover:scale-105 transition-all"
             >
               Cadastrar
-            </Link>
+            </button>
           </nav>
         </header>
         <main className="flex-1 grid grid-cols-2">
@@ -74,7 +85,7 @@ export default function LandingPage() {
           <div className="flex flex-col justify-center items-center gap-3 mt-6">
             {vagas.map((vaga) => (
               <div
-                className="flex shadow-lg shadow-gray-400/60 gap-8 w-80 justify-between items-center p-6 bg-blue-700 text-white border border-white/40 backdrop-blur rounded-lg"
+                className="flex shadow-lg shadow-gray-400/60 gap-8 w-80 justify-between items-center p-6 bg-[#ffab4b] text-white border border-white/40 cursor-pointer hover:z-50 hover:scale-125 hover:backdrop-blur-xl transition-transform duration-200 rounded-lg"
                 key={vaga.id}
               >
                 <img src={vaga.icone} className="w-6 h-6 bg" />
@@ -85,6 +96,45 @@ export default function LandingPage() {
           </div>
         </main>
       </div>
+
+      {showModal &&
+        createPortal(
+          <motion.div
+            className="fixed inset-0 backdrop-blur bg-black/50 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={retornarButton}
+          >
+            <motion.div
+              className="bg-white p-10 w-150 h-180 rounded-lg shadow-xl"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              transition={{ duration: 0.2 }}
+            >
+              <header>
+                <nav>
+                  
+                    <ChevronLeft className="cursor-pointer rounded-full hover:scale-110 transition-all" size={52} strokeWidth={2} onClick={retornarButton}/>
+                  
+                </nav>
+              </header>
+              <div className="flex flex-col">
+                <form>
+                  <label >
+                  E-mail<br></br>
+                      <input type="email" id="email" name="email" placeholder="example@example.com">
+
+                      </input>
+                  </label>
+                </form>
+              </div>
+            </motion.div>
+          </motion.div>,
+          document.body
+        )}
     </motion.div>
   );
 }
