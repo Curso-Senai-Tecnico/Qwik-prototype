@@ -147,24 +147,25 @@ export default function LandingPage() {
               <div className="flex flex-col">
                 <form className="flex flex-col gap-10 justify-center items-center h-140">
                   <label htmlFor="candidato" className="font-inter font-bold text-3xl"> Candidato</label>
-                  <div className="shadow-2xl w-3xs h-40 overflow-clip rounded-2xl cursor-pointer hover:scale-110 ease-in-out duration-200 active:scale-95">
+                  <div className="shadow-2xl border w-3xs h-40 overflow-clip rounded-2xl cursor-pointer hover:scale-110 ease-in-out duration-200 active:scale-95">
                     <input
                       type="radio"
                       name="candidato"
                       id="candidato"
-                      value="Candidato"
+                      value="candidato"
                       class="hidden"
                     />
 
-                    <img src="/quikCandidato.png"/>
+                    <img src="/esquiloCandidato.png"/>
                   </div>
                   <label htmlFor="recrutador" className="font-inter font-bold text-3xl">Recrutador</label>
-                  <div className="shadow-2xl w-3xs h-40 rounded-2xl overflow-clip coursor-pointer hover:scale-110 ease-in-out duration-200 active:scale-95">
+                  <div className="shadow-2xl border w-3xs h-40 rounded-2xl overflow-clip cursor-pointer hover:scale-110 ease-in-out duration-200 active:scale-95">
                     <input
                       type="radio"
                       name="recrutador"
                       id="recrutador"
                       class="hidden"
+                      value="recrutador"
                     />
                     <img src="esquiloRecrutador.png" />
                   </div>
