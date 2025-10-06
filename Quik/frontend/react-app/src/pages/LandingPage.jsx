@@ -64,7 +64,7 @@ export default function LandingPage() {
         repeat: Infinity,
       }}
     >
-      <div className="bg-white w-300 h-150 rounded-lg">
+      <div className="bg-white w-300 h-155 rounded-lg">
         <header>
           <nav className="flex justify-end gap-12 pt-6">
             <Link
@@ -106,6 +106,12 @@ export default function LandingPage() {
             ))}
           </div>
         </main>
+        <footer className="flex justify-around items-center mt-10 font-black text-gray-500 border-t-1 pt-2">
+          <p>© 2025 Quik — Todos os direitos reservados</p>
+          <p>Sobre</p>
+          <p>Centro de ajuda</p>
+          <p>Política de privacidade</p>
+        </footer>
       </div>
 
       {showModal && (
@@ -148,7 +154,13 @@ export default function LandingPage() {
               </header>
               <div className="flex flex-col">
                 <form className="flex flex-col gap-10 justify-center items-center h-140">
-                  <label htmlFor="candidato" className="font-inter font-bold text-3xl"> Candidato</label>
+                  <label
+                    htmlFor="candidato"
+                    className="font-inter font-bold text-3xl"
+                  >
+                    {" "}
+                    Candidato
+                  </label>
                   <div className="shadow-2xl border w-3xs h-40 overflow-clip rounded-2xl cursor-pointer hover:scale-110 ease-in-out duration-200 active:scale-95">
                     <input
                       type="radio"
@@ -158,9 +170,14 @@ export default function LandingPage() {
                       class="hidden"
                     />
 
-                    <img src="/esquiloCandidato.png"/>
+                    <img src="/esquiloCandidato.png" />
                   </div>
-                  <label htmlFor="recrutador" className="font-inter font-bold text-3xl">Recrutador</label>
+                  <label
+                    htmlFor="recrutador"
+                    className="font-inter font-bold text-3xl"
+                  >
+                    Recrutador
+                  </label>
                   <div className="shadow-2xl border w-3xs h-40 rounded-2xl overflow-clip cursor-pointer hover:scale-110 ease-in-out duration-200 active:scale-95">
                     <input
                       type="radio"
