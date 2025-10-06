@@ -1,9 +1,11 @@
 import React from "react";
 import { motion } from "motion/react";
-import { ChevronLeft} from "lucide-react";
-import { Link } from "react-router-dom";
+import { ChevronLeft } from "lucide-react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   return (
     <motion.div
       className="bg-gradient-to-br from-[#ffd064] via-[#ffab4b] to-[#934500] flex w-vh h-dvh bg-[length:200%_200%] justify-center items-center"
@@ -17,7 +19,11 @@ export default function Login() {
       <div className="flex flex-col bg-white rounded-2xl w-2xl h-11/12 shadow-2xl backdrop-blur-3xl">
         <header>
           <nav className="flex pt-10">
-            <ChevronLeft size={48} className="ml-9 mr-26" />
+            <ChevronLeft
+              size={48}
+              className="ml-9 mr-26 cursor-pointer"
+              onClick={() => navigate("/")}
+            ></ChevronLeft>
             <img src="/esquilo.png" width={160} />
             <h1 className="font-rammeto text-orange-400 text-5xl mt-20">
               Quik
@@ -65,10 +71,13 @@ export default function Login() {
             >
               Entrar
             </button>
-            <h3 className="" >Esqueceu a senha?</h3>
+            <h3 className="">Esqueceu a senha?</h3>
             <div>
               <h3>
-                Não tem uma conta? <Link to={"/"} className="text-blue-600 font-bold">Cadastre-se</Link>
+                Não tem uma conta?{" "}
+                <Link to={"/"} className="text-blue-600 font-bold">
+                  Cadastre-se
+                </Link>
               </h3>
             </div>
           </form>
