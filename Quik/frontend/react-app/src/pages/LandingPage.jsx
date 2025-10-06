@@ -8,6 +8,8 @@ export default function LandingPage() {
   const [showModal, setShowModal] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
+  
+
   function abrirModal() {
     setShowModal(true);
     setIsAnimating(false);
