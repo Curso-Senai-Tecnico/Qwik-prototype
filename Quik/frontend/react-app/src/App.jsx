@@ -10,7 +10,7 @@ import CadastroRecrutador from "./pages/recrutador/CadastroRecrutador";
 import DashboardRecrutador from "./pages/recrutador/DashboardRecrutador";
 import CadastrarVagas from "./pages/recrutador/CadastrarVagas";
 import Assinatura from "./pages/recrutador/Assinatura";
-import Separator from "./pages/Separator";
+
 
 export default function App() {
   return (
@@ -19,7 +19,7 @@ export default function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/separator" element={<Separator />} />
+      
 
       {/*Grupo candidato */}
       <Route path="/candidato/cadastro" element={<CadastroCandidato />} />

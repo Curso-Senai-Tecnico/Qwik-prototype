@@ -1,8 +1,25 @@
-import React from "react";
-import { motion } from "motion/react";
+import React, { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { Link } from "react-router-dom";
+import { createPortal } from "react-dom";
+import { ChevronLeft } from "lucide-react";
 
 export default function LandingPage() {
+  const [showModal, setShowModal] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  function abrirModal() {
+    setShowModal(true);
+    setIsAnimating(false);
+  }
+
+  function retornarButton() {
+    setIsAnimating(true);
+    setTimeout(() => {
+      setShowModal(false);
+    }, 300);
+  }
+
   const vagas = [
     {
       id: 1,
@@ -48,15 +65,18 @@ export default function LandingPage() {
       <div className="bg-white w-300 h-150 rounded-lg">
         <header>
           <nav className="flex justify-end gap-12 pt-6">
-            <Link to="/login" className="italic cursor-pointer font-space mt-3">
+            <Link
+              to={"/login"}
+              className="italic cursor-pointer font-space mt-3 hover:underline"
+            >
               Entrar
             </Link>
-            <Link
-              to="/separator"
-              className="mr-10 bg-blue-700 text-white p-3 rounded-full italic cursor-pointer"
+            <button
+              onClick={abrirModal}
+              className="mr-10 bg-[#ffab4b] text-white font-bold p-3 rounded-full italic cursor-pointer hover:scale-105 transition-all"
             >
               Cadastrar
-            </Link>
+            </button>
           </nav>
         </header>
         <main className="flex-1 grid grid-cols-2">
@@ -74,7 +94,7 @@ export default function LandingPage() {
           <div className="flex flex-col justify-center items-center gap-3 mt-6">
             {vagas.map((vaga) => (
               <div
-                className="flex shadow-lg shadow-gray-400/60 gap-8 w-80 justify-between items-center p-6 bg-blue-700 text-white border border-white/40 backdrop-blur rounded-lg"
+                className="flex shadow-lg shadow-gray-400/60 gap-8 w-80 justify-between items-center p-6 bg-[#ffab4b] text-white border border-white/40 cursor-pointer hover:z-50 hover:scale-125 hover:backdrop-blur-xl transition-transform duration-200 rounded-lg"
                 key={vaga.id}
               >
                 <img src={vaga.icone} className="w-6 h-6 bg" />
@@ -85,6 +105,76 @@ export default function LandingPage() {
           </div>
         </main>
       </div>
+
+      {showModal && (
+        <AnimatePresence>
+          ( createPortal(
+          <motion.div
+            className="fixed inset-0 backdrop-blur bg-black/50 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: isAnimating ? 0 : 1,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            onClick={retornarButton}
+          >
+            <motion.div
+              className="bg-white p-6 w-150 h-180 rounded-lg shadow-xl"
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{
+                scale: isAnimating ? 0.8 : 1,
+                opacity: isAnimating ? 0 : 1,
+                y: isAnimating ? 20 : 0,
+              }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              <header>
+                <nav className="flex gap-6 items-center">
+                  <ChevronLeft
+                    className="cursor-pointer rounded-full hover:scale-110 active:scale-95 transition-all"
+                    size={52}
+                    strokeWidth={2}
+                    onClick={retornarButton}
+                  />
+                  <h1 className="font-inter text-3xl">
+                    Como você deseja se cadastrar?
+                  </h1>
+                </nav>
+              </header>
+              <div className="flex flex-col">
+                <form className="flex flex-col gap-10 justify-center items-center h-140">
+                  <label htmlFor="candidato" className="font-inter font-bold text-3xl"> Candidato</label>
+                  <div className="shadow-2xl w-3xs h-40 overflow-clip rounded-2xl cursor-pointer hover:scale-110 ease-in-out duration-200 active:scale-95">
+                    <input
+                      type="radio"
+                      name="candidato"
+                      id="candidato"
+                      value="Candidato"
+                      class="hidden"
+                    />
+
+                    <img src="/quikCandidato.png"/>
+                  </div>
+                  <label htmlFor="recrutador" className="font-inter font-bold text-3xl">Recrutador</label>
+                  <div className="shadow-2xl w-3xs h-40 rounded-2xl overflow-clip coursor-pointer hover:scale-110 ease-in-out duration-200 active:scale-95">
+                    <input
+                      type="radio"
+                      name="recrutador"
+                      id="recrutador"
+                      class="hidden"
+                    />
+                    <img src="esquiloRecrutador.png" />
+                  </div>
+                </form>
+              </div>
+            </motion.div>
+          </motion.div>
+          ,document.body ) )
+        </AnimatePresence>
+      )}
     </motion.div>
   );
 }
