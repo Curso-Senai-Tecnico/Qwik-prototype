@@ -3,10 +3,12 @@ import { AnimatePresence, motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { ChevronLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
   const [showModal, setShowModal] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const navigate = useNavigate()
 
   
 
@@ -168,9 +170,10 @@ export default function LandingPage() {
                       id="candidato"
                       value="candidato"
                       class="hidden"
+                      
                     />
 
-                    <img src="/esquiloCandidato.png" />
+                    <img src="/esquiloCandidato.png" onClick={() => navigate("/candidato/cadastro") } />
                   </div>
                   <label
                     htmlFor="recrutador"
