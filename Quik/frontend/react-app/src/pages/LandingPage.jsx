@@ -8,9 +8,7 @@ import { useNavigate } from "react-router-dom";
 export default function LandingPage() {
   const [showModal, setShowModal] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const navigate = useNavigate()
-
-  
+  const navigate = useNavigate();
 
   function abrirModal() {
     setShowModal(true);
@@ -170,10 +168,12 @@ export default function LandingPage() {
                       id="candidato"
                       value="candidato"
                       class="hidden"
-                      
                     />
 
-                    <img src="/esquiloCandidato.png" onClick={() => navigate("/candidato/cadastro") } />
+                    <img
+                      src="/esquiloCandidato.png"
+                      onClick={() => navigate("/candidato/cadastro")}
+                    />
                   </div>
                   <label
                     htmlFor="recrutador"
@@ -189,7 +189,10 @@ export default function LandingPage() {
                       class="hidden"
                       value="recrutador"
                     />
-                    <img src="esquiloRecrutador.png" />
+                    <img
+                      src="esquiloRecrutador.png"
+                      onClick={() => navigate("/recrutador/cadastro")}
+                    />
                   </div>
                 </form>
               </div>

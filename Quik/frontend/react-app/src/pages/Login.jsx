@@ -16,7 +16,7 @@ export default function Login() {
         repeat: Infinity,
       }}
     >
-      <div className="flex flex-col bg-white rounded-2xl w-2xl h-11/12 shadow-2xl backdrop-blur-3xl">
+      <div className="flex flex-col bg-white rounded-2xl w-2xl h-9/12 shadow-2xl backdrop-blur-3xl">
         <header>
           <nav className="flex pt-10">
             <ChevronLeft
@@ -75,7 +75,7 @@ export default function Login() {
             <div>
               <h3>
                 Não tem uma conta?{" "}
-                <Link to={"/"} className="text-blue-600 font-bold">
+                <Link to={"/"} className="text-orange-500 font-bold">
                   Cadastre-se
                 </Link>
               </h3>
