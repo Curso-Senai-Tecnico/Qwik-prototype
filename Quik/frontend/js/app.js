@@ -1,1 +1,0 @@
-                    /*MANIPULAÇÃO DA PAGINA E REQUISIÇÃO DO BACK*/ 
