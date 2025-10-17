@@ -7,22 +7,22 @@ class User(AbstractUser):
     cidade = models.CharField(max_length=100, blank=True)
     estado = models.CharField(max_length=100, blank=True)
     telefone = models.CharField(max_length=15, blank=True)
-    bairro = models.CharField(max_length=100, blank=True) # Corrigido de 'bairrpo'
+    bairro = models.CharField(max_length=100, blank=True)
 
     # O __str__ agora funcionará, pois AbstractUser tem o campo 'username'
     def __str__(self):
         return self.username
     
 class Candidato(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True) # Ligação um-para-um com User
     cpf = models.CharField(max_length=14, unique=True) # Formato: 000.000.000-00
-    data_nascimento = models.DateField()
+    data_nascimento = models.DateField() # Campo para data de nascimento
 
     def __str__(self):
         return self.user.username
     
 class Recrutador(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True) # Ligação um-para-um com User
     cnpj = models.CharField(max_length=18, unique=True) # Formato: 00.000.000/0000-00
 
     def __str__(self):
