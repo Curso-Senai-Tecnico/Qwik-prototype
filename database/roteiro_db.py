@@ -1,20 +1,32 @@
 import mysql.connector #seleciona a biblioteca
+import os
+import time
 
 # ==============================================================================
 # 				                  CONHEXÃO
 # ==============================================================================
 
 #criei um objeto que vai fazer a conexão com o Mysql
-conexao = mysql.connector.connect( host = 'localhost',
-                                    port = 3307,
-                                    user = 'admin',
-                                    password = 'admin')
-
-#Boolean que vai informar se conseguiu fazer a conexão, usando o ".is_conected" que verifica se a conexão foi realizada
-if conexao.is_connected():
-    print("Conexão efetuada!")
+for i in range(20): ## retry adaptado para o docker
+    try:
+        conexao = mysql.connector.connect(
+            host=os.getenv("MYSQL_HOST"),
+            port=int(os.getenv("MYSQL_PORT", 3306)),
+            user=os.getenv("MYSQL_USER"),
+            password=os.getenv("MYSQL_PASS")
+        )
+        #Boolean que vai informar se conseguiu fazer a conexão, usando o ".is_connected" que verifica se a conexão foi realizada
+        if conexao.is_connected(): 
+            print("Conexão efetuada!")
+            break
+    except:
+        print("Aguardando o MySQL iniciar...")
+        time.sleep(3)
 else:
-    print("Conexão não efetuada!")
+    print("Não foi possível conectar ao MySQL.")
+    exit(1)
+
+
 
 # objeto que vai receber a conexao + função de executar comandos SQL
 cursor = conexao.cursor()

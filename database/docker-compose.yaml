@@ -1,0 +1,29 @@
+services:
+  db:
+    image: mysql:8.0.43-debian
+    container_name: mysql
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      - backend
+  
+  init_db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: init_db
+    depends_on:
+      - db
+    env_file:
+      - .env
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

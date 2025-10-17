@@ -1,0 +1,11 @@
+FROM python:3.13.9-slim
+
+RUN pip install mysql-connector-python
+
+WORKDIR /app
+
+COPY roteiro_db.py /app
+
+COPY wait-for-it.sh /app/
+
+CMD ["bash", "./wait-for-it.sh", "db:3306", "--", "python", "roteiro_db.py" ]
