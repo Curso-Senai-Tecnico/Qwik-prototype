@@ -12,8 +12,8 @@ for i in range(20): ## retry adaptado para o docker
         conexao = mysql.connector.connect(
             host=os.getenv("MYSQL_HOST"),
             port=int(os.getenv("MYSQL_PORT", 3306)),
-            user=os.getenv("MYSQL_USER"),
-            password=os.getenv("MYSQL_PASS")
+            user="root",
+            password=os.getenv("MYSQL_ROOT_PASSWORD")
         )
         #Boolean que vai informar se conseguiu fazer a conexão, usando o ".is_connected" que verifica se a conexão foi realizada
         if conexao.is_connected(): 
