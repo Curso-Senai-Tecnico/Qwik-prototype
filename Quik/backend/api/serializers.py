@@ -1,8 +1,11 @@
 from rest_framework import serializers                                   # Importa serializers do Django REST Framework
+from django.contrib.auth import get_user_model
+from .models import Candidato, Recrutador
 from .models import User, Candidato, Recrutador                          # Importa os modelos necessários
 from django.db import transaction                                        # Importa transaction para operações atômicas
-from validate_docbr import CPF, CNPJ                                     # Importa validadores de CPF e CNPJ
+from validate_docbr import CPF, CNPJ                                    # Importa validadores de CPF e CNPJ
 
+user = get_user_model
                                 #Serializador para usuario em geral
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,3 +1,28 @@
+from django.contrib import admin
+from django.urls import path, include
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="API de Usuários",
+      default_version='v1',
+      description="Documentação da API para usuários, candidatos e recrutadores",
+      contact=openapi.Contact(email="suporte@seudominio.com"),
+   ),
+   public=True,
+   permission_classes=[permissions.AllowAny],
+)
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('sua_app.urls')),  # Substitua 'sua_app' pelo nome da sua app
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+]
+
+
 """
 URL configuration for Quik project.
 
@@ -21,3 +46,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),  # Adicione esta linha
 ]
+
