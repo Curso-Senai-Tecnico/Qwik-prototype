@@ -49,7 +49,7 @@ CREATE TABLE Usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,   -- chave primária com auto incremento
     nome VARCHAR(100) NOT NULL,          -- nome do usuário (obrigatório)
     email VARCHAR(250) UNIQUE NOT NULL,   -- email do usuário único e obrigatório
-    telefone VARCHAR(20),                -- telefone (opcional)
+    telefone VARCHAR(15),                -- telefone (opcional)
     login VARCHAR(50) UNIQUE NOT NULL,   -- login único (não pode repetir)
     senha VARCHAR(100) NOT NULL,         -- senha (armazenar hash, não senha em texto puro)
     cidade VARCHAR(100),                 -- cidade do usuário
@@ -61,9 +61,9 @@ CREATE TABLE Usuario (
 cursor.execute("""
 CREATE TABLE Candidato (
     id INT PRIMARY KEY,                    -- chave primária
-    idade INT,
+    data_nascimento DATE NOT Null,
     cpf VARCHAR(14) UNIQUE,                -- CPF único
-    genero VARCHAR(20),
+    genero ENUM("Masculino", "Feminino", "Prefiro nao dizer"),
     estado_civil VARCHAR(20),
     FOREIGN KEY (id) REFERENCES Usuario(id) -- relação 1:1 com Usuario
 );
@@ -74,7 +74,7 @@ CREATE TABLE Perfil (
     id_candidato INT PRIMARY KEY,           -- chave primária (mesmo id do candidato)
     foto VARCHAR(255),
     nome_perfil VARCHAR(100),
-    idade_perfil VARCHAR(10),
+    data_nascimento_perfil VARCHAR(10),
     curriculo VARCHAR(255),                 -- link ou caminho do currículo
     FOREIGN KEY (id_candidato) REFERENCES Candidato(id)
 );

@@ -79,10 +79,17 @@ WSGI_APPLICATION = 'Quik.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'qwik',
+        'USER': 'root',                 
+        'PASSWORD': 'admin',            
+        'PORT': '3306',                 
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'" # meio q diz pro django “Assim que conectar, execute esse comando SQL para deixar o MySQL mais rigoroso e seguro"
+        },
     }
 }
+
 
 
 # Password validation

@@ -1,12 +1,12 @@
 from rest_framework import serializers                                   # Importa serializers do Django REST Framework
-from .models import User, Candidato, Recrutador                          # Importa os modelos necessários
+from .models import Usuario, Candidato, Recrutador                          # Importa os modelos necessários
 from django.db import transaction                                        # Importa transaction para operações atômicas
 from validate_docbr import CPF, CNPJ                                     # Importa validadores de CPF e CNPJ
 
                                 #Serializador para usuario em geral
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = Usuario
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'cidade', 'estado', 'telefone', 'bairro', 'password']
 
     
@@ -50,7 +50,7 @@ class CandidatoRegistrationSerializer(serializers.ModelSerializer):
     @transaction.atomic                                                  #transaction.atomic garante que a criação do usuário seja atômicas
     def create(self, validated_data):
         user_data = validated_data.pop('user')
-        user = User.objects.create_user(**user_data)
+        user = Usuario.objects.create_user(**user_data)
         candidato = Candidato.objects.create(user=user, **validated_data)
         return candidato
 
@@ -66,14 +66,14 @@ class RecrutadorRegistrationSerializer(serializers.ModelSerializer):
     @transaction.atomic                                                  #transaction.atomic garante que a criação do usuário seja atômicas
     def create(self, validated_data):
         user_data = validated_data.pop('user')
-        user = User.objects.create_user(**user_data)
+        user = Usuario.objects.create_user(**user_data)
         recrutador = Recrutador.objects.create(user=user, **validated_data)
         return recrutador
     
     """   Pra lembrar: 
             @transaction.atomic é um decorador do Django
             que garante que todas as operações de banco
-            de dados dentro do método sejam tratadas como
+            de dados dentro do método, sejam tratadas como
             uma única transação.
             Se qualquer operação falhar, todas as mudanças 
             feitas no banco de dados
