@@ -1,8 +1,11 @@
 import React from 'react'
+import CustomNav from './CustomNav'
 
 export default function Home() {
   return (
-    <div>Home</div>
+    <div>
+      <CustomNav/>
+    </div>
   )
 }
 
