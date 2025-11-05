@@ -18,7 +18,7 @@ class Usuario (models.Model):
 
 class Candidato(models.Model):
     data_nascimento = models.DateField() # Campo para data de nascimento
-    user = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True) # Ligação um-para-um com User
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True) # Ligação um-para-um com User
     cpf = models.CharField(max_length=14, unique=True, null=False)# Formato: 000.000.000-00
     class generos(models.TextChoices):
         MASCULINO = 'M', '  Masculino'
@@ -47,7 +47,7 @@ class Perfil(models.Model):
 
 
 class Recrutador(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True) # Ligação um-para-um com User
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True) # Ligação um-para-um com User
     cnpj = models.CharField(max_length=18, unique=True) # Formato: 00.000.000/0000-00
 
     def __str__(self):
