@@ -10,10 +10,8 @@ export default function Messenger({darkMode, setDarkMode}){
     }
 
     return(
-       <>
-       {isOpen ? 
-       
-       <div className={`flex font-inter font-bold justify-between items-center fixed bottom-0 left-0 ml-4 w-70 rounded-l-2xl rounded-r-2xl cursor-pointer h-10 ${darkMode ? "bg-[#22303c] text-white": "bg-white text-black"}`} onClick={toggleChat}>
+       <div className={`flex flex-col transition-all duration-300 fixed bottom-0 left-0`}>
+       <div className={`flex font-inter font-bold justify-between items-center ml-4 w-70 rounded-t-2xl rounded-tr-2xl cursor-pointer h-10 ${darkMode ? "bg-[#22303c] text-white": "bg-white text-black"} ${isOpen && "border-b"}`} onClick={toggleChat}>
         <span className='ml-4'>Chat</span>
         <div className='flex justify-center gap-1 items-center mr-4'>
             <span className=''>3</span>
@@ -25,12 +23,12 @@ export default function Messenger({darkMode, setDarkMode}){
             <User size={20}/>
         </div>
        </div> 
-       
-       : 
-       <div className={`flex fixed bottom-0 left-0 ml-4 w-90 rounded-l-2xl rounded-r-2xl h-72 ${darkMode ? "bg-[#22303c] text-white": "bg-white text-black"}`} onClick={toggleChat}>
+       {isOpen && 
+       <div className={`flex font-inter font-bold justify-between items-center ml-4 w-70 cursor-pointer h-90 ${darkMode ? "bg-[#22303c] text-white": "bg-white text-black"}`} onClick={toggleChat}>
 
         </div>
         }
-       </>
+        
+       </div>
     )
 }

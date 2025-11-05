@@ -6,7 +6,7 @@ import Messenger from "./Messenger";
 export default function Home({ darkMode, setDarkMode }) {
   return (
     <motion.div
-      className="bg-gradient-to-br from-[#ffd064] via-[#ffab4b] to-[#934500] flex w-vh h-dvh bg-[length:200%_200%] justify-center"
+      className="bg-gradient-to-br from-[#ffd064] via-[#ffab4b] to-[#934500] flex flex-col w-vh h-dvh bg-[length:200%_200%] items-center"
       animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
       transition={{
         duration: 5,
