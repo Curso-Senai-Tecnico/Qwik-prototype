@@ -1,4 +1,3 @@
-import React from "react";
 import { BellIcon } from "lucide-react";
 import { User } from "lucide-react";
 import { Briefcase } from "lucide-react";
@@ -13,7 +12,13 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   };
   return (
     <header>
-      <nav className="flex bg-white dark:border-white dark:bg-[#22303c] dark:text-white w-dvw h-24 border-b">
+      <nav
+        className={`flex  w-dvw h-24 border-b ${
+          darkMode
+            ? "dark:border-white dark:bg-[#22303c]  dark:text-white"
+            : "text-black bg-white"
+        }  `}
+      >
         <div className="flex justify-between items-center border-r w-1/2 h-full">
           <span
             onClick={() => navigate("/home")}
@@ -24,7 +29,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
           </span>
           <div className="flex flex-col h-full w-30 justify-center items-center">
             <div>
-              <User className="dark: text-white" />
+              <User />
             </div>
             <div className="flex justify-center items-center gap-1.5">
               <Circle
@@ -38,20 +43,30 @@ export default function CustomNav({ darkMode, setDarkMode }) {
         </div>
         <div className="flex justify-between items-center h-full w-1/2">
           <div className="flex flex-col justify-center items-center pl-5">
-            <Briefcase className="dark:text-white" />
+            <Briefcase />
             <span className="font-inter font-semibold"> +500k </span>
           </div>
           <div className="flex gap-4 justify-center items-center mr-5 dark:text-white">
             <BellIcon
-              className="border rounded-full p-1 cursor-pointer hover:scale-110 transition active:scale-95"
+              className={`border rounded-full p-1 cursor-pointer hover:scale-110 transition active:scale-95 ${
+                darkMode ? "border-white" : "border-black"
+              }`}
               size={35}
+              color={darkMode ? "white" : "black"}
             />
-            <button className="flex w-fit border rounded-4xl h-full justify-between items-center pl-2.5 pr-2.5 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900 active:scale-95 transition">
+            <button
+              className={`flex w-fit border rounded-4xl h-full justify-between items-center pl-2.5 pr-2.5 cursor-pointer active:scale-95 transition ${
+                darkMode
+                  ? "dark:hover:bg-gray-900"
+                  : "hover:bg-gray-100 border-black text-black"
+              }`}
+            >
               <Circle size={75} fill="rgba(114,114,114,1)" strokeWidth={0.5} />
               Nome Sobrenome
             </button>
             <Lightbulb
               onClick={toggleTheme}
+              color={darkMode ? "yellow" : "black"}
               className="hover:scale-110 active:scale-95 cursor-pointer transition-colors duration-300"
             />
           </div>
