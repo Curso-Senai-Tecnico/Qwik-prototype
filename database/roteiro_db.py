@@ -84,7 +84,7 @@ cursor.execute("""
 CREATE TABLE Recrutador (
     id INT PRIMARY KEY,                     
     cnpj VARCHAR(18) UNIQUE,                -- CNPJ único
-    identidade_recrutador VARCHAR(100),
+    perfil_recrutador VARCHAR(100),
     FOREIGN KEY (id) REFERENCES Usuario(id) -- cada recrutador é também um usuário
 );
 """)
