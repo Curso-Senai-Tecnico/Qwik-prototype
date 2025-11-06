@@ -18,7 +18,6 @@ export default function VideoChamada() {
           <Video color="white" />
           <Phone
             fill="red"
-            enableBackground={true}
             color="white"
             size={35}
             className="border bg-red-500 p-1 rounded-full hover:bg-red-700"

@@ -6,16 +6,16 @@ export default function Messenger({ darkMode, setDarkMode }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleChat = () => {
-    setIsOpen((prev) => setIsOpen(!prev));
+    setIsOpen((prev) => !prev);
   };
 
   const [searchTerm, setSearchTerm] = useState("");
   const [contatos, setContatos] = useState([
-    { id: 1, nome: "Jackson Jailson", foto: "./sai.png" },
-    { id: 2, nome: "Phelipe Games", foto: "./sakura.png" },
-    { id: 3, nome: "Pedro Games", foto: "./kakashi.png" },
-    { id: 4, nome: "Julio Jogos", foto: "./naruto.png" },
-    { id: 5, nome: "Thiago Zabumba", foto: "./sasuke.png" },
+    { id: 1, nome: "Jackson Jailson", foto: "./sai.png", online: false },
+    { id: 2, nome: "Phelipe Games", foto: "./sakura.png", online: true },
+    { id: 3, nome: "Pedro Games", foto: "./kakashi.png", online: false },
+    { id: 4, nome: "Julio Jogos", foto: "./naruto.png", online: true },
+    { id: 5, nome: "Thiago Zabumba", foto: "./sasuke.png", online: true },
   ]);
 
   const handleSearchChange = (e) => {
@@ -68,6 +68,13 @@ export default function Messenger({ darkMode, setDarkMode }) {
                   className="flex gap-3 w-full justify-start p-3 items-center border-b border-gray-500"
                 >
                   <img src={contato.foto} className="w-9 h-9 rounded-full" />
+                  {contato.online && (
+                    <Circle
+                      fill="rgba(9,230,49,1)"
+                      color="rgba(9,230,49,1)"
+                      size={15}
+                    />
+                  )}
                   <span className="font-inter font-bold text-center">
                     {contato.nome}
                   </span>
