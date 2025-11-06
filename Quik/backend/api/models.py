@@ -5,8 +5,9 @@ from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeFie
 #                usuários
 # ==========================================
 
+
 class Usuario(models.Model):
-    #o django já cria um id para cada tabela automaticamente
+    # o django já cria um id para cada tabela automaticamente
     nome = models.CharField(max_length=100, null=False)
     email = models.CharField(max_length=250, null=False, unique=True)
     telefone = models.CharField(max_length=15, null=True, unique=True)
@@ -18,27 +19,29 @@ class Usuario(models.Model):
 
     class Meta:
         db_table = "usuarios"
-    
+
 # ==========================================
 #                candidatos
 # ==========================================
 
+
 class Candidato(models.Model):
-    usuario = models.OneToOneField('Usuario', on_delete=models.CASCADE, primary_key=True) # Ligação um-para-um com User
-    data_nascimento = models.DateField() # Campo para data de nascimento
-    cpf = models.CharField(max_length=14, unique=True, null=False)# Formato: 000.000.000-00
+    # Ligação um-para-um com Usuario
+    usuario = models.OneToOneField('Usuario', on_delete=models.CASCADE, primary_key=True)
+    data_nascimento = models.DateField()  # Campo para data de nascimento
+    cpf = models.CharField(max_length=14, unique=True,null=False)  # Formato: 000.000.000-00
     class generos(models.TextChoices):
         MASCULINO = 'M', 'Masculino'
         FEMININO = 'F', 'Feminino'
         OUTRO = 'OUTRO', "Prefiro não dizer"
-    genero = models.CharField(max_length=20, choices=generos.choices,null=False)
+    genero = models.CharField(max_length=20, choices=generos.choices, null=False)
     class CivilStatus(models.TextChoices):
         SOLTEIRO = 'Solteiro(a)', 'Solteiro(a)'
         CASADO = 'Casado(a)', 'Casado(a)'
         DIVORCIADO = 'Divorciado(a)', 'Divorciado(a)'
         VIUVO = 'Viúvo(a)', 'Viúvo(a)'
     estado_civil = models.CharField(max_length=15, choices=CivilStatus.choices, null=False)
-    
+
     class Meta:
         db_table = "candidatos"
 
@@ -46,12 +49,14 @@ class Candidato(models.Model):
 #                 perfil
 # ==========================================
 
+
 class Perfil(models.Model):
     usuario = models.OneToOneField('Usuario', on_delete=models.CASCADE, primary_key=True)
     foto = models.CharField(max_length=255, null=False)
     nome_perfil = models.CharField(max_length=100, null=False)
     data_nascimento_perfil = models.DateField(null=False)
     curriculo = models.CharField(max_length=255, null=True)
+
     class Meta:
         db_table = 'perfil'
 
@@ -59,9 +64,11 @@ class Perfil(models.Model):
 #                recrutador
 # ==========================================
 
+
 class Recrutador(models.Model):
-    usuario = models.OneToOneField('Usuario', on_delete=models.CASCADE, primary_key=True) # Ligação um-para-um com Usuario
-    cnpj = models.CharField(max_length=18, unique=True) # Formato: 00.000.000/0000-00
+    # Ligação um-para-um com Usuario
+    usuario = models.OneToOneField('Usuario', on_delete=models.CASCADE, primary_key=True)
+    cnpj = models.CharField(max_length=18, unique=True)# Formato: 00.000.000/0000-00
     perfil_recrutador = models.CharField(max_length=100, null=False)
 
     class Meta:
@@ -70,6 +77,7 @@ class Recrutador(models.Model):
 # ==========================================
 #                   vaga
 # ==========================================
+
 
 class Vaga(models.Model):
     recrutador = models.ForeignKey('Recrutador', on_delete=models.CASCADE)
@@ -83,11 +91,11 @@ class Vaga(models.Model):
     salario = models.DecimalField(max_digits=10, decimal_places=2, null=False)
     quantidade = models.IntegerField(null=False)
     localizacao = models.CharField(max_length=200, null=False)
-    data_publicacao = models.DateField(null=False) 
+    data_publicacao = models.DateField(null=False)
     class Vagatacomo(models.TextChoices):
         ATIVA = 'Ativa', 'Ativa'
         EXPIRADA = 'Expirada', 'Expirada'
-    status = models.CharField(max_length=10, choices=Vagatacomo.choices,default='Ativa')
+    status = models.CharField(max_length=10, choices=Vagatacomo.choices, default='Ativa')
     tags = models.CharField(max_length=255)
 
     class Meta:
@@ -96,6 +104,7 @@ class Vaga(models.Model):
 # ==========================================
 #              forma de pagamento
 # ==========================================
+
 
 class FormaPagamento(models.Model):
     recrutador = models.ForeignKey('Recrutador', on_delete=models.CASCADE)
@@ -110,6 +119,7 @@ class FormaPagamento(models.Model):
 #                 pagamento
 # ==========================================
 
+
 class Pagamento(models.Model):
     recrutador = models.ForeignKey('Recrutador', on_delete=models.CASCADE)
     formapagamento = models.ForeignKey('FormaPagamento', on_delete=models.CASCADE)
@@ -119,14 +129,15 @@ class Pagamento(models.Model):
     class Pagamentostatus(models.TextChoices):
         ATIVA = 'Ativo', 'Ativo'
         EXPIRADA = 'Expirado', 'Expirado'
-    status = models.CharField(max_length=10, choices=Pagamentostatus.choices,default='Ativa')
-    
-    class Meta: 
+    status = models.CharField(max_length=10, choices=Pagamentostatus.choices, default='Ativa')
+
+    class Meta:
         db_table = 'pagamento'
 
 # ==========================================
 #                 assinatura
 # ==========================================
+
 
 class Assinatura(models.Model):
     pagamento = models.ForeignKey('Pagamento', on_delete=models.CASCADE)
@@ -137,7 +148,7 @@ class Assinatura(models.Model):
         CARTAO = 'Cartão', 'cartão'
         PIX = 'Pix', 'pix'
     forma_pgt = models.CharField(max_length=6, choices=Formas.choices, null=False)
-    
+
     class Meta:
         db_table = 'assinatura'
 
@@ -145,9 +156,11 @@ class Assinatura(models.Model):
 #                 cartão
 # ==========================================
 
+
 class Cartao(models.Model):
     formapagamento = models.OneToOneField('FormaPagamento', on_delete=models.CASCADE)
-    numero_cartao = CardNumberField(null=False)  # O CardNumberField inclui validação do Algoritmo de Luhn
+    # O CardNumberField inclui validação do Algoritmo de Luhn
+    numero_cartao = CardNumberField(null=False)
     nome_titular = models.CharField(max_length=100, null=False)
     validade = CardExpiryField(null=False)
     cvv = SecurityCodeField(null=False)
@@ -159,14 +172,15 @@ class Cartao(models.Model):
 #                   pix
 # ==========================================
 
+
 class Pix(models.Model):
     formapagamento = models.OneToOneField('FormaPagamento', on_delete=models.CASCADE)
     class Tipospix(models.TextChoices):
         EMAIL = 'Email', 'email'
         TELEFONE = 'Telefone', 'telefone'
         CPF = 'CPF', 'cpf'
-        ALEATORIA  = 'Aleatoria', 'aleatoria' 
-    tipo_de_chave = models.CharField(max_length=10, choices=Tipospix.choices, null=False) 
+        ALEATORIA = 'Aleatoria', 'aleatoria'
+    tipo_de_chave = models.CharField(max_length=10, choices=Tipospix.choices, null=False)
     chave = models.CharField(max_length=150, null=False)
 
     class Meta:
@@ -175,6 +189,7 @@ class Pix(models.Model):
 # ==========================================
 #               video chamada
 # ==========================================
+
 
 class Videochamada(models.Model):
     candidato = models.ForeignKey('Candidato', on_delete=models.CASCADE)
@@ -190,6 +205,7 @@ class Videochamada(models.Model):
 # ==========================================
 #               chat privado
 # ==========================================
+
 
 class PV(models.Model):
     candidato = models.ForeignKey('Candidato', on_delete=models.CASCADE)
