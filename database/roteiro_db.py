@@ -104,8 +104,8 @@ CREATE TABLE Vaga (
     quantidade INT,
     localizacao VARCHAR(100),
     data_publicacao DATETIME,
-    status VARCHAR(20),
-    tags VARCHAR(100),
+    status ENUM("Ativo", "Expirada"),
+    tags VARCHAR(255),
     FOREIGN KEY (id_recrutador) REFERENCES Recrutador(id)
 );
 """)
@@ -141,7 +141,7 @@ CREATE TABLE Assinatura (
     tipo VARCHAR(50),                        -- ex: mensal, anual
     data_inicio DATE,
     vencimento DATE,
-    forma_pgt VARCHAR(50),
+    forma_pgt ENUM("Pix", "Cartao"),
     id_pagamento INT NOT NULL,
     FOREIGN KEY (id_pagamento) REFERENCES Pagamento(id)
 );
