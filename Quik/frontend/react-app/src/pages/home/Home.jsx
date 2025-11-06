@@ -2,6 +2,7 @@ import React from "react";
 import CustomNav from "./CustomNav";
 import { motion } from "framer-motion";
 import Messenger from "./Messenger";
+import VideoChamada from "./VideoChamada";
 
 export default function Home({ darkMode, setDarkMode }) {
   return (
@@ -15,6 +16,7 @@ export default function Home({ darkMode, setDarkMode }) {
       }}
     >
       <CustomNav darkMode={darkMode} setDarkMode={setDarkMode} />
+      <VideoChamada />
       <Messenger darkMode={darkMode} setDarkMode={setDarkMode} />
     </motion.div>
   );
