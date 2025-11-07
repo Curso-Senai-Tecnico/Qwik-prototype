@@ -5,7 +5,6 @@ RUN pip install mysql-connector-python
 WORKDIR /app
 
 COPY roteiro_db.py /app
-COPY populacao.py /app
 
 COPY wait-for-it.sh /app/
 
