@@ -15,7 +15,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
       <nav
         className={`flex  w-dvw h-24 border-b ${
           darkMode
-            ? "dark:border-white dark:bg-[#22303c]  dark:text-white"
+            ? "border-white bg-[#22303c]  text-white"
             : "text-black bg-white"
         }  `}
       >
