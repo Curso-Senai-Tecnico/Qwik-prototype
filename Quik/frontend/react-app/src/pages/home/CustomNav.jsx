@@ -5,8 +5,9 @@ import { Circle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Lightbulb } from "lucide-react";
 
-export default function CustomNav({ darkMode, setDarkMode }) {
+export default function CustomNav({ darkMode, setDarkMode, role, setRole }) {
   const navigate = useNavigate();
+  console.log("Role recebida da Home: ", role);
   const toggleTheme = () => {
     setDarkMode((prevMode) => !prevMode);
   };
@@ -55,6 +56,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
               color={darkMode ? "white" : "black"}
             />
             <button
+              onClick={() => navigate(`/${role}/dashboard`)}
               className={`flex w-fit border rounded-4xl h-full justify-between items-center pl-2.5 pr-2.5 cursor-pointer active:scale-95 transition ${
                 darkMode
                   ? "dark:hover:bg-gray-900"
