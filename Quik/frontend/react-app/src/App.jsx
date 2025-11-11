@@ -9,9 +9,11 @@ import CadastroRecrutador from "./pages/recrutador/CadastroRecrutador";
 import DashboardRecrutador from "./pages/recrutador/DashboardRecrutador";
 import CadastrarVagas from "./pages/recrutador/CadastrarVagas";
 import Assinatura from "./pages/recrutador/Assinatura";
+import MainLayout from "./MainLayout";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
+  const [role, setRole] = useState(localStorage.getItem("role") || "candidato");
 
   useEffect(() => {
     if (darkMode) {
@@ -26,20 +28,53 @@ export default function App() {
     /* Configuração de rotas usando React Router para fins de organização*/
     <Routes>
       <Route path="/" element={<LandingPage />} />
-      <Route
-        path="/home"
-        element={<Home darkMode={darkMode} setDarkMode={setDarkMode} />}
-      />
+
       <Route path="/login" element={<Login />} />
 
-      {/*Grupo candidato */}
+      {/*Grupo cadastro */}
       <Route path="/candidato/cadastro" element={<CadastroCandidato />} />
-      <Route path="/candidato/dashboard" element={<DashboardCandidato />} />
-      {/*Grupo recrutador */}
       <Route path="/recrutador/cadastro" element={<CadastroRecrutador />} />
-      <Route path="/recrutador/dashboard" element={<DashboardRecrutador />} />
-      <Route path="/recrutador/vagas" element={<CadastrarVagas />} />
-      <Route path="/recrutador/assinatura" element={<Assinatura />} />
+
+      {/*Grupo com layout */}
+      <Route
+        element={
+          <MainLayout
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+            role={role}
+          />
+        }
+      >
+        <Route
+          path="/home"
+          element={<Home darkMode={darkMode} setDarkMode={setDarkMode} />}
+        />
+        <Route
+          path="/candidato/dashboard"
+          element={
+            <DashboardCandidato darkMode={darkMode} setDarkMode={setDarkMode} />
+          }
+        />
+        <Route
+          path="/recrutador/dashboard"
+          element={
+            <DashboardRecrutador
+              darkMode={darkMode}
+              setDarkMode={setDarkMode}
+            />
+          }
+        />
+        <Route
+          path="/recrutador/vagas"
+          element={
+            <CadastrarVagas darkMode={darkMode} setDarkMode={setDarkMode} />
+          }
+        />
+        <Route
+          path="/recrutador/assinatura"
+          element={<Assinatura darkMode={darkMode} setDarkMode={setDarkMode} />}
+        />
+      </Route>
     </Routes>
   );
 }

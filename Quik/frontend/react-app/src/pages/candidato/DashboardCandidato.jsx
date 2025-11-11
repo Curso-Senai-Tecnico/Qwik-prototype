@@ -1,5 +1,9 @@
-import React from "react";
 
-export default function Dashboard() {
-  return <div>Dashboard Candidato</div>;
+
+export default function Dashboard({ darkMode, setDarkMode }) {
+  return (
+    <div className="flex flex-col">
+      <div>Dashboard Candidato</div>
+    </div>
+  );
 }

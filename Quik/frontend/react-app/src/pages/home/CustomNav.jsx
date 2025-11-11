@@ -4,6 +4,7 @@ import { Briefcase } from "lucide-react";
 import { Circle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Lightbulb } from "lucide-react";
+import Logo from "/logoNova.png";
 
 export default function CustomNav({ darkMode, setDarkMode, role, setRole }) {
   const navigate = useNavigate();
@@ -21,13 +22,13 @@ export default function CustomNav({ darkMode, setDarkMode, role, setRole }) {
         }  `}
       >
         <div className="flex justify-between items-center border-r w-1/2 h-full">
-          <span
+          <img
+            src={Logo}
+            width={250}
+            height={250}
+            className="cursor-pointer overflow-hidden"
             onClick={() => navigate("/home")}
-            className="font-rammeto text-3xl text-orange-500 cursor-pointer"
-          >
-            {" "}
-            Quik
-          </span>
+          />
           <div className="flex flex-col h-full w-30 justify-center items-center">
             <div>
               <User />

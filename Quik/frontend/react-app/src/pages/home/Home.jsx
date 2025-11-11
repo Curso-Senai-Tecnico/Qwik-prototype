@@ -26,7 +26,6 @@ export default function Home({ darkMode, setDarkMode }) {
         repeat: Infinity,
       }}
     >
-      <CustomNav darkMode={darkMode} setDarkMode={setDarkMode} role={role} />
       <VideoChamada />
       <Messenger darkMode={darkMode} setDarkMode={setDarkMode} />
     </motion.div>
