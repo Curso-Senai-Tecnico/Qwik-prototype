@@ -114,7 +114,7 @@ insert into candidatos (usuario_id, data_nascimento, cpf, genero, estado_civil) 
 # ==========================================
 #       tabela de perfil + população 
 # ==========================================
-
+# ------ ADICIONAR TAGS EM JSON -------
 cursor.execute("""
 create table perfil (
     usuario_id int primary key,
@@ -122,22 +122,23 @@ create table perfil (
     nome_perfil varchar(100) not null,
     data_nascimento_perfil date not null,
     curriculo varchar(255),
+    tags ,
     foreign key (usuario_id) references usuarios(id) on delete cascade
 ) default charset = utf8mb4;
 """)
 
 cursor.execute("""
 insert into perfil (usuario_id, foto, nome_perfil, data_nascimento_perfil, curriculo) values
-(1, 'foto1.jpg', 'Carlos S. Dev', '1990-05-15', 'caminho/curriculo1.pdf'),
-(2, 'foto2.jpg', 'Mariana Designer', '1995-10-20', 'caminho/curriculo2.pdf'),
-(3, 'foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'caminho/curriculo3.pdf'),
-(4, 'foto4.jpg', 'Ana Marketing', '1988-03-01', 'caminho/curriculo4.pdf'),
-(5, 'foto5.jpg', 'Felipe Eng', '2000-12-12', 'caminho/curriculo5.pdf'),
-(6, 'foto6.jpg', 'Julia Analista', '1992-07-25', 'caminho/curriculo6.pdf'),
-(7, 'foto7.jpg', 'Pedro Gerente', '1985-01-01', 'caminho/curriculo7.pdf'),
-(8, 'foto8.jpg', 'Larissa Estagiaria', '1996-11-30', 'caminho/curriculo8.pdf'),
-(9, 'foto9.jpg', 'Gustavo Vendas', '1998-09-09', 'caminho/curriculo9.pdf'),
-(10, 'foto10.jpg', 'Camila Contadora', '1993-04-18', 'caminho/curriculo10.pdf');
+(1, 'foto1.jpg', 'Carlos S. Dev', '1990-05-15', 'QWIK/Qwik-prototype/database/curículos/currículo Bárbara C. Almeida .pdf'),
+(2, 'foto2.jpg', 'Mariana Designer', '1995-10-20', 'QWIK/Qwik-prototype/database/curículos/Currículo de João Gabriel.pdf'),
+(3, 'foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'QWIK/Qwik-prototype/database/curículos/Currículo D'or.pdf'),
+(4, 'foto4.jpg', 'Ana Marketing', '1988-03-01', 'QWIK/Qwik-prototype/database/curículos/Currículo Guilherme Galvão Leal18.docx.pdf'),
+(5, 'foto5.jpg', 'Felipe Eng', '2000-12-12', 'QWIK/Qwik-prototype/database/curículos/Currículo Jamilly Lima Sousa.2.pdf'),
+(6, 'foto6.jpg', 'Julia Analista', '1992-07-25', 'QWIK/Qwik-prototype/database/curículos/Curriculo João Francisco.pdf'),
+(7, 'foto7.jpg', 'Pedro Gerente', '1985-01-01', 'QWIK/Qwik-prototype/database/curículos/Curriculo matheus.pdf'),
+(8, 'foto8.jpg', 'Larissa Estagiaria', '1996-11-30', 'QWIK/Qwik-prototype/database/curículos/Curriculo Myllena Gomes.2024.pdf'),
+(9, 'foto9.jpg', 'Gustavo Vendas', '1998-09-09', 'QWIK/Qwik-prototype/database/curículos/Currículo Phelipe (2).pdf'),
+(10, 'foto10.jpg', 'Camila Contadora', '1993-04-18', 'QWIK/Qwik-prototype/database/curículos/Curriculo_Ruan_Veiga_Melengati.pdf');
 """)
 
 
@@ -188,7 +189,7 @@ create table vaga (
     localizacao varchar(200) not null,
     data_publicacao date not null,
     status varchar(10) not null check (status in ('Ativa', 'Expirada')) default 'Ativa',
-    tags varchar(255),
+    tags varchar(255), 
     foreign key (recrutador_id) references recrutador(usuario_id) on delete cascade
 ) default charset = utf8mb4;
 """)
@@ -355,7 +356,7 @@ insert into pix (formapagamento_id, tipo_de_chave, chave) values
 """)
 
 # ==========================================
-#  tabela de vídeo chamada + população 
+#  tabela de vídeo chamada + população       #PROVÁVEL ALTERAÇÃO
 # ==========================================
 
 cursor.execute("""

@@ -3,14 +3,15 @@ from .models import Usuario, Candidato, Recrutador                          # Im
 from django.db import transaction                                        # Importa transaction para operações atômicas
 from validate_docbr import CPF, CNPJ                                     # Importa validadores de CPF e CNPJ
 
-                                #Serializador para usuario em geral
+#Serializador para usuario em geral
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'cidade', 'estado', 'telefone', 'bairro', 'password']
+        fields = ['id', 'nome', 'email', 'telefone', 'login',
+                    'senha', 'cidade', 'estado', 'bairro']
 
     
-                                #Serializador para candidato (GET)
+#Serializador para candidato (GET)
 class CandidatoSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
