@@ -1,25 +1,37 @@
 import { CircleUserRound } from "lucide-react";
 import { Lock } from "lucide-react";
 import { ScrollText } from "lucide-react";
+import { useRole } from "../../contexts/RoleContext";
 
-export default function DashNav({ role }) {
+export default function DashNav({ darkMode }) {
+  const { role } = useRole();
   return (
-    <nav className="flex flex-col gap-6 border-r h-dvh w-2/12 bg-[#D9D9D9] items-center justify-center">
+    <nav
+      className={`flex flex-col gap-6 border-r h-dvh w-2/12  items-center justify-center  ${
+        darkMode
+          ? "bg-[#22303c] text-white border-r-white"
+          : "bg-[#D9D9D9] text-black"
+      }`}
+    >
       <div className="flex items-center gap-1 min-w-full p-2">
-        <CircleUserRound />
-        <span className="font-inter font-semibold ">Informações da conta</span>
+        <CircleUserRound size={35} />
+        <span className="font-inter font-semibold text-2xl ">
+          Informações da conta
+        </span>
       </div>
       <div className="flex items-center gap-1 min-w-full p-2">
-        <Lock />
-        <span className="font-inter font-semibold ">Acesso e Segurança</span>
+        <Lock size={35} />
+        <span className="font-inter font-semibold text-2xl ">
+          Acesso e Segurança
+        </span>
       </div>
       <div className="flex items-center gap-1 min-w-full p-2">
-        <ScrollText />
+        <ScrollText size={35} />
         {role === "candidato" && (
-          <span className="font-inter font-semibold ">Currículo</span>
+          <span className="font-inter font-semibold text-2xl ">Currículo</span>
         )}
         {role === "recrutador" && (
-          <span className="font-inter font-semibold ">Vagas</span>
+          <span className="font-inter font-semibold text-2xl ">Vagas</span>
         )}
       </div>
     </nav>

@@ -1,9 +1,9 @@
-export default function Dashboard({ darkMode, setDarkMode, role }) {
+import DashNav from "../dashutils/DashNav";
+
+export default function Dashboard({ darkMode}) {
   return (
     <div className="flex flex-col">
-      <div className="flex">
-        <nav className="flex flex-col h-dvh w-2/12 border-r"></nav>
-      </div>
+      <DashNav darkMode={darkMode}/>
     </div>
   );
 }

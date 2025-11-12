@@ -5,8 +5,10 @@ import { Circle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Lightbulb } from "lucide-react";
 import Logo from "/logoNova.png";
+import { useRole } from "../../contexts/RoleContext";
 
-export default function CustomNav({ darkMode, setDarkMode, role, setRole }) {
+export default function CustomNav({ darkMode, setDarkMode }) {
+  const { role } = useRole();
   const navigate = useNavigate();
   console.log("Role recebida da Home: ", role);
   const toggleTheme = () => {
@@ -15,7 +17,7 @@ export default function CustomNav({ darkMode, setDarkMode, role, setRole }) {
   return (
     <header>
       <nav
-        className={`flex  w-dvw h-24 border-b ${
+        className={`flex  w-dvw h-25 border-b ${
           darkMode
             ? "border-white bg-[#22303c]  text-white"
             : "text-black bg-white"
@@ -24,7 +26,7 @@ export default function CustomNav({ darkMode, setDarkMode, role, setRole }) {
         <div className="flex justify-between items-center border-r w-1/2 h-full">
           <img
             src={Logo}
-            width={250}
+            width={230}
             height={250}
             className="cursor-pointer overflow-hidden"
             onClick={() => navigate("/home")}

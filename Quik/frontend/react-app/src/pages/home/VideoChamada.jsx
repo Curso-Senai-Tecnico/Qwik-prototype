@@ -3,11 +3,21 @@ import SignalIcon from "./SignalIcon";
 import { Mic, Phone, MicOff, VideoOff, HeadphoneOff } from "lucide-react";
 import { Video } from "lucide-react";
 import { Headphones } from "lucide-react";
+import LogoLoading from "./LogoLoading";
+import Logo from "/logoNova.png";
 
 export default function VideoChamada() {
   const [mic, setMic] = useState(true);
   const [headset, setHeadset] = useState(true);
   const [video, setVideo] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const startCall = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+  };
 
   const changeMic = () => {
     setMic((prev) => !prev);
@@ -20,12 +30,22 @@ export default function VideoChamada() {
   };
 
   return (
-    <div className="bg-black w-10/12 h-10/12 rounded-md mt-4 flex justify-center items-center">
+    <div className="bg-black w-9/12 h-9/12 rounded-md mt-4 flex justify-center items-center">
       <div className="bg-[rgb(26,26,26,100)] w-11/12 h-11/12 flex flex-col justify-between group">
         <SignalIcon />
-        <button className="text-white font-inter text-2xl font-bold border-orange-400 bg-orange-400 w-fit h-fit self-center justify-self-center p-4 rounded-full inset-shadow-black inset-shadow-2xs cursor-pointer">
-          Faça um Quik
-        </button>
+        {!isLoading ? (
+          <button
+            className="text-white font-inter text-2xl font-bold border-orange-400 bg-orange-400 w-fit h-fit self-center justify-self-center p-4 rounded-full inset-shadow-black inset-shadow-2xs cursor-pointer"
+            onClick={startCall}
+          >
+            Faça um Quik
+          </button>
+        ) : (
+          <div className="flex flex-col self-center justify-self-center justify-center items-center">
+            <img src={Logo} width={250} height={100} />
+            <LogoLoading />
+          </div>
+        )}
         <div className="flex justify-around opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           {mic ? (
             <Mic color="white" onClick={changeMic} />

@@ -10,10 +10,11 @@ import DashboardRecrutador from "./pages/recrutador/DashboardRecrutador";
 import CadastrarVagas from "./pages/recrutador/CadastrarVagas";
 import Assinatura from "./pages/recrutador/Assinatura";
 import MainLayout from "./MainLayout";
+import { RoleProvider } from "./contexts/RoleProvider";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
-  const [role, setRole] = useState(localStorage.getItem("role") || "candidato");
+  
 
   useEffect(() => {
     if (darkMode) {
@@ -26,56 +27,56 @@ export default function App() {
   console.log(darkMode);
   return (
     /* Configuração de rotas usando React Router para fins de organização*/
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
+    <RoleProvider>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
 
-      <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} />
 
-      {/*Grupo cadastro */}
-      <Route path="/candidato/cadastro" element={<CadastroCandidato />} />
-      <Route path="/recrutador/cadastro" element={<CadastroRecrutador />} />
+        {/*Grupo cadastro */}
+        <Route path="/candidato/cadastro" element={<CadastroCandidato />} />
+        <Route path="/recrutador/cadastro" element={<CadastroRecrutador />} />
 
-      {/*Grupo com layout */}
-      <Route
-        element={
-          <MainLayout
-            darkMode={darkMode}
-            setDarkMode={setDarkMode}
-            role={role}
+        {/*Grupo com layout */}
+        <Route
+          element={<MainLayout darkMode={darkMode} setDarkMode={setDarkMode} />}
+        >
+          <Route
+            path="/home"
+            element={<Home darkMode={darkMode} setDarkMode={setDarkMode} />}
           />
-        }
-      >
-        <Route
-          path="/home"
-          element={<Home darkMode={darkMode} setDarkMode={setDarkMode} />}
-        />
-        <Route
-          path="/candidato/dashboard"
-          element={
-            <DashboardCandidato darkMode={darkMode} setDarkMode={setDarkMode} />
-          }
-        />
-        <Route
-          path="/recrutador/dashboard"
-          element={
-            <DashboardRecrutador
-              darkMode={darkMode}
-              setDarkMode={setDarkMode}
-              role={role}
-            />
-          }
-        />
-        <Route
-          path="/recrutador/vagas"
-          element={
-            <CadastrarVagas darkMode={darkMode} setDarkMode={setDarkMode} />
-          }
-        />
-        <Route
-          path="/recrutador/assinatura"
-          element={<Assinatura darkMode={darkMode} setDarkMode={setDarkMode} />}
-        />
-      </Route>
-    </Routes>
+          <Route
+            path="/candidato/dashboard"
+            element={
+              <DashboardCandidato
+                darkMode={darkMode}
+                setDarkMode={setDarkMode}
+              />
+            }
+          />
+          <Route
+            path="/recrutador/dashboard"
+            element={
+              <DashboardRecrutador
+                darkMode={darkMode}
+                setDarkMode={setDarkMode}
+              />
+            }
+          />
+          <Route
+            path="/recrutador/vagas"
+            element={
+              <CadastrarVagas darkMode={darkMode} setDarkMode={setDarkMode} />
+            }
+          />
+          <Route
+            path="/recrutador/assinatura"
+            element={
+              <Assinatura darkMode={darkMode} setDarkMode={setDarkMode} />
+            }
+          />
+        </Route>
+      </Routes>
+    </RoleProvider>
   );
 }
