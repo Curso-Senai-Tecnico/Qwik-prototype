@@ -61,6 +61,7 @@ export default function App() {
             <DashboardRecrutador
               darkMode={darkMode}
               setDarkMode={setDarkMode}
+              role={role}
             />
           }
         />
