@@ -1,23 +1,28 @@
 from rest_framework import serializers                                   # Importa serializers do Django REST Framework
-from .models import Usuario, Candidato, Recrutador                          # Importa os modelos necessários
+from .models import Usuario, Candidato, Perfil, Recrutador, Vaga, FormaPagamento, Pagamento, Assinatura, Cartao, Pix, Videochamada, PV,                        # Importa os modelos necessários
 from django.db import transaction                                        # Importa transaction para operações atômicas
 from validate_docbr import CPF, CNPJ                                     # Importa validadores de CPF e CNPJ
 
-#Serializador para usuario em geral
-class UserSerializer(serializers.ModelSerializer):
+# ==========================================
+#         serializer de usuario
+# ==========================================
+
+class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = ['id', 'nome', 'email', 'telefone', 'login',
                     'senha', 'cidade', 'estado', 'bairro']
-
     
-#Serializador para candidato (GET)
-class CandidatoSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+# ==========================================
+#         serializer de candidato
+# ==========================================
 
+class CandidatoSerializer(serializers.ModelSerializer):
+    user = UsuarioSerializer()
     class Meta:
         model = Candidato
-        fields = ['user', 'cpf', 'data_nascimento']
+        fields = ['user', 'data_nascimento', 'cpf',
+                  'genero', 'estado_civil']
 
         def validate_cpf(self, value):                             # Validação personalizada para CPF
             cpf_validator = CPF()                                  # Cria uma instância do validador de CPF
@@ -25,13 +30,27 @@ class CandidatoSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("CPF inválido.") # Levanta erro se o CPF for inválido
             return value                                           # Retorna o valor se for válido
 
-                                #Serializador para recrutador (GET)
+# ==========================================
+#         serializer de perfil
+# ==========================================
+
+class PerfilSerializer(serializers.ModelSerializer):
+    user = UsuarioSerializer()
+    class Meta:
+        model = Perfil
+        fields = ['user', 'foto', 'nome_perfil',
+                  'data_nascimento', 'curriculo']
+
+# ==========================================
+#         serializer de recrutador
+# ==========================================
+
 class RecrutadorSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UsuarioSerializer()
 
     class Meta:
         model = Recrutador
-        fields = ['user', 'cnpj']
+        fields = ['user', 'cnpj', 'perfil_recutador']
 
         def validate_cnpj(self, value):                             # Validação personalizada para CNPJ
             cnpj_validator = CNPJ()                                 # Cria uma instância do validador de CNPJ
@@ -39,9 +58,35 @@ class RecrutadorSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("CNPJ inválido.") # Levanta erro se o CNPJ for inválido
             return value                                            # Retorna o valor se for válido
 
-                                #Serializador para registro de candidato (POST)
+# ==========================================
+#         serializer de vaga
+# ==========================================
+
+
+# ==========================================
+#         serializer de serializer
+# ==========================================
+
+# ==========================================
+#         serializer de serializer
+# ==========================================
+
+# ==========================================
+#         serializer de serializer
+# ==========================================
+
+# ==========================================
+#         serializer de serializer
+# ==========================================
+
+# ==========================================
+#         serializer de serializer
+# ==========================================
+
+
+#Serializador para registro de candidato (POST)
 class CandidatoRegistrationSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UsuarioSerializer()
 
     class Meta:
         model = Candidato
@@ -57,7 +102,7 @@ class CandidatoRegistrationSerializer(serializers.ModelSerializer):
 
                                 #Serializador para registro de recrutador (POST)
 class RecrutadorRegistrationSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UsuarioSerializer()
 
     class Meta:
         model = Recrutador
