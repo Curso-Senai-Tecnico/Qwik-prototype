@@ -190,7 +190,6 @@ class Pix(models.Model):
 #               video chamada
 # ==========================================
 
-
 class Videochamada(models.Model):
     candidato = models.ForeignKey('Candidato', on_delete=models.CASCADE)
     recrutador = models.ForeignKey('Recrutador', on_delete=models.CASCADE)
