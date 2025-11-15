@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { ChevronLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import Logo from "/logoSvg.svg";
 
 export default function Cadastro() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function Cadastro() {
         repeat: Infinity,
       }}
     >
-      <div className="bg-white w-2xl h-10/12 rounded-md flex flex-col">
+      <div className="bg-white w-2xl h-11/12 rounded-md flex flex-col">
         <header>
           <nav className="flex pt-10">
             <ChevronLeft
@@ -23,9 +24,7 @@ export default function Cadastro() {
               onClick={() => navigate("/")}
             />
             <img src="/esquilo.png" width={160} />
-            <h1 className="font-rammeto text-orange-400 text-5xl mt-20">
-              Quik
-            </h1>
+            <img src={Logo} width={120} className="self-end mb-5" />
           </nav>
         </header>
         <div className="flex flex-col items-center justify-center gap-3">

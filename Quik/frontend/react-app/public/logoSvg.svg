@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="29 350 940 317">
     <defs>
         <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="8" dy="8" stdDeviation="7" flood-opacity="1"/>
+            <feDropShadow dx="12" dy="12" stdDeviation="9" flood-opacity="0.8"/>
         </filter>
     </defs>
      <g filter="url(#shadow)">

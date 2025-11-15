@@ -4,7 +4,7 @@ import { Briefcase } from "lucide-react";
 import { Circle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Lightbulb } from "lucide-react";
-import Logo from "/logoNova.png";
+import Logo from "/logoSvg.svg";
 import { useRole } from "../../contexts/RoleContext";
 
 export default function CustomNav({ darkMode, setDarkMode }) {

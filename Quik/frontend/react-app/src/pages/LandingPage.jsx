@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Link } from "react-router-dom";
-import { createPortal } from "react-dom";
+
 import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Logo from "/logoSvg.svg";
@@ -171,7 +171,7 @@ export default function LandingPage() {
 
       {showModal && (
         <AnimatePresence>
-          ( createPortal(
+          ((
           <motion.div
             className="fixed inset-0 backdrop-blur bg-black/50 flex items-center justify-center"
             initial={{ opacity: 0 }}
