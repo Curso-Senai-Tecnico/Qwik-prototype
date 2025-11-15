@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Logo from "/logoSvg.svg"
 
 export default function LandingPage() {
   const [showModal, setShowModal] = useState(false);
@@ -84,9 +85,7 @@ export default function LandingPage() {
         <main className="flex-1 grid grid-cols-2">
           <div className="flex flex-col items-center justify-center text-center ml-10">
             <img src="/esquilo.png" alt="Logo Quik" className="w-80" />
-            <h1 className="font-rammeto font-normal text-orange-300 text-5xl mb-3">
-              Quik
-            </h1>
+            <img src={Logo} width={200} height={200} />
             <p className="font-bold mt-3">
               Encontre vagas qualificadas e conecte-se com empresas sérias —
               rápido e sem complicação. O lugar certo para sua próxima
