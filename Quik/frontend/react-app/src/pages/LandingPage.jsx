@@ -85,7 +85,7 @@ export default function LandingPage() {
           <nav className="flex justify-end gap-12 pt-6">
             <Link
               to={"/login"}
-              className="italic cursor-pointer font-space mt-3 hover:underline"
+              className="italic cursor-pointer font-space mt-3 hover:underline underline-offset-8 decoration-2"
             >
               Entrar
             </Link>
