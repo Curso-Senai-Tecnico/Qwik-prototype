@@ -55,7 +55,7 @@ cursor.execute("""use qwik;""")
 # ==========================================
 
 cursor.execute("""
-create table usuarios (
+create table if not exists usuarios (
     id int auto_increment primary key,
     nome varchar(100) not null,
     email varchar(250) unique not null,
@@ -69,7 +69,7 @@ create table usuarios (
 """)
 
 cursor.execute("""
-insert into usuarios (nome, email, telefone, login, senha, cidade, estado, bairro) values
+insert ignore into usuarios (nome, email, telefone, login, senha, cidade, estado, bairro) values
 ('Carlos Silva', 'carlos.silva@exemplo.com', '(21) 98765-4321', 'carlossilva', 'hashsenha1', 'Rio de Janeiro', 'RJ', 'Tijuca'),
 ('Mariana Santos', 'mariana.santos@exemplo.com', '(11) 99887-7665', 'marisan', 'hashsenha2', 'São Paulo', 'SP', 'Pinheiros'),
 ('Ricardo Oliveira', 'ricardo.oliveira@exemplo.com', '(31) 91234-5678', 'ricardoo', 'hashsenha3', 'Belo Horizonte', 'MG', 'Savassi'),
@@ -87,7 +87,7 @@ insert into usuarios (nome, email, telefone, login, senha, cidade, estado, bairr
 # ==========================================
 
 cursor.execute("""
-create table candidatos (
+create table if not exists candidatos (
     usuario_id int primary key,
     data_nascimento date not null,
     cpf varchar(14) unique not null,
@@ -98,7 +98,7 @@ create table candidatos (
 """)
 
 cursor.execute("""
-insert into candidatos (usuario_id, data_nascimento, cpf, genero, estado_civil) values
+insert ignore into candidatos (usuario_id, data_nascimento, cpf, genero, estado_civil) values
 (1, '1990-05-15', '111.111.111-11', 'M', 'Casado(a)'),
 (2, '1995-10-20', '222.222.222-22', 'F', 'Solteiro(a)'),
 (4, '1988-03-01', '444.444.444-44', 'F', 'Divorciado(a)'),
@@ -116,19 +116,19 @@ insert into candidatos (usuario_id, data_nascimento, cpf, genero, estado_civil) 
 # ==========================================
 # ------ ADICIONAR TAGS EM JSON -------
 cursor.execute("""
-create table perfil (
+create table if not exists perfil (
     usuario_id int primary key,
     foto varchar(255) not null,
     nome_perfil varchar(100) not null,
     data_nascimento_perfil date not null,
     curriculo varchar(255),
-    tags ,
+    tags json,
     foreign key (usuario_id) references usuarios(id) on delete cascade
 ) default charset = utf8mb4;
 """)
 
 cursor.execute("""
-insert into perfil (usuario_id, foto, nome_perfil, data_nascimento_perfil, curriculo) values
+insert ignore into perfil (usuario_id, foto, nome_perfil, data_nascimento_perfil, curriculo) values
 (1, 'foto1.jpg', 'Carlos S. Dev', '1990-05-15', 'QWIK/Qwik-prototype/database/curículos/currículo Bárbara C. Almeida .pdf'),
 (2, 'foto2.jpg', 'Mariana Designer', '1995-10-20', 'QWIK/Qwik-prototype/database/curículos/Currículo de João Gabriel.pdf'),
 (3, 'foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'QWIK/Qwik-prototype/database/curículos/Currículo D'or.pdf'),
@@ -147,7 +147,7 @@ insert into perfil (usuario_id, foto, nome_perfil, data_nascimento_perfil, curri
 # ==========================================
 
 cursor.execute("""
-create table recrutador (
+create table if not exists recrutador (
     usuario_id int primary key,
     cnpj varchar(18) unique,
     perfil_recrutador varchar(100) not null,
@@ -156,7 +156,7 @@ create table recrutador (
 """)
 
 cursor.execute("""
-insert into recrutador (usuario_id, cnpj, perfil_recrutador) values
+insert ignore into recrutador (usuario_id, cnpj, perfil_recrutador) values
 (3, '00.111.222/0001-33', 'Recursos Humanos'),
 (7, '11.222.333/0001-44', 'Tech Recruiter'),
 (6, '22.333.444/0001-55', 'Generalista'),
@@ -174,7 +174,7 @@ insert into recrutador (usuario_id, cnpj, perfil_recrutador) values
 # ==========================================
 
 cursor.execute("""
-create table vaga (
+create table if not exists vaga (
     id int auto_increment primary key,
     recrutador_id int not null,
     tipo varchar(50) not null,
@@ -195,7 +195,7 @@ create table vaga (
 """)
 
 cursor.execute("""
-insert into vaga (recrutador_id, tipo, contrato, cargo, resumo, responsabilidades, requisitos, beneficios, salario, quantidade, localizacao, data_publicacao, status, tags) values
+insert ignore into vaga (recrutador_id, tipo, contrato, cargo, resumo, responsabilidades, requisitos, beneficios, salario, quantidade, localizacao, data_publicacao, status, tags) values
 (3, 'CLT', 'Integral', 'Desenvolvedor Frontend', 'Desenvolvimento de interfaces web.', 'Implementar funcionalidades, garantir usabilidade.', 'HTML, CSS, JavaScript, React', 'Vale Transporte, Vale Refeição, Plano de Saúde', 5000.00, 2, 'São Paulo - SP', '2025-10-20', 'Ativa', 'Frontend, React, Web'),
 (7, 'PJ', 'Integral', 'Analista de Dados', 'Análise de dados e criação de relatórios.', 'Coletar, limpar e analisar dados.', 'SQL, Python, Power BI', 'Bônus por performance, Flexibilidade de Horário', 6500.00, 1, 'Remoto', '2025-10-21', 'Ativa', 'Dados, SQL, Python'),
 (6, 'Estágio', 'Parcial', 'Assistente Administrativo', 'Suporte a tarefas administrativas.', 'Organização de documentos, atendimento telefônico.', 'Pacote Office, Boa comunicação', 'Bolsa Auxílio, Recesso Remunerado', 1500.00, 3, 'Rio de Janeiro - RJ', '2025-10-22', 'Ativa', 'Administrativo, Office'),
@@ -213,7 +213,7 @@ insert into vaga (recrutador_id, tipo, contrato, cargo, resumo, responsabilidade
 # ==========================================
 
 cursor.execute("""
-create table formapagamento (
+create table if not exists formapagamento (
     id int auto_increment primary key,
     recrutador_id int not null,
     tipo varchar(50) not null,
@@ -224,7 +224,7 @@ create table formapagamento (
 """)
 
 cursor.execute("""
-insert into formapagamento (recrutador_id, tipo, status) values
+insert ignore into formapagamento (recrutador_id, tipo, status) values
 (3, 'Cartão', 'Ativo'),
 (7, 'Pix', 'Ativo'),
 (6, 'Cartão', 'Ativo'),
@@ -242,7 +242,7 @@ insert into formapagamento (recrutador_id, tipo, status) values
 # ==========================================
 
 cursor.execute("""
-create table pagamento (
+create table if not exists pagamento (
     id int auto_increment primary key,
     recrutador_id int not null,
     formapagamento_id int not null,
@@ -256,7 +256,7 @@ create table pagamento (
 """)
 
 cursor.execute("""
-insert into pagamento (recrutador_id, formapagamento_id, tipo_serviço, valor, status) values
+insert ignore into pagamento (recrutador_id, formapagamento_id, tipo_serviço, valor, status) values
 (3, 1, 'Plano Mensal', 199.90, 'Ativo'),
 (7, 2, 'Destaque Vaga', 49.90, 'Ativo'),
 (6, 3, 'Plano Anual', 1999.00, 'Ativo'),
@@ -274,7 +274,7 @@ insert into pagamento (recrutador_id, formapagamento_id, tipo_serviço, valor, s
 # ==========================================
 
 cursor.execute("""
-create table assinatura (
+create table if not exists assinatura (
     id int auto_increment primary key,
     pagamento_id int not null,
     tipo varchar(50) not null,
@@ -286,7 +286,7 @@ create table assinatura (
 """)
 
 cursor.execute("""
-insert into assinatura (pagamento_id, tipo, data_inicio, data_vencimento, forma_pgt) values
+insert ignore into assinatura (pagamento_id, tipo, data_inicio, data_vencimento, forma_pgt) values
 (1, 'Básico', '2025-10-01 10:00:00', '2025-11-01', 'Cartão'),
 (3, 'Premium', '2025-09-15 15:30:00', '2026-09-15', 'Cartão'),
 (4, 'Básico', '2025-10-25 08:00:00', '2025-11-25', 'Pix'),
@@ -304,7 +304,7 @@ insert into assinatura (pagamento_id, tipo, data_inicio, data_vencimento, forma_
 # ==========================================
 
 cursor.execute("""
-create table cartao (
+create table if not exists cartao (
     formapagamento_id int primary key,
     numero_cartao varchar(20) not null,
     nome_titular varchar(100) not null,
@@ -315,7 +315,7 @@ create table cartao (
 """)
 
 cursor.execute("""
-insert into cartao (formapagamento_id, numero_cartao, nome_titular, validade, cvv) values
+insert ignore into cartao (formapagamento_id, numero_cartao, nome_titular, validade, cvv) values
 (1, '1234567890123456', 'RICARDO OLIVEIRA', '12/2028', '123'),
 (3, '9876543210987654', 'JULIA COSTA', '05/2027', '456'),
 (5, '1111222233334444', 'MARIANA SANTOS', '01/2026', '789'),
@@ -333,7 +333,7 @@ insert into cartao (formapagamento_id, numero_cartao, nome_titular, validade, cv
 # ==========================================
 
 cursor.execute("""
-create table pix (
+create table if not exists pix (
     formapagamento_id int primary key,
     tipo_de_chave varchar(10) not null check (tipo_de_chave in ('EMAIL', 'TELEFONE', 'CPF', 'ALEATORIA')),
     chave varchar(150) not null,
@@ -342,7 +342,7 @@ create table pix (
 """)
 
 cursor.execute("""
-insert into pix (formapagamento_id, tipo_de_chave, chave) values
+insert ignore into pix (formapagamento_id, tipo_de_chave, chave) values
 (2, 'EMAIL', 'pedro.almeida@exemplo.com'),
 (4, 'TELEFONE', '(21) 98765-4321'),
 (6, 'CPF', '55.666.777/0001-88'),
@@ -360,7 +360,7 @@ insert into pix (formapagamento_id, tipo_de_chave, chave) values
 # ==========================================
 
 cursor.execute("""
-create table video_chamada (
+create table if not exists video_chamada (
     id int auto_increment primary key,
     candidato_id int not null,
     recrutador_id int not null,
@@ -375,7 +375,7 @@ create table video_chamada (
 """)
 
 cursor.execute("""
-insert into video_chamada (candidato_id, recrutador_id, vaga_id, log, record, data_realizacao) values
+insert ignore into video_chamada (candidato_id, recrutador_id, vaga_id, log, record, data_realizacao) values
 (1, 3, 1, 'Log da chamada 1', 'link/gravacao1', '2025-10-30 10:00:00'),
 (2, 7, 2, 'Log da chamada 2', 'link/gravacao2', '2025-10-30 14:30:00'),
 (4, 6, 3, 'Log da chamada 3', null, '2025-10-31 09:00:00'),
@@ -393,7 +393,7 @@ insert into video_chamada (candidato_id, recrutador_id, vaga_id, log, record, da
 # ==========================================
 
 cursor.execute("""
-create table chat_pv (
+create table if not exists chat_pv (
     id int auto_increment primary key,
     candidato_id int not null,
     recrutador_id int not null,
@@ -405,7 +405,7 @@ create table chat_pv (
 """)
 
 cursor.execute("""
-insert into chat_pv (candidato_id, recrutador_id, log, data) values
+insert ignore into chat_pv (candidato_id, recrutador_id, log, data) values
 (1, 3, 'Início da conversa com Carlos.', '2025-10-28 10:00:00'),
 (2, 7, 'Mariana enviou o portfólio.', '2025-10-28 11:30:00'),
 (4, 6, 'Dúvidas sobre a vaga 3 esclarecidas.', '2025-10-29 14:00:00'),
