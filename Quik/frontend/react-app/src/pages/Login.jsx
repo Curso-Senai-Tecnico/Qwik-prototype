@@ -1,7 +1,7 @@
-import React from "react";
 import { motion } from "motion/react";
 import { ChevronLeft } from "lucide-react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Logo from "/logoSvg.svg";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function Login() {
         repeat: Infinity,
       }}
     >
-      <div className="flex flex-col bg-white rounded-2xl w-2xl h-9/12 shadow-2xl backdrop-blur-3xl">
+      <div className="flex flex-col bg-white rounded-2xl w-2xl h-10/12 shadow-2xl backdrop-blur-3xl">
         <header>
           <nav className="flex pt-10">
             <ChevronLeft
@@ -25,9 +25,7 @@ export default function Login() {
               onClick={() => navigate("/")}
             ></ChevronLeft>
             <img src="/esquilo.png" width={160} />
-            <h1 className="font-rammeto text-orange-400 text-5xl mt-20">
-              Quik
-            </h1>
+            <img src={Logo} width={120} className="self-end mb-5" />
           </nav>
         </header>
         <div className="flex flex-col gap-3 justify-center items-center font-inter">
