@@ -16,7 +16,7 @@ export default function Login() {
         repeat: Infinity,
       }}
     >
-      <div className="flex flex-col bg-white rounded-2xl w-2xl h-10/12 shadow-2xl backdrop-blur-3xl">
+      <div className="flex flex-col bg-white rounded-2xl w-full max-w-2xl  min-h-screen md:min-h-fit shadow-2xl backdrop-blur-3xl">
         <header>
           <nav className="flex pt-10">
             <ChevronLeft
