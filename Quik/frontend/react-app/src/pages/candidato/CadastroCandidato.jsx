@@ -15,7 +15,7 @@ export default function Cadastro() {
         repeat: Infinity,
       }}
     >
-      <div className="bg-white w-2xl h-11/12 rounded-md flex flex-col">
+      <div className="bg-white w-full max-w-2xl  min-h-screen md:min-h-fit rounded-2xl flex flex-col pb-10 shadow-2xl backdrop-blur-3xl">
         <header>
           <nav className="flex pt-10">
             <ChevronLeft
