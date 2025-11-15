@@ -66,8 +66,10 @@ export default function LandingPage() {
       }}
     >
       <div className="bg-white w-300 h-155 rounded-lg">
-        <header>
+        <header className="flex justify-between">
+          <img src={Logo} width={100} className="pl-2" />
           <nav className="flex justify-end gap-12 pt-6">
+            
             <Link
               to={"/login"}
               className="italic cursor-pointer font-space mt-3 hover:underline"
@@ -84,9 +86,9 @@ export default function LandingPage() {
         </header>
         <main className="flex-1 grid grid-cols-2">
           <div className="flex flex-col items-center justify-center text-center ml-10">
-            <img src="/esquilo.png" alt="Logo Quik" className="w-80" />
-            <img src={Logo} width={200} height={200} />
-            <p className="font-bold mt-3">
+            
+            <img src="/esquilo.png" alt="Logo Quik" className="w-60" />
+            <p className="font-bold mt-2">
               Encontre vagas qualificadas e conecte-se com empresas sérias —
               rápido e sem complicação. O lugar certo para sua próxima
               oportunidade profissional.
