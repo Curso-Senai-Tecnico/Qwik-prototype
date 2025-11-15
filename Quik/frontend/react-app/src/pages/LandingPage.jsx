@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Logo from "/logoSvg.svg"
+import Logo from "/logoSvg.svg";
 
 export default function LandingPage() {
   const [showModal, setShowModal] = useState(false);
@@ -55,6 +55,20 @@ export default function LandingPage() {
       numeroVagas: 234,
     },
   ];
+
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % vagas.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [vagas.length]);
+
+  const vagaAtual = vagas[index];
+  const prevIndex = (index - 1 + vagas.length) % vagas.length;
+  const nextIndex = (index + 1) % vagas.length;
+
   return (
     <motion.div
       className="bg-gradient-to-br from-[#ffd064] via-[#ffab4b] to-[#934500] flex w-vh h-dvh bg-[length:200%_200%] justify-center items-center"
@@ -67,9 +81,8 @@ export default function LandingPage() {
     >
       <div className="bg-white w-300 h-155 rounded-lg">
         <header className="flex justify-between">
-          <img src={Logo} width={100} className="pl-2" />
+          <img src={Logo} className="p-3 w-35" />
           <nav className="flex justify-end gap-12 pt-6">
-            
             <Link
               to={"/login"}
               className="italic cursor-pointer font-space mt-3 hover:underline"
@@ -86,7 +99,6 @@ export default function LandingPage() {
         </header>
         <main className="flex-1 grid grid-cols-2">
           <div className="flex flex-col items-center justify-center text-center ml-10">
-            
             <img src="/esquilo.png" alt="Logo Quik" className="w-60" />
             <p className="font-bold mt-2">
               Encontre vagas qualificadas e conecte-se com empresas sérias —
@@ -94,25 +106,67 @@ export default function LandingPage() {
               oportunidade profissional.
             </p>
           </div>
-          <div className="flex flex-col justify-center items-center gap-3 mt-6">
-            {vagas.map((vaga) => (
-              <div
-                className="flex shadow-lg shadow-gray-400/60 gap-8 w-80 justify-between items-center p-6 bg-[#ffab4b] text-white border border-white/40 cursor-pointer hover:z-50 hover:scale-125 hover:backdrop-blur-xl transition-transform duration-200 rounded-lg"
-                key={vaga.id}
-              >
-                <img src={vaga.icone} className="w-6 h-6 bg" />
-                <span>{vaga.empresa}</span>
-                <span>{vaga.numeroVagas}+ vagas</span>
+          {/* Carrossel */}
+          <div
+            className="relative w-full flex justify-center mt-30"
+            style={{
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)",
+              maskImage:
+                "linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)",
+            }}
+          >
+            {/* Preview Esquerda */}
+            <motion.div
+              className="absolute left-0 top-0 h-full flex items-center"
+              style={{
+                transform: "translateX(-45%) scale(0.85)",
+                filter: "blur(4px)",
+                pointerEvents: "none",
+                opacity: 0.4,
+              }}
+            >
+              <div className="flex flex-col shadow-lg shadow-gray-400/60 gap-8 w-80 h-55 justify-between items-center p-6 bg-[#ffab4b] text-white border border-white/40 rounded-xl scale-90">
+                <img src={vagas[prevIndex].icone} className="w-20 h-20" />
+                <span>{vagas[prevIndex].numeroVagas}+ vagas</span>
               </div>
-            ))}
+            </motion.div>
+
+            {/* CARD PRINCIPAL */}
+            <div className="w-80 h-70 flex items-center justify-center relative">
+              <AnimatePresence mode="popLayout">
+                <motion.div
+                  key={vagaAtual.id}
+                  initial={{ opacity: 0, x: 150, scale: 0.9 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: -150, scale: 0.9 }}
+                  transition={{ duration: 0.5, type: "spring" }}
+                  className="absolute flex flex-col shadow-lg shadow-gray-400/60 gap-8 w-80 h-60 justify-between items-center p-6 bg-[#ffab4b] text-white border border-white/40 rounded-md"
+                >
+                  <img src={vagaAtual.icone} className="w-30 h-30" />
+                  <span>{vagaAtual.numeroVagas}+ vagas</span>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Preview Direita */}
+            <motion.div
+              className="absolute right-0 top-0 h-full flex items-center"
+              style={{
+                transform: "translateX(45%) scale(0.85)",
+                filter: "blur(4px)",
+                pointerEvents: "none",
+                opacity: 0.4,
+              }}
+            >
+              <div className="flex flex-col shadow-lg shadow-gray-400/60 gap-8 w-80 h-50 justify-between items-center p-6 bg-[#ffab4b] text-white border border-white/40 rounded-xl scale-90">
+                <img src={vagas[nextIndex].icone} className="w-6 h-6" />
+                <span>{vagas[nextIndex].empresa}</span>
+                <span>{vagas[nextIndex].numeroVagas}+ vagas</span>
+              </div>
+            </motion.div>
           </div>
         </main>
-        <footer className="flex justify-around items-center mt-10 font-black text-gray-500 border-t-1 pt-2">
-          <p>© 2025 Quik — Todos os direitos reservados</p>
-          <p>Sobre</p>
-          <p>Centro de ajuda</p>
-          <p>Política de privacidade</p>
-        </footer>
       </div>
 
       {showModal && (
