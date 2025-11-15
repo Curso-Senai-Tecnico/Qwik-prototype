@@ -5,14 +5,16 @@ import Home from "./pages/home/Home";
 import Login from "./pages/Login";
 import CadastroCandidato from "./pages/candidato/CadastroCandidato";
 import DashboardCandidato from "./pages/candidato/DashboardCandidato";
-import PerfilCandidato from "./pages/candidato/PerfilCandidato";
 import CadastroRecrutador from "./pages/recrutador/CadastroRecrutador";
 import DashboardRecrutador from "./pages/recrutador/DashboardRecrutador";
 import CadastrarVagas from "./pages/recrutador/CadastrarVagas";
 import Assinatura from "./pages/recrutador/Assinatura";
+import MainLayout from "./MainLayout";
+import { RoleProvider } from "./contexts/RoleProvider";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
+  
 
   useEffect(() => {
     if (darkMode) {
@@ -25,23 +27,56 @@ export default function App() {
   console.log(darkMode);
   return (
     /* Configuração de rotas usando React Router para fins de organização*/
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route
-        path="/home"
-        element={<Home darkMode={darkMode} setDarkMode={setDarkMode} />}
-      />
-      <Route path="/login" element={<Login />} />
+    <RoleProvider>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
 
-      {/*Grupo candidato */}
-      <Route path="/candidato/cadastro" element={<CadastroCandidato />} />
-      <Route path="/candidato/dashboard" element={<DashboardCandidato />} />
-      <Route path="/candidato/perfil" element={<PerfilCandidato />} />
-      {/*Grupo recrutador */}
-      <Route path="/recrutador/cadastro" element={<CadastroRecrutador />} />
-      <Route path="/recrutador/dashboard" element={<DashboardRecrutador />} />
-      <Route path="/recrutador/vagas" element={<CadastrarVagas />} />
-      <Route path="/recrutador/assinatura" element={<Assinatura />} />
-    </Routes>
+        <Route path="/login" element={<Login />} />
+
+        {/*Grupo cadastro */}
+        <Route path="/candidato/cadastro" element={<CadastroCandidato />} />
+        <Route path="/recrutador/cadastro" element={<CadastroRecrutador />} />
+
+        {/*Grupo com layout */}
+        <Route
+          element={<MainLayout darkMode={darkMode} setDarkMode={setDarkMode} />}
+        >
+          <Route
+            path="/home"
+            element={<Home darkMode={darkMode} setDarkMode={setDarkMode} />}
+          />
+          <Route
+            path="/candidato/dashboard"
+            element={
+              <DashboardCandidato
+                darkMode={darkMode}
+                setDarkMode={setDarkMode}
+              />
+            }
+          />
+          <Route
+            path="/recrutador/dashboard"
+            element={
+              <DashboardRecrutador
+                darkMode={darkMode}
+                setDarkMode={setDarkMode}
+              />
+            }
+          />
+          <Route
+            path="/recrutador/vagas"
+            element={
+              <CadastrarVagas darkMode={darkMode} setDarkMode={setDarkMode} />
+            }
+          />
+          <Route
+            path="/recrutador/assinatura"
+            element={
+              <Assinatura darkMode={darkMode} setDarkMode={setDarkMode} />
+            }
+          />
+        </Route>
+      </Routes>
+    </RoleProvider>
   );
 }

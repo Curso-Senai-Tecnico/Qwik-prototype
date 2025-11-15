@@ -166,7 +166,7 @@ class Cartao(models.Model):
     cvv = SecurityCodeField(null=False)
 
     class Meta:
-        db_table = 'cartão'
+        db_table = 'cartao'
 
 # ==========================================
 #                   pix

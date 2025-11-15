@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Logo from "/logoSvg.svg";
 
 export default function Cadastro() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function Cadastro() {
         repeat: Infinity,
       }}
     >
-      <div className="bg-white w-2xl h-10/12 rounded-md flex flex-col">
+      <div className="bg-white w-full max-w-2xl  min-h-screen md:min-h-fit rounded-2xl flex flex-col shadow-2xl backdrop-blur-3xl">
         <header>
           <nav className="flex pt-10">
             <ChevronLeft
@@ -25,12 +26,10 @@ export default function Cadastro() {
               onClick={() => navigate("/")}
             />
             <img src="/esquilo.png" width={160} />
-            <h1 className="font-rammeto text-orange-400 text-5xl mt-20">
-              Quik
-            </h1>
+            <img src={Logo} width={120} className="self-end mb-5" />
           </nav>
         </header>
-        <div className="flex flex-col items-center justify-center gap-3">
+        <div className="flex flex-col items-center justify-center gap-3 pb-10">
           <h1 className="font-inter font-bold text-2xl">
             Prepare-se para encontrar sua próxima oportunidade!
           </h1>

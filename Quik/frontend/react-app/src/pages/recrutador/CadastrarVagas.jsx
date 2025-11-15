@@ -1,7 +1,9 @@
-import React from 'react'
 
-export default function CadastrarVagas() {
+
+export default function CadastrarVagas({ darkMode, setDarkMode }) {
   return (
-    <div>CadastrarVagas</div>
-  )
+    <div className="flex flex-col">
+      <div>Cadastrar Vagas</div>
+    </div>
+  );
 }

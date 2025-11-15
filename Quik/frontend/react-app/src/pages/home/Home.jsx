@@ -1,5 +1,3 @@
-import React from "react";
-import CustomNav from "./CustomNav";
 import { motion } from "framer-motion";
 import Messenger from "./Messenger";
 import VideoChamada from "./VideoChamada";
@@ -7,7 +5,7 @@ import VideoChamada from "./VideoChamada";
 export default function Home({ darkMode, setDarkMode }) {
   return (
     <motion.div
-      className="bg-gradient-to-br from-[#ffd064] via-[#ffab4b] to-[#934500] flex flex-col w-vh h-dvh bg-[length:200%_200%] items-center"
+      className="bg-gradient-to-br from-[#ffd064] via-[#ffab4b] to-[#934500] flex flex-col w-screen h-screen bg-[length:200%_200%] items-center overflow-hidden"
       animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
       transition={{
         duration: 5,
@@ -15,7 +13,6 @@ export default function Home({ darkMode, setDarkMode }) {
         repeat: Infinity,
       }}
     >
-      <CustomNav darkMode={darkMode} setDarkMode={setDarkMode} />
       <VideoChamada />
       <Messenger darkMode={darkMode} setDarkMode={setDarkMode} />
     </motion.div>
