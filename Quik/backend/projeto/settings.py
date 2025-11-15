@@ -133,4 +133,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Adicione esta linha para usar o User customizado em api.models
-AUTH_USER_MODEL = 'api.User'
+AUTH_USER_MODEL = 'api.Usuario'
