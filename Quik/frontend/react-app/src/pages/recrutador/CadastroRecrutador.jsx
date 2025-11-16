@@ -45,6 +45,14 @@ export default function Cadastro() {
             />
             <input
               type="text"
+              id="login"
+              name="login"
+              placeholder="Login"
+              className="font-inter border rounded-full p-3 shadow-lg"
+              size={40}
+            />
+            <input
+              type="text"
               id="identidade"
               name="identidade"
               placeholder="Identidade"
