@@ -6,6 +6,26 @@ import Logo from "/logoSvg.svg";
 export default function Login() {
   const navigate = useNavigate();
 
+  const handleLogin = async (e) => {
+    e.preventDefault()
+
+    const formData = new FormData(e.target); // pega os inputs do forms
+
+    try {
+      const response = await fetch("/login/", {
+        method: "POST",
+        body: formData
+      });
+
+      if (!response.ok) throw new Error("Usuário ou senha inválidos")
+      
+      const data = await response.json();
+      console.log("Login feito com sucesso: ", data)
+    } catch (err) {
+      console.error(err.message);
+    }
+  } 
+
   return (
     <motion.div
       className="bg-gradient-to-br from-[#ffd064] via-[#ffab4b] to-[#934500] flex w-vh h-dvh bg-[length:200%_200%] justify-center items-center"
@@ -36,7 +56,7 @@ export default function Login() {
           {/*TODO:
             Fazer com que os dados não fiquem salvos na URL
            */}
-          <form className="flex flex-col justify-center items-center gap-6">
+          <form onSubmit={handleLogin} className="flex flex-col justify-center items-center gap-6">
             <input
               type="email"
               name="email"

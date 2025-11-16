@@ -246,7 +246,7 @@ create table if not exists pagamento (
     id int auto_increment primary key,
     recrutador_id int not null,
     formapagamento_id int not null,
-    tipo_serviço varchar(50) not null,
+    tipo_servico varchar(50) not null,
     valor decimal(10,2) not null,
     data_pagamento datetime default current_timestamp,
     status varchar(10) not null check (status in ('Ativo', 'Expirado')) default 'Ativo',
@@ -256,7 +256,7 @@ create table if not exists pagamento (
 """)
 
 cursor.execute("""
-insert ignore into pagamento (recrutador_id, formapagamento_id, tipo_serviço, valor, status) values
+insert ignore into pagamento (recrutador_id, formapagamento_id, tipo_servico, valor, status) values
 (3, 1, 'Plano Mensal', 199.90, 'Ativo'),
 (7, 2, 'Destaque Vaga', 49.90, 'Ativo'),
 (6, 3, 'Plano Anual', 1999.00, 'Ativo'),
