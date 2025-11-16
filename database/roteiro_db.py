@@ -129,16 +129,16 @@ create table if not exists perfil (
 
 cursor.execute("""
 insert ignore into perfil (usuario_id, foto, nome_perfil, data_nascimento_perfil, curriculo) values
-(1, 'foto1.jpg', 'Carlos S. Dev', '1990-05-15', 'database/curículos/curriculo_alexandre.pdf'),
-(2, 'foto2.jpg', 'Mariana Designer', '1995-10-20', 'database/curículos/curriculo_barbara.pdf'),
-(3, 'foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'database/curículos/curriculo_francisco.pdf'),
-(4, 'foto4.jpg', 'Ana Marketing', '1988-03-01', 'database/curículos/curriculo_guilherme.pdf'),
-(5, 'foto5.jpg', 'Felipe Eng', '2000-12-12', 'database/curículos/curriculo_jamilly.pdf'),
-(6, 'foto6.jpg', 'Julia Analista', '1992-07-25', 'database/curículos/curriculo_joao_gabriel.pdf'),
-(7, 'foto7.jpg', 'Pedro Gerente', '1985-01-01', 'database/curículos/curriculo_matheus.pdf'),
-(8, 'foto8.jpg', 'Larissa Estagiaria', '1996-11-30', 'database/curículos/curriculo_mylenna.pdf'),
-(9, 'foto9.jpg', 'Gustavo Vendas', '1998-09-09', 'database/curículos/curriculo_phelipe.pdf'),
-(10, 'foto10.jpg', 'Camila Contadora', '1993-04-18', 'database/curículos/curriculo_ruan.pdf');
+(1, 'database/fotos/foto1.jpg', 'Carlos S. Dev', '1990-05-15', 'database/curriculos/curriculo_alexandre.pdf'),
+(2, 'database/fotos/foto2.jpg', 'Mariana Designer', '1995-10-20', 'database/curriculos/curriculo_barbara.pdf'),
+(3, 'database/fotos/foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'database/curriculos/curriculo_francisco'),
+(4, 'database/fotos/foto4.jpg', 'Ana Marketing', '1988-03-01', 'database/curriculos/curriculo_gabriel.pdf'),
+(5, 'database/fotos/foto5.jpg', 'Felipe Eng', '2000-12-12', 'database/curriculos/curriculo_guilherme.pdf'),
+(6, 'database/fotos/foto6.jpg', 'Julia Analista', '1992-07-25', 'database/curriculos/curriculo_jamilly.pdf'),
+(7, 'database/fotos/foto7.jpg', 'Pedro Gerente', '1985-01-01', 'database/curriculos/curriculo_matheus.pdf'),
+(8, 'database/fotos/foto8.jpg', 'Larissa Estagiaria', '1996-11-30', 'database/curriculos/curriculo_mylenna.pdf'),
+(9, 'database/fotos/foto9.jpg', 'Gustavo Vendas', '1998-09-09', 'database/curriculos/curriculo_phelipe.pdf'),
+(10, 'database/fotos/foto10.jpg', 'Camila Contadora', '1993-04-18', 'database/curriculos/curriculo_ruan.pdf');
 """)
 
 
