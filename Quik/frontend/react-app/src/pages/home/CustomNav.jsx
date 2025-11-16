@@ -6,11 +6,40 @@ import { useNavigate } from "react-router-dom";
 import { Lightbulb } from "lucide-react";
 import Logo from "/logoSvg.svg";
 import { useRole } from "../../contexts/RoleContext";
+//import { useToken } from "../../contexts/TokenContext";
+//import { useEffect, useState } from "react";
+
+// COMENTANDO UM MONTE DE COISA PQ O BACKEND TA TODO BUGADO
 
 export default function CustomNav({ darkMode, setDarkMode }) {
   const { role } = useRole();
+  //const {token} = useToken();
   const navigate = useNavigate();
   console.log("Role recebida da Home: ", role);
+  //console.log("Token: ", token);
+
+  /* const [foto, setFoto] = useState(null);
+  const [nome, setNome] = useState("");
+ */
+  /* useEffect(() => {
+    async function loadProfile() {
+      if (!token) return;
+
+      const response = await fetch(`/usuario/me`, {
+        headers: {Authorization: `Bearer ${token}`}
+      });
+
+      if (response.ok) {
+
+      
+      const user = await response.json();
+      setNome(user.nome ?? "")
+      setFoto(user.foto ?? null)
+      }
+    }
+
+    loadProfile()
+  }, [token]) */
   const toggleTheme = () => {
     setDarkMode((prevMode) => !prevMode);
   };

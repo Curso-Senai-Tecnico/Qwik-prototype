@@ -5,6 +5,36 @@ import Logo from "/logoSvg.svg";
 
 export default function Cadastro() {
   const navigate = useNavigate();
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("/candidato/register/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: data.nome,
+          login: data.login,
+          email: data.email,
+          cpf: data.cpf,
+          senha: data.pass,
+        }),
+      });
+
+      const responseData = await response.json();
+      if (response.ok) {
+        navigate("/login");
+      } else {
+        console.log("Erro: ", responseData);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
   return (
     <motion.div
       className="bg-gradient-to-br from-[#ffd064] via-[#ffab4b] to-[#934500] flex w-vh h-dvh bg-[length:200%_200%] justify-center items-center"
@@ -32,12 +62,23 @@ export default function Cadastro() {
             Prepare-se para encontrar sua próxima oportunidade!
           </h1>
           <br></br>
-          <form className="flex flex-col gap-6 items-center justify-center">
+          <form
+            onSubmit={handleRegister}
+            className="flex flex-col gap-6 items-center justify-center"
+          >
             <input
               type="text"
               id="nome"
               name="nome"
               placeholder="Nome"
+              className="font-inter border rounded-full p-3 shadow-lg"
+              size={40}
+            />
+            <input
+              type="text"
+              id="login"
+              name="login"
+              placeholder="Login"
               className="font-inter border rounded-full p-3 shadow-lg"
               size={40}
             />
