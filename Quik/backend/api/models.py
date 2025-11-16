@@ -75,6 +75,17 @@ class Recrutador(models.Model):
         db_table = 'recrutador'
 
 # ==========================================
+#                   tags
+# ==========================================
+
+
+class Tag(models.Model):
+    nome = models.CharField(max_length=50, unique=True, null=False)
+
+    class Meta:
+        db_table = 'tag'
+
+# ==========================================
 #                   vaga
 # ==========================================
 
@@ -96,7 +107,7 @@ class Vaga(models.Model):
         ATIVA = 'Ativa', 'Ativa'
         EXPIRADA = 'Expirada', 'Expirada'
     status = models.CharField(max_length=10, choices=Vagatacomo.choices, default='Ativa')
-    tags = models.CharField(max_length=255)
+    tags = models.ManyToManyField(Tag)
 
     class Meta:
         db_table = 'vaga'
