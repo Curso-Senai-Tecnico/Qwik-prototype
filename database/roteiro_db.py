@@ -129,16 +129,16 @@ create table if not exists perfil (
 
 cursor.execute("""
 insert ignore into perfil (usuario_id, foto, nome_perfil, data_nascimento_perfil, curriculo) values
-(1, 'foto1.jpg', 'Carlos S. Dev', '1990-05-15', 'QWIK/Qwik-prototype/database/curículos/currículo Bárbara C. Almeida .pdf'),
-(2, 'foto2.jpg', 'Mariana Designer', '1995-10-20', 'QWIK/Qwik-prototype/database/curículos/Currículo de João Gabriel.pdf'),
-(3, 'foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'QWIK/Qwik-prototype/database/curículos/Currículo D'or.pdf'),
-(4, 'foto4.jpg', 'Ana Marketing', '1988-03-01', 'QWIK/Qwik-prototype/database/curículos/Currículo Guilherme Galvão Leal18.docx.pdf'),
-(5, 'foto5.jpg', 'Felipe Eng', '2000-12-12', 'QWIK/Qwik-prototype/database/curículos/Currículo Jamilly Lima Sousa.2.pdf'),
-(6, 'foto6.jpg', 'Julia Analista', '1992-07-25', 'QWIK/Qwik-prototype/database/curículos/Curriculo João Francisco.pdf'),
-(7, 'foto7.jpg', 'Pedro Gerente', '1985-01-01', 'QWIK/Qwik-prototype/database/curículos/Curriculo matheus.pdf'),
-(8, 'foto8.jpg', 'Larissa Estagiaria', '1996-11-30', 'QWIK/Qwik-prototype/database/curículos/Curriculo Myllena Gomes.2024.pdf'),
-(9, 'foto9.jpg', 'Gustavo Vendas', '1998-09-09', 'QWIK/Qwik-prototype/database/curículos/Currículo Phelipe (2).pdf'),
-(10, 'foto10.jpg', 'Camila Contadora', '1993-04-18', 'QWIK/Qwik-prototype/database/curículos/Curriculo_Ruan_Veiga_Melengati.pdf');
+(1, 'foto1.jpg', 'Carlos S. Dev', '1990-05-15', 'database/curículos/curriculo_alexandre.pdf'),
+(2, 'foto2.jpg', 'Mariana Designer', '1995-10-20', 'database/curículos/curriculo_barbara.pdf'),
+(3, 'foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'database/curículos/curriculo_francisco.pdf'),
+(4, 'foto4.jpg', 'Ana Marketing', '1988-03-01', 'database/curículos/curriculo_guilherme.pdf'),
+(5, 'foto5.jpg', 'Felipe Eng', '2000-12-12', 'database/curículos/curriculo_jamilly.pdf'),
+(6, 'foto6.jpg', 'Julia Analista', '1992-07-25', 'database/curículos/curriculo_joao_gabriel.pdf'),
+(7, 'foto7.jpg', 'Pedro Gerente', '1985-01-01', 'database/curículos/curriculo_matheus.pdf'),
+(8, 'foto8.jpg', 'Larissa Estagiaria', '1996-11-30', 'database/curículos/curriculo_mylenna.pdf'),
+(9, 'foto9.jpg', 'Gustavo Vendas', '1998-09-09', 'database/curículos/curriculo_phelipe.pdf'),
+(10, 'foto10.jpg', 'Camila Contadora', '1993-04-18', 'database/curículos/curriculo_ruan.pdf');
 """)
 
 
@@ -246,7 +246,7 @@ create table if not exists pagamento (
     id int auto_increment primary key,
     recrutador_id int not null,
     formapagamento_id int not null,
-    tipo_serviço varchar(50) not null,
+    tipo_servico varchar(50) not null,
     valor decimal(10,2) not null,
     data_pagamento datetime default current_timestamp,
     status varchar(10) not null check (status in ('Ativo', 'Expirado')) default 'Ativo',
@@ -256,7 +256,7 @@ create table if not exists pagamento (
 """)
 
 cursor.execute("""
-insert ignore into pagamento (recrutador_id, formapagamento_id, tipo_serviço, valor, status) values
+insert ignore into pagamento (recrutador_id, formapagamento_id, tipo_servico, valor, status) values
 (3, 1, 'Plano Mensal', 199.90, 'Ativo'),
 (7, 2, 'Destaque Vaga', 49.90, 'Ativo'),
 (6, 3, 'Plano Anual', 1999.00, 'Ativo'),
