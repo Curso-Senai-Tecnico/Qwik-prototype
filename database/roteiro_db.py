@@ -103,11 +103,6 @@ insert ignore into candidatos (usuario_id, data_nascimento, cpf, genero, estado_
 (2, '1995-10-20', '222.222.222-22', 'F', 'Solteiro(a)'),
 (4, '1988-03-01', '444.444.444-44', 'F', 'Divorciado(a)'),
 (5, '2000-12-12', '555.555.555-55', 'M', 'Solteiro(a)'),
-(6, '1992-07-25', '666.666.666-66', 'F', 'Casado(a)'),
-(7, '1985-01-01', '777.777.777-77', 'M', 'Viúvo(a)'),
-(9, '1998-09-09', '999.999.999-99', 'M', 'Solteiro(a)'),
-(10, '1993-04-18', '000.000.000-00', 'F', 'Divorciado(a)'),
-(8, '1996-11-30', '888.888.888-88', 'F', 'Solteiro(a)'),
 (3, '1980-02-29', '333.333.333-33', 'M', 'Casado(a)');
 """)
 
@@ -157,13 +152,8 @@ create table if not exists recrutador (
 
 cursor.execute("""
 insert ignore into recrutador (usuario_id, cnpj, perfil_recrutador) values
-(3, '00.111.222/0001-33', 'Recursos Humanos'),
 (7, '11.222.333/0001-44', 'Tech Recruiter'),
 (6, '22.333.444/0001-55', 'Generalista'),
-(1, '33.444.555/0001-66', 'Especialista em Vendas'),
-(2, '44.555.666/0001-77', 'Recrutador Júnior'),
-(4, '55.666.777/0001-88', 'Recrutador Sênior'),
-(5, '66.777.888/0001-99', 'Analista de RH'),
 (8, '77.888.999/0001-00', 'Diretor de RH'),
 (9, '88.999.000/0001-11', 'Consultor de Talentos'),
 (10, '99.000.111/0001-22', 'Gerente de Contratação');
