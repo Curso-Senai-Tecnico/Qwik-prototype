@@ -7,24 +7,25 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     const formData = new FormData(e.target); // pega os inputs do forms
 
     try {
       const response = await fetch("/login/", {
         method: "POST",
-        body: formData
+        body: formData,
       });
 
-      if (!response.ok) throw new Error("Usuário ou senha inválidos")
-      
+      if (!response.ok) throw new Error("Usuário ou senha inválidos");
+
       const data = await response.json();
-      console.log("Login feito com sucesso: ", data)
+      console.log("Login feito com sucesso: ", data);
+      localStorage.setItem("role", data.role);
     } catch (err) {
       console.error(err.message);
     }
-  } 
+  };
 
   return (
     <motion.div
@@ -56,7 +57,10 @@ export default function Login() {
           {/*TODO:
             Fazer com que os dados não fiquem salvos na URL
            */}
-          <form onSubmit={handleLogin} className="flex flex-col justify-center items-center gap-6">
+          <form
+            onSubmit={handleLogin}
+            className="flex flex-col justify-center items-center gap-6"
+          >
             <input
               type="email"
               name="email"
