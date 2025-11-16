@@ -106,19 +106,39 @@ insert ignore into candidatos (usuario_id, data_nascimento, cpf, genero, estado_
 (3, '1980-02-29', '333.333.333-33', 'M', 'Casado(a)');
 """)
 
+cursor.execute("""
+create table if not exists tag(
+id int auto_increment primary key,
+nome varchar(50) unique
+);
+""")
+
+cursor.execute("""
+insert ignore into tag(nome) values
+('HTML'),
+('CSS'),
+('Javascript'),
+('Java'),
+('Python'),
+('Desenvolvimento de Sistemas'),
+('Análise de Dados'),
+('Ciência de Dados'),
+('Frontend'),
+('Backend')
+""")
+
 # ==========================================
 #       tabela de perfil + população 
 # ==========================================
 # ------ ADICIONAR TAGS EM JSON -------
 cursor.execute("""
 create table if not exists perfil (
-    usuario_id int primary key,
+    candidato_id int primary key,
     foto varchar(255) not null,
     nome_perfil varchar(100) not null,
     data_nascimento_perfil date not null,
     curriculo varchar(255),
-    tags json,
-    foreign key (usuario_id) references usuarios(id) on delete cascade
+    foreign key (candidato_id) references candidatos(usuario_id) on delete cascade
 ) default charset = utf8mb4;
 """)
 
@@ -128,12 +148,7 @@ insert ignore into perfil (usuario_id, foto, nome_perfil, data_nascimento_perfil
 (2, 'database/fotos/foto2.jpg', 'Mariana Designer', '1995-10-20', 'database/curriculos/curriculo_barbara.pdf'),
 (3, 'database/fotos/foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'database/curriculos/curriculo_francisco'),
 (4, 'database/fotos/foto4.jpg', 'Ana Marketing', '1988-03-01', 'database/curriculos/curriculo_gabriel.pdf'),
-(5, 'database/fotos/foto5.jpg', 'Felipe Eng', '2000-12-12', 'database/curriculos/curriculo_guilherme.pdf'),
-(6, 'database/fotos/foto6.jpg', 'Julia Analista', '1992-07-25', 'database/curriculos/curriculo_jamilly.pdf'),
-(7, 'database/fotos/foto7.jpg', 'Pedro Gerente', '1985-01-01', 'database/curriculos/curriculo_matheus.pdf'),
-(8, 'database/fotos/foto8.jpg', 'Larissa Estagiaria', '1996-11-30', 'database/curriculos/curriculo_mylenna.pdf'),
-(9, 'database/fotos/foto9.jpg', 'Gustavo Vendas', '1998-09-09', 'database/curriculos/curriculo_phelipe.pdf'),
-(10, 'database/fotos/foto10.jpg', 'Camila Contadora', '1993-04-18', 'database/curriculos/curriculo_ruan.pdf');
+(5, 'database/fotos/foto5.jpg', 'Felipe Eng', '2000-12-12', 'database/curriculos/curriculo_guilherme.pdf')
 """)
 
 
@@ -159,6 +174,8 @@ insert ignore into recrutador (usuario_id, cnpj, perfil_recrutador) values
 (10, '99.000.111/0001-22', 'Gerente de Contratação');
 """)
 
+
+
 # ==========================================
 #        tabela de vagas + população 
 # ==========================================
@@ -179,25 +196,65 @@ create table if not exists vaga (
     localizacao varchar(200) not null,
     data_publicacao date not null,
     status varchar(10) not null check (status in ('Ativa', 'Expirada')) default 'Ativa',
-    tags varchar(255), 
     foreign key (recrutador_id) references recrutador(usuario_id) on delete cascade
 ) default charset = utf8mb4;
 """)
 
 cursor.execute("""
-insert ignore into vaga (recrutador_id, tipo, contrato, cargo, resumo, responsabilidades, requisitos, beneficios, salario, quantidade, localizacao, data_publicacao, status, tags) values
-(3, 'CLT', 'Integral', 'Desenvolvedor Frontend', 'Desenvolvimento de interfaces web.', 'Implementar funcionalidades, garantir usabilidade.', 'HTML, CSS, JavaScript, React', 'Vale Transporte, Vale Refeição, Plano de Saúde', 5000.00, 2, 'São Paulo - SP', '2025-10-20', 'Ativa', 'Frontend, React, Web'),
-(7, 'PJ', 'Integral', 'Analista de Dados', 'Análise de dados e criação de relatórios.', 'Coletar, limpar e analisar dados.', 'SQL, Python, Power BI', 'Bônus por performance, Flexibilidade de Horário', 6500.00, 1, 'Remoto', '2025-10-21', 'Ativa', 'Dados, SQL, Python'),
-(6, 'Estágio', 'Parcial', 'Assistente Administrativo', 'Suporte a tarefas administrativas.', 'Organização de documentos, atendimento telefônico.', 'Pacote Office, Boa comunicação', 'Bolsa Auxílio, Recesso Remunerado', 1500.00, 3, 'Rio de Janeiro - RJ', '2025-10-22', 'Ativa', 'Administrativo, Office'),
-(1, 'CLT', 'Integral', 'Gerente de Vendas', 'Gestão de equipe e metas de vendas.', 'Liderar equipe, planejar estratégias.', 'Experiência em liderança, Negociação', 'Comissão, Carro da empresa, Plano Odontológico', 10000.00, 1, 'Belo Horizonte - MG', '2025-10-15', 'Expirada', 'Vendas, Liderança'),
-(2, 'PJ', 'Híbrido', 'Designer UX/UI', 'Criação de protótipos e interfaces.', 'Pesquisar usuários, desenhar wireframes.', 'Figma, Adobe XD, Pesquisa UX', 'Auxílio Home Office, Cursos e Certificações', 4500.00, 1, 'Curitiba - PR', '2025-10-23', 'Ativa', 'Design, UX, UI, Figma'),
-(4, 'CLT', 'Integral', 'Engenheiro de Software Backend', 'Desenvolvimento e manutenção de APIs.', 'Programar em Java/Spring, testar código.', 'Java, Spring Boot, Microserviços', 'Participação nos Lucros, Seguro de Vida', 8000.00, 2, 'Porto Alegre - RS', '2025-10-24', 'Ativa', 'Backend, Java, Spring'),
-(5, 'CLT', 'Integral', 'Analista de Marketing Digital', 'Gestão de campanhas e redes sociais.', 'Criar conteúdo, analisar métricas.', 'Google Ads, Facebook Ads, SEO', 'Vale Cultura, Day Off Aniversário', 4000.00, 1, 'Recife - PE', '2025-10-25', 'Ativa', 'Marketing, Digital, SEO'),
-(8, 'PJ', 'Remoto', 'Consultor Financeiro', 'Consultoria e planejamento financeiro para clientes.', 'Elaborar orçamentos, analisar investimentos.', 'Experiência em finanças, Certificações', 'Flexibilidade de Horário, Autonomia', 7500.00, 1, 'Remoto', '2025-10-10', 'Expirada', 'Finanças, Consultoria'),
-(9, 'CLT', 'Integral', 'Técnico de Suporte TI', 'Suporte técnico a usuários e sistemas.', 'Resolver problemas de hardware e software.', 'Redes, Windows Server, Linux', 'Plano de Carreira, Vale Alimentação', 3000.00, 3, 'Brasília - DF', '2025-10-26', 'Ativa', 'TI, Suporte, Redes'),
-(10, 'Estágio', 'Parcial', 'Desenvolvedor Mobile Android', 'Desenvolvimento de funcionalidades em apps Android.', 'Codificar em Kotlin, testar o app.', 'Kotlin, Android Studio, APIs REST', 'Bolsa Auxílio, Mentoria', 1800.00, 1, 'Fortaleza - CE', '2025-10-27', 'Ativa', 'Mobile, Android, Kotlin');
+insert ignore into vaga (recrutador_id, tipo, contrato, cargo, resumo, responsabilidades, requisitos, beneficios, salario, quantidade, localizacao, data_publicacao, status) values
+(7, 'CLT', 'Integral', 'Desenvolvedor Frontend', 'Desenvolvimento de interfaces web.', 'Implementar funcionalidades, garantir usabilidade.', 'HTML, CSS, JavaScript, React', 'Vale Transporte, Vale Refeição, Plano de Saúde', 5000.00, 2, 'São Paulo - SP', '2025-10-20', 'Ativa'),
+(7, 'PJ', 'Integral', 'Analista de Dados', 'Análise de dados e criação de relatórios.', 'Coletar, limpar e analisar dados.', 'SQL, Python, Power BI', 'Bônus por performance, Flexibilidade de Horário', 6500.00, 1, 'Remoto', '2025-10-21', 'Ativa'),
+(6, 'Estágio', 'Parcial', 'Assistente Administrativo', 'Suporte a tarefas administrativas.', 'Organização de documentos, atendimento telefônico.', 'Pacote Office, Boa comunicação', 'Bolsa Auxílio, Recesso Remunerado', 1500.00, 3, 'Rio de Janeiro - RJ', '2025-10-22', 'Ativa'),
+(6, 'CLT', 'Integral', 'Gerente de Vendas', 'Gestão de equipe e metas de vendas.', 'Liderar equipe, planejar estratégias.', 'Experiência em liderança, Negociação', 'Comissão, Carro da empresa, Plano Odontológico', 10000.00, 1, 'Belo Horizonte - MG', '2025-10-15', 'Expirada'),
+(8, 'PJ', 'Híbrido', 'Designer UX/UI', 'Criação de protótipos e interfaces.', 'Pesquisar usuários, desenhar wireframes.', 'Figma, Adobe XD, Pesquisa UX', 'Auxílio Home Office, Cursos e Certificações', 4500.00, 1, 'Curitiba - PR', '2025-10-23', 'Ativa'),
+(9, 'CLT', 'Integral', 'Engenheiro de Software Backend', 'Desenvolvimento e manutenção de APIs.', 'Programar em Java/Spring, testar código.', 'Java, Spring Boot, Microserviços', 'Participação nos Lucros, Seguro de Vida', 8000.00, 2, 'Porto Alegre - RS', '2025-10-24', 'Ativa'),
+(10, 'CLT', 'Integral', 'Analista de Marketing Digital', 'Gestão de campanhas e redes sociais.', 'Criar conteúdo, analisar métricas.', 'Google Ads, Facebook Ads, SEO', 'Vale Cultura, Day Off Aniversário', 4000.00, 1, 'Recife - PE', '2025-10-25', 'Ativa'),
+(8, 'PJ', 'Remoto', 'Consultor Financeiro', 'Consultoria e planejamento financeiro para clientes.', 'Elaborar orçamentos, analisar investimentos.', 'Experiência em finanças, Certificações', 'Flexibilidade de Horário, Autonomia', 7500.00, 1, 'Remoto', '2025-10-10', 'Expirada'),
+(9, 'CLT', 'Integral', 'Técnico de Suporte TI', 'Suporte técnico a usuários e sistemas.', 'Resolver problemas de hardware e software.', 'Redes, Windows Server, Linux', 'Plano de Carreira, Vale Alimentação', 3000.00, 3, 'Brasília - DF', '2025-10-26', 'Ativa'),
+(10, 'Estágio', 'Parcial', 'Desenvolvedor Mobile Android', 'Desenvolvimento de funcionalidades em apps Android.', 'Codificar em Kotlin, testar o app.', 'Kotlin, Android Studio, APIs REST', 'Bolsa Auxílio, Mentoria', 1800.00, 1, 'Fortaleza - CE', '2025-10-27', 'Ativa');
 """)
 
+cursor.execute("""
+create table if not exists VagaTag(
+               vaga_id int,
+               tag_id int,
+               primary key (vaga_id, tag_id),
+               foreign key (vaga_id) references vaga(id) on delete cascade,
+               foreign key (tag_id) references tag(id) on delete cascade);
+""")
+
+cursor.execute("""
+INSERT IGNORE INTO VagaTag (vaga_id, tag_id) VALUES
+-- Vaga 1
+(1, 3), (1, 7), (1, 1), (1, 9), (1, 5),
+-- Vaga 2
+(2, 2), (2, 6), (2, 8), (2, 4), (2, 10),
+-- Vaga 3
+(3, 1), (3, 4), (3, 6), (3, 7), (3, 9),
+-- Vaga 4
+(4, 5), (4, 2), (4, 8), (4, 10), (4, 3),
+-- Vaga 5
+(5, 6), (5, 1), (5, 7), (5, 9), (5, 4),
+-- Vaga 6
+(6, 2), (6, 5), (6, 8), (6, 10), (6, 3),
+-- Vaga 7
+(7, 1), (7, 6), (7, 9), (7, 4), (7, 7),
+-- Vaga 8
+(8, 2), (8, 5), (8, 10), (8, 3), (8, 8),
+-- Vaga 9
+(9, 4), (9, 1), (9, 6), (9, 7), (9, 9),
+-- Vaga 10
+(10, 2), (10, 3), (10, 5), (10, 8), (10, 10);
+
+""")
+cursor.execute("""
+create table if not exists PerfilTag(
+               perfil_id int,
+               tag_id int,
+               primary key (perfil_id, tag_id),
+               foreign key (perfil_id) references perfil(candidato_id) on delete cascade,
+               foreign key (tag_id) references tag(id) on delete cascade)
+""")
 # ==========================================
 #  tabela de forma de pagamento + população 
 # ==========================================
