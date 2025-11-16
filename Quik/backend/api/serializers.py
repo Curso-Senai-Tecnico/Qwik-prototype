@@ -1,5 +1,5 @@
 from rest_framework import serializers                                   # Importa serializers do Django REST Framework
-from .models import Usuario, Candidato, Perfil, Recrutador, Vaga, FormaPagamento, Pagamento, Assinatura, Cartao, Pix, Videochamada, PV,                        # Importa os modelos necessários
+from .models import Usuario, Candidato, Perfil, Recrutador, Vaga, FormaPagamento, Pagamento, Assinatura, Cartao, Pix, Videochamada, PV, Tag                     # Importa os modelos necessários
 from django.db import transaction                                        # Importa transaction para operações atômicas
 from validate_docbr import CPF, CNPJ                                     # Importa validadores de CPF e CNPJ
 
@@ -9,7 +9,7 @@ from validate_docbr import CPF, CNPJ                                     # Impor
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Usuario()
+        model = Usuario
         fields = ['id', 'nome', 'email', 'telefone', 'login',
                     'senha', 'cidade', 'estado', 'bairro']
     
@@ -19,7 +19,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
 class CandidatoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Candidato()
+        model = Candidato
         fields = ['usuario', 'data_nascimento', 'cpf',
                   'genero', 'estado_civil']
 
@@ -35,7 +35,7 @@ class CandidatoSerializer(serializers.ModelSerializer):
 
 class PerfilSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Perfil()
+        model = Perfil
         fields = ['usuario', 'foto', 'nome_perfil',
                   'data_nascimento', 'curriculo']
 
@@ -45,7 +45,7 @@ class PerfilSerializer(serializers.ModelSerializer):
 
 class RecrutadorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Recrutador()
+        model = Recrutador
         fields = ['usuario', 'cnpj', 'perfil_recutador']
 
         def validate_cnpj(self, value):                             # Validação personalizada para CNPJ
@@ -55,15 +55,67 @@ class RecrutadorSerializer(serializers.ModelSerializer):
             return value                                            # Retorna o valor se for válido
 
 # ==========================================
-#         serializer de vaga
+#            serializer de tags
+# ==========================================
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'nome']
+
+# ==========================================
+#           serializer de vaga
 # ==========================================
 
 class VagaSerializer(serializers.ModelSerializer):
+    tags = TagSerializer(many=True, read_only=True) # o django vai usar o serializers da tag para formatar as tags 
+
+    # quando há uma requisição de POST ou PUT, o sistema espera uma resposta em strings
+    tags_nomes = serializers.ListField(child=serializers.CharField(max_length=50), # garante que cada item da lista seja uma string
+                                       write_only=True, # ele diz para o django que esse campo serve apenas para a escrita/entrada dos dados
+                                       required=True) # ele obriga o cliente fornecer um dado, ou seja, precisa ter pelo menos uma tag  
+    
+# ========== SERIALIZAÇÃO DOS CAMPOS ==========
     class Meta:
-        model = Vaga()
+        model = Vaga
         fields = ['recrutador', 'tipo', 'contato', 'cargo', 'resumo',
                     'responsabilidades', 'requisitos', 'beneficios', 'salario',
-                        'quantidade', 'localizacao', 'data_publicacao', 'status', 'tags']
+                        'quantidade', 'localizacao', 'data_publicacao', 'status', 'tags', 'tags_nomes']
+
+# ========== ENTRADA DAS TAGS ==========
+    # salva e conecta as tags no serializer. Ele vai pegar as tags que já existem no db, se não houver nenhuma, ele vai criar uma
+    def _handle_tags(self, vaga, nome_tags):
+        tags_a_conectar = [] #as tags virão dentro dessa lista
+        
+        for nome in nome_tags: # for para procurar as tags
+            tag_objeto, criado = Tag.objects.get_or_create(nome=nome.strip()) # o get_or_create vai, ou buscar a tag se ela já exixtir ou ele vai criá-la, junto com o 'strip', para não deixar nenhum espaço acidental
+            tags_a_conectar.append(tag_objeto) # coleta as tags resgatadas pelo loop
+
+        vaga.tags.set(tags_a_conectar) # usa a ferramenta muitos para muitos do django para se conectar as tags com a(s) vaga(s)
+
+# ========== JUNÇÃO DA VAGA COM AS TAGS ==========
+    def create(self, validated_data):
+        nome_tags = validated_data.pop('tags_nomes', []) # separa as tags do resto dos dados, se não encontrar, coloca uma lista vazia para não querbrar o código  
+
+        # junta os dados de tags e de vaga, usando o 'transaction.atomic', que se algum valor der errado, irá ser deletado em dormato "cascade"
+        with transaction.atomic(): 
+            vaga = Vaga.objects.create(**validated_data)
+            self._handle_tags(vaga, nome_tags) # referencia a criação/resgate de tags
+            return vaga
+
+# ========== ATUALIZAR AS TAGS ==========
+    # aqui, o update recebe dois argumentos principais, o instance e o validated_data
+    # instance = estabelece que a Vaga (que já existe no DB) q vai ser o serializer modificado
+    # validated_data = são os dados vindos do cliente, e os que ser~]ao atualizados
+    def update(self, instance, validate_data ):
+        nomes_tags = validate_data.pop('tags_nomes', None) # extrai a lista de tags dos outros dados. é acompanhado do "none" que significa que, se não vier nenhum dado, nada será modificado
+        for attr, value in validate_data.items():
+            setattr(instance, attr, value) # pega os dados que o cliente incluiu
+        instance.save() #salva a Vaga
+
+        if nomes_tags is not None: # se os dados que o clinete colocou não for vazio, vai ser chamado a 'entrada das tags'
+            self._handle_tags(instance, nomes_tags)
+        return instance
 
 # ==========================================
 #     serializer de forma de pagamento
@@ -71,7 +123,7 @@ class VagaSerializer(serializers.ModelSerializer):
 
 class FormaPagamentoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FormaPagamento()
+        model = FormaPagamento
         
         fields = ['recrutador', 'tipo', 'data_criacao', 'status']
 
@@ -81,7 +133,7 @@ class FormaPagamentoSerializer(serializers.ModelSerializer):
 
 class PagamentoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Pagamento()
+        model = Pagamento
         fields = ['recrutador', 'forma_pagamento', 'tipo_serviço',
                    'valor', 'data_pagamento',  'status']
 
@@ -91,7 +143,7 @@ class PagamentoSerializer(serializers.ModelSerializer):
 
 class AssinaturaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Assinatura()
+        model = Assinatura
         fields = ['pagamento', 'tipo', 'data_inicio', 'data_vencimento', 'forma_pgt']
 
 # ==========================================
@@ -100,7 +152,7 @@ class AssinaturaSerializer(serializers.ModelSerializer):
 
 class CartaoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Cartao()
+        model = Cartao
         fields = ['formapagamento', 'numero_cartao', 'nome_titular', 'validade', 'cvv']
 
 # ==========================================
@@ -109,7 +161,7 @@ class CartaoSerializer(serializers.ModelSerializer):
 
 class PixSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Pix()
+        model = Pix
         fields = ['formapagamento', 'tipo_de_chave', 'chave']
 
 # ==========================================
@@ -118,7 +170,7 @@ class PixSerializer(serializers.ModelSerializer):
 
 class VideoChamadaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Videochamada()
+        model = Videochamada
         fields = ['candidato', 'recrutador', 'vaga',
                    'log', 'record', 'data_realizacao']
 
@@ -128,8 +180,10 @@ class VideoChamadaSerializer(serializers.ModelSerializer):
 
 class PVSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PV()
+        model = PV
         fields = ['candidato', 'recrutador', 'log', 'data']
+
+
 
 #Serializador para registro de candidato (POST)
 class CandidatoRegistrationSerializer(serializers.ModelSerializer):

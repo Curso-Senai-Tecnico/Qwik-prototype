@@ -129,16 +129,16 @@ create table if not exists perfil (
 
 cursor.execute("""
 insert ignore into perfil (usuario_id, foto, nome_perfil, data_nascimento_perfil, curriculo) values
-(1, 'foto1.jpg', 'Carlos S. Dev', '1990-05-15', 'QWIK/Qwik-prototype/database/curículos/currículo Bárbara C. Almeida .pdf'),
-(2, 'foto2.jpg', 'Mariana Designer', '1995-10-20', 'QWIK/Qwik-prototype/database/curículos/Currículo de João Gabriel.pdf'),
-(3, 'foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'QWIK/Qwik-prototype/database/curículos/Currículo D'or.pdf'),
-(4, 'foto4.jpg', 'Ana Marketing', '1988-03-01', 'QWIK/Qwik-prototype/database/curículos/Currículo Guilherme Galvão Leal18.docx.pdf'),
-(5, 'foto5.jpg', 'Felipe Eng', '2000-12-12', 'QWIK/Qwik-prototype/database/curículos/Currículo Jamilly Lima Sousa.2.pdf'),
-(6, 'foto6.jpg', 'Julia Analista', '1992-07-25', 'QWIK/Qwik-prototype/database/curículos/Curriculo João Francisco.pdf'),
-(7, 'foto7.jpg', 'Pedro Gerente', '1985-01-01', 'QWIK/Qwik-prototype/database/curículos/Curriculo matheus.pdf'),
-(8, 'foto8.jpg', 'Larissa Estagiaria', '1996-11-30', 'QWIK/Qwik-prototype/database/curículos/Curriculo Myllena Gomes.2024.pdf'),
-(9, 'foto9.jpg', 'Gustavo Vendas', '1998-09-09', 'QWIK/Qwik-prototype/database/curículos/Currículo Phelipe (2).pdf'),
-(10, 'foto10.jpg', 'Camila Contadora', '1993-04-18', 'QWIK/Qwik-prototype/database/curículos/Curriculo_Ruan_Veiga_Melengati.pdf');
+(1, 'QWIK/Qwik-prototype/database/fotos/foto1.jpg', 'Carlos S. Dev', '1990-05-15', 'QWIK/Qwik-prototype/database/curículos/currículo Bárbara C. Almeida .pdf'),
+(2, 'QWIK/Qwik-prototype/database/fotos/foto2.jpg', 'Mariana Designer', '1995-10-20', 'QWIK/Qwik-prototype/database/curículos/Currículo de João Gabriel.pdf'),
+(3, 'QWIK/Qwik-prototype/database/fotos/foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'QWIK/Qwik-prototype/database/curículos/Currículo D'or.pdf'),
+(4, 'QWIK/Qwik-prototype/database/fotos/foto4.jpg', 'Ana Marketing', '1988-03-01', 'QWIK/Qwik-prototype/database/curículos/Currículo Guilherme Galvão Leal18.docx.pdf'),
+(5, 'QWIK/Qwik-prototype/database/fotos/foto5.jpg', 'Felipe Eng', '2000-12-12', 'QWIK/Qwik-prototype/database/curículos/Currículo Jamilly Lima Sousa.2.pdf'),
+(6, 'QWIK/Qwik-prototype/database/fotos/foto6.jpg', 'Julia Analista', '1992-07-25', 'QWIK/Qwik-prototype/database/curículos/Curriculo João Francisco.pdf'),
+(7, 'QWIK/Qwik-prototype/database/fotos/foto7.jpg', 'Pedro Gerente', '1985-01-01', 'QWIK/Qwik-prototype/database/curículos/Curriculo matheus.pdf'),
+(8, 'QWIK/Qwik-prototype/database/fotos/foto8.jpg', 'Larissa Estagiaria', '1996-11-30', 'QWIK/Qwik-prototype/database/curículos/Curriculo Myllena Gomes.2024.pdf'),
+(9, 'QWIK/Qwik-prototype/database/fotos/foto9.jpg', 'Gustavo Vendas', '1998-09-09', 'QWIK/Qwik-prototype/database/curículos/Currículo Phelipe (2).pdf'),
+(10, 'QWIK/Qwik-prototype/database/fotos/foto10.jpg', 'Camila Contadora', '1993-04-18', 'QWIK/Qwik-prototype/database/curículos/Curriculo_Ruan_Veiga_Melengati.pdf');
 """)
 
 
