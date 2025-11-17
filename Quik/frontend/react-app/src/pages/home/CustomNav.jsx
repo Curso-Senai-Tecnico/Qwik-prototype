@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Lightbulb } from "lucide-react";
 import Logo from "/logoSvg.svg";
 import { useRole } from "../../contexts/RoleContext";
+import { useUser } from "../../contexts/UserContext";
 //import { useToken } from "../../contexts/TokenContext";
 //import { useEffect, useState } from "react";
 
@@ -14,11 +15,14 @@ import { useRole } from "../../contexts/RoleContext";
 export default function CustomNav({ darkMode, setDarkMode }) {
   
   const navigate = useNavigate();
-  console.log("Role recebida da Home: ", role);
+  const {user, loadingUser} = useUser()
+  const {role} = useRole()
   
   const toggleTheme = () => {
     setDarkMode((prevMode) => !prevMode);
   };
+
+  if (loadingUser) 
   return (
     <header>
       <nav
@@ -64,15 +68,26 @@ export default function CustomNav({ darkMode, setDarkMode }) {
               color={darkMode ? "white" : "black"}
             />
             <button
-              onClick={() => navigate(`/${role}/dashboard`)}
+              onClick={() => !loadingUser && navigate(`/${role}/dashboard`)}
               className={`flex w-fit border rounded-4xl h-full justify-between items-center pl-2.5 pr-2.5 cursor-pointer active:scale-95 transition ${
                 darkMode
                   ? "dark:hover:bg-gray-900"
                   : "hover:bg-gray-100 border-black text-black"
               }`}
             >
-              <Circle size={75} fill="rgba(114,114,114,1)" strokeWidth={0.5} />
-              Nome Sobrenome
+              {loadingUser ? (
+    
+    <>
+      <div className="w-[75px] h-[75px] rounded-full bg-gray-300 dark:bg-gray-700 animate-pulse" />
+      <div className="ml-3 h-5 w-32 bg-gray-300 dark:bg-gray-700 rounded-md animate-pulse" />
+    </>
+  ) : (
+    
+    <>
+      <Circle size={75} fill="rgba(114,114,114,1)" strokeWidth={0.5} />
+      <span className="ml-3">{user?.nome}</span>
+    </>
+  )}
             </button>
             <Lightbulb
               onClick={toggleTheme}

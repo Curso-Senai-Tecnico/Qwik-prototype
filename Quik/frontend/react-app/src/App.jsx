@@ -12,6 +12,7 @@ import Assinatura from "./pages/recrutador/Assinatura";
 import MainLayout from "./MainLayout";
 import { RoleProvider } from "./contexts/RoleProvider";
 import { TokenProvider } from "./contexts/TokenProvider";
+import { UserProvider } from "./contexts/UserProvider";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -30,6 +31,7 @@ export default function App() {
     /* Configuração de rotas usando React Router para fins de organização*/
     <TokenProvider>
     <RoleProvider>
+      <UserProvider>
       <Routes>
         <Route path="/" element={<LandingPage />} />
 
@@ -79,6 +81,7 @@ export default function App() {
           />
         </Route>
       </Routes>
+      </UserProvider>
     </RoleProvider>
     </TokenProvider>
   );
