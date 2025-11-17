@@ -2,9 +2,13 @@ import { motion } from "motion/react";
 import { ChevronLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "/logoSvg.svg";
+import { useRole } from "../contexts/RoleContext";
+import { useToken } from "../contexts/TokenContext";
 
 export default function Login() {
   const navigate = useNavigate();
+  const {role, setRole} = useRole()
+  const {token, setToken} = useToken()
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,8 +24,8 @@ export default function Login() {
       if (!response.ok) throw new Error("Usuário ou senha inválidos");
 
       const data = await response.json();
-      console.log("Login feito com sucesso: ", data);
-      localStorage.setItem("role", data.role);
+      setRole(data.role)
+      setToken(data.token)
     } catch (err) {
       console.error(err.message);
     }

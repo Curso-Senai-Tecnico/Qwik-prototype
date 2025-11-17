@@ -60,7 +60,7 @@ create table if not exists usuarios (
     nome varchar(100) not null,
     email varchar(250) unique not null,
     telefone varchar(15) unique,
-    login varchar(50) unique not null,
+    role varchar(50) unique not null,
     senha varchar(255) not null,
     cidade varchar(100),
     estado varchar(100),
@@ -69,17 +69,17 @@ create table if not exists usuarios (
 """)
 
 cursor.execute("""
-insert ignore into usuarios (nome, email, telefone, login, senha, cidade, estado, bairro) values
-('Carlos Silva', 'carlos.silva@exemplo.com', '(21) 98765-4321', 'carlossilva', 'hashsenha1', 'Rio de Janeiro', 'RJ', 'Tijuca'),
-('Mariana Santos', 'mariana.santos@exemplo.com', '(11) 99887-7665', 'marisan', 'hashsenha2', 'São Paulo', 'SP', 'Pinheiros'),
-('Ricardo Oliveira', 'ricardo.oliveira@exemplo.com', '(31) 91234-5678', 'ricardoo', 'hashsenha3', 'Belo Horizonte', 'MG', 'Savassi'),
-('Ana Paula Lima', 'ana.lima@exemplo.com', '(41) 96543-2109', 'analima', 'hashsenha4', 'Curitiba', 'PR', 'Centro'),
-('Felipe Mendes', 'felipe.mendes@exemplo.com', '(51) 97777-8888', 'felipem', 'hashsenha5', 'Porto Alegre', 'RS', 'Moinhos de Vento'),
-('Julia Costa', 'julia.costa@exemplo.com', '(81) 95555-4444', 'juliacosta', 'hashsenha6', 'Recife', 'PE', 'Boa Viagem'),
-('Pedro Almeida', 'pedro.almeida@exemplo.com', '(71) 93333-2222', 'pedroal', 'hashsenha7', 'Salvador', 'BA', 'Pituba'),
-('Larissa Soares', 'larissa.soares@exemplo.com', '(61) 92222-1111', 'larissas', 'hashsenha8', 'Brasília', 'DF', 'Asa Sul'),
-('Gustavo Pereira', 'gustavo.pereira@exemplo.com', '(92) 91111-0000', 'gustavop', 'hashsenha9', 'Manaus', 'AM', 'Adrianópolis'),
-('Camila Rocha', 'camila.rocha@exemplo.com', '(85) 90000-9999', 'camilar', 'hashsenha10', 'Fortaleza', 'CE', 'Meireles');
+insert ignore into usuarios (nome, email, telefone, role, senha, cidade, estado, bairro) values
+('Carlos Silva', 'carlos.silva@exemplo.com', '(21) 98765-4321', 'candidato', 'hashsenha1', 'Rio de Janeiro', 'RJ', 'Tijuca'),
+('Mariana Santos', 'mariana.santos@exemplo.com', '(11) 99887-7665', 'candidato', 'hashsenha2', 'São Paulo', 'SP', 'Pinheiros'),
+('Ricardo Oliveira', 'ricardo.oliveira@exemplo.com', '(31) 91234-5678', 'candidato', 'hashsenha3', 'Belo Horizonte', 'MG', 'Savassi'),
+('Ana Paula Lima', 'ana.lima@exemplo.com', '(41) 96543-2109', 'candidato', 'hashsenha4', 'Curitiba', 'PR', 'Centro'),
+('Felipe Mendes', 'felipe.mendes@exemplo.com', '(51) 97777-8888', 'candidato', 'hashsenha5', 'Porto Alegre', 'RS', 'Moinhos de Vento'),
+('Julia Costa', 'julia.costa@exemplo.com', '(81) 95555-4444', 'recrutador', 'hashsenha6', 'Recife', 'PE', 'Boa Viagem'),
+('Pedro Almeida', 'pedro.almeida@exemplo.com', '(71) 93333-2222', 'recrutador', 'hashsenha7', 'Salvador', 'BA', 'Pituba'),
+('Larissa Soares', 'larissa.soares@exemplo.com', '(61) 92222-1111', 'recrutador', 'hashsenha8', 'Brasília', 'DF', 'Asa Sul'),
+('Gustavo Pereira', 'gustavo.pereira@exemplo.com', '(92) 91111-0000', 'recrutador', 'hashsenha9', 'Manaus', 'AM', 'Adrianópolis'),
+('Camila Rocha', 'camila.rocha@exemplo.com', '(85) 90000-9999', 'recrutador', 'hashsenha10', 'Fortaleza', 'CE', 'Meireles');
 """)
 
 # ==========================================
