@@ -15,7 +15,7 @@ services:
 
   init_db:
     build:
-      context: .
+      context: ./database
       dockerfile: Dockerfile
     container_name: init_db
     depends_on:
@@ -24,7 +24,15 @@ services:
       - .env
     networks:
       - backend
-
+  frontend:
+    build:
+      context: ./Quik/frontend
+    container_name: quik_frontend
+    ports:
+      - "8080:80"
+    networks:
+      - backend
+    restart: always
 networks:
   backend:
     driver: bridge
