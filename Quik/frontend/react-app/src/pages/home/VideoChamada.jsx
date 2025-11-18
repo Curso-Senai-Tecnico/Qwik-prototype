@@ -11,6 +11,7 @@ export default function VideoChamada() {
   const [headset, setHeadset] = useState(true);
   const [video, setVideo] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [activeMic, setActiveMic] = useState(false)
 
   const videoRef = useRef(null);
   const localStreamRef = useRef(null);
@@ -45,7 +46,11 @@ export default function VideoChamada() {
     };
   }, []);
 
-  
+  const detectMic = () => {
+    if (localStreamRef.getAudioTracks()){
+      
+    }
+  }
 
   const startCall = () => {
     setIsLoading(true);
@@ -84,7 +89,7 @@ export default function VideoChamada() {
           autoPlay
           playsInline
           muted
-          className={`absolute w-235 h-164 z-0 transition-opacity duration-500 ${
+          className={`absolute self-center w-280 h-120 z-0 transition-opacity duration-500 ${
             isLoading ? "opacity-50 blur-2xl" : "opacity-100"
           }`}
         />
@@ -93,7 +98,7 @@ export default function VideoChamada() {
 
           {!isLoading ? (
             <button
-              className="self-center text-white font-inter text-2xl font-bold bg-orange-400 p-5 rounded-full cursor-pointer"
+              className="self-center opacity-0 group-hover:opacity-100 transition-all duration-300 text-white font-inter text-2xl font-bold bg-orange-400 p-5 rounded-full cursor-pointer"
               onClick={startCall}
             >
               Faça um Quik
