@@ -3,7 +3,7 @@ import os
 import time
 
 # ==============================================================================
-# 				                  CONHEXÃO
+# 				                  CONEXÃO
 # ==============================================================================
 
 #criei um objeto que vai fazer a conexão com o Mysql
@@ -69,7 +69,7 @@ create table if not exists usuarios (
 """)
 
 cursor.execute("""
-insert ignore into usuarios (nome, email, telefone, role, senha, cidade, estado, bairro) values
+insert  into usuarios (nome, email, telefone, role, senha, cidade, estado, bairro) values
 ('Carlos Silva', 'carlos.silva@exemplo.com', '(21) 98765-4321', 'candidato', 'hashsenha1', 'Rio de Janeiro', 'RJ', 'Tijuca'),
 ('Mariana Santos', 'mariana.santos@exemplo.com', '(11) 99887-7665', 'candidato', 'hashsenha2', 'São Paulo', 'SP', 'Pinheiros'),
 ('Ricardo Oliveira', 'ricardo.oliveira@exemplo.com', '(31) 91234-5678', 'candidato', 'hashsenha3', 'Belo Horizonte', 'MG', 'Savassi'),
@@ -98,7 +98,7 @@ create table if not exists candidatos (
 """)
 
 cursor.execute("""
-insert ignore into candidatos (usuario_id, data_nascimento, cpf, genero, estado_civil) values
+insert  into candidatos (usuario_id, data_nascimento, cpf, genero, estado_civil) values
 (1, '1990-05-15', '111.111.111-11', 'M', 'Casado(a)'),
 (2, '1995-10-20', '222.222.222-22', 'F', 'Solteiro(a)'),
 (4, '1988-03-01', '444.444.444-44', 'F', 'Divorciado(a)'),
@@ -114,7 +114,7 @@ nome varchar(50) unique
 """)
 
 cursor.execute("""
-insert ignore into tag(nome) values
+insert  into tag(nome) values
 ('HTML'),
 ('CSS'),
 ('Javascript'),
@@ -124,7 +124,7 @@ insert ignore into tag(nome) values
 ('Análise de Dados'),
 ('Ciência de Dados'),
 ('Frontend'),
-('Backend')
+('Backend');
 """)
 
 # ==========================================
@@ -143,12 +143,12 @@ create table if not exists perfil (
 """)
 
 cursor.execute("""
-insert ignore into perfil (candidato_id, foto, nome_perfil, data_nascimento_perfil, curriculo) values
+insert  into perfil (candidato_id, foto, nome_perfil, data_nascimento_perfil, curriculo) values
 (1, 'database/fotos/foto1.jpg', 'Carlos S. Dev', '1990-05-15', 'database/curriculos/curriculo_alexandre.pdf'),
 (2, 'database/fotos/foto2.jpg', 'Mariana Designer', '1995-10-20', 'database/curriculos/curriculo_barbara.pdf'),
-(3, 'database/fotos/foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'database/curriculos/curriculo_francisco'),
+(3, 'database/fotos/foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'database/curriculos/curriculo_francisco.pdf'),
 (4, 'database/fotos/foto4.jpg', 'Ana Marketing', '1988-03-01', 'database/curriculos/curriculo_gabriel.pdf'),
-(5, 'database/fotos/foto5.jpg', 'Felipe Eng', '2000-12-12', 'database/curriculos/curriculo_guilherme.pdf')
+(5, 'database/fotos/foto5.jpg', 'Felipe Eng', '2000-12-12', 'database/curriculos/curriculo_guilherme.pdf');
 """)
 
 
@@ -166,7 +166,7 @@ create table if not exists recrutador (
 """)
 
 cursor.execute("""
-insert ignore into recrutador (usuario_id, cnpj, perfil_recrutador) values
+insert  into recrutador (usuario_id, cnpj, perfil_recrutador) values
 (7, '11.222.333/0001-44', 'Tech Recruiter'),
 (6, '22.333.444/0001-55', 'Generalista'),
 (8, '77.888.999/0001-00', 'Diretor de RH'),
@@ -201,7 +201,7 @@ create table if not exists vaga (
 """)
 
 cursor.execute("""
-insert ignore into vaga (recrutador_id, tipo, contrato, cargo, resumo, responsabilidades, requisitos, beneficios, salario, quantidade, localizacao, data_publicacao, status) values
+insert  into vaga (recrutador_id, tipo, contrato, cargo, resumo, responsabilidades, requisitos, beneficios, salario, quantidade, localizacao, data_publicacao, status) values
 (7, 'CLT', 'Integral', 'Desenvolvedor Frontend', 'Desenvolvimento de interfaces web.', 'Implementar funcionalidades, garantir usabilidade.', 'HTML, CSS, JavaScript, React', 'Vale Transporte, Vale Refeição, Plano de Saúde', 5000.00, 2, 'São Paulo - SP', '2025-10-20', 'Ativa'),
 (7, 'PJ', 'Integral', 'Analista de Dados', 'Análise de dados e criação de relatórios.', 'Coletar, limpar e analisar dados.', 'SQL, Python, Power BI', 'Bônus por performance, Flexibilidade de Horário', 6500.00, 1, 'Remoto', '2025-10-21', 'Ativa'),
 (6, 'Estágio', 'Parcial', 'Assistente Administrativo', 'Suporte a tarefas administrativas.', 'Organização de documentos, atendimento telefônico.', 'Pacote Office, Boa comunicação', 'Bolsa Auxílio, Recesso Remunerado', 1500.00, 3, 'Rio de Janeiro - RJ', '2025-10-22', 'Ativa'),
@@ -216,15 +216,15 @@ insert ignore into vaga (recrutador_id, tipo, contrato, cargo, resumo, responsab
 
 cursor.execute("""
 create table if not exists VagaTag(
-               vaga_id int,
-               tag_id int,
-               primary key (vaga_id, tag_id),
-               foreign key (vaga_id) references vaga(id) on delete cascade,
-               foreign key (tag_id) references tag(id) on delete cascade);
+vaga_id int,
+tag_id int,
+primary key (vaga_id, tag_id),
+foreign key (vaga_id) references vaga(id) on delete cascade,
+foreign key (tag_id) references tag(id) on delete cascade);
 """)
 
 cursor.execute("""
-INSERT IGNORE INTO VagaTag (vaga_id, tag_id) VALUES
+INSERT  INTO VagaTag (vaga_id, tag_id) VALUES
 -- Vaga 1
 (1, 3), (1, 7), (1, 1), (1, 9), (1, 5),
 -- Vaga 2
@@ -245,15 +245,14 @@ INSERT IGNORE INTO VagaTag (vaga_id, tag_id) VALUES
 (9, 4), (9, 1), (9, 6), (9, 7), (9, 9),
 -- Vaga 10
 (10, 2), (10, 3), (10, 5), (10, 8), (10, 10);
-
 """)
 cursor.execute("""
 create table if not exists PerfilTag(
-               perfil_id int,
-               tag_id int,
-               primary key (perfil_id, tag_id),
-               foreign key (perfil_id) references perfil(candidato_id) on delete cascade,
-               foreign key (tag_id) references tag(id) on delete cascade)
+perfil_id int,
+tag_id int,
+primary key (perfil_id, tag_id),
+foreign key (perfil_id) references perfil(candidato_id) on delete cascade,
+foreign key (tag_id) references tag(id) on delete cascade);
 """)
 # ==========================================
 #  tabela de forma de pagamento + população 
@@ -271,7 +270,7 @@ create table if not exists formapagamento (
 """)
 
 cursor.execute("""
-insert ignore into formapagamento (recrutador_id, tipo, status) values
+insert  into formapagamento (recrutador_id, tipo, status) values
 (7, 'Pix', 'Ativo'),
 (6, 'Cartão', 'Ativo'),
 (8, 'Pix', 'Ativo'),
@@ -298,7 +297,7 @@ create table if not exists pagamento (
 """)
 
 cursor.execute("""
-insert ignore into pagamento (recrutador_id, formapagamento_id, tipo_servico, valor, status) values
+insert  into pagamento (recrutador_id, formapagamento_id, tipo_servico, valor, status) values
 (7, 1, 'Destaque Vaga', 49.90, 'Ativo'),
 (6, 2, 'Plano Anual', 1999.00, 'Ativo'),
 (8, 3, 'Destaque Vaga', 49.90, 'Ativo'),
@@ -323,12 +322,12 @@ create table if not exists assinatura (
 """)
 
 cursor.execute("""
-insert ignore into assinatura (pagamento_id, tipo, data_inicio, data_vencimento, forma_pgt) values
-(6, 'Básico', '2025-10-05 14:00:00', '2025-11-05', 'Pix'),
-(7, 'Premium', '2025-09-01 11:00:00', '2026-09-01', 'Cartão'),
-(9, 'Básico', '2025-10-10 09:00:00', '2025-11-10', 'Cartão'),
-(10, 'Premium', '2024-10-01 12:00:00', '2025-10-01', 'Pix'),
-(8, 'Premium', '2025-10-07 13:00:00', '2026-10-07', 'Pix');
+insert  into assinatura (pagamento_id, tipo, data_inicio, data_vencimento, forma_pgt) values
+(1, 'Básico', '2025-10-05 14:00:00', '2025-11-05', 'Pix'),
+(2, 'Premium', '2025-09-01 11:00:00', '2026-09-01', 'Cartão'),
+(3, 'Básico', '2025-10-10 09:00:00', '2025-11-10', 'Cartão'),
+(4, 'Premium', '2024-10-01 12:00:00', '2025-10-01', 'Pix'),
+(5, 'Premium', '2025-10-07 13:00:00', '2026-10-07', 'Pix');
 """)
 
 # ==========================================
@@ -347,12 +346,9 @@ create table if not exists cartao (
 """)
 
 cursor.execute("""
-insert ignore into cartao (formapagamento_id, numero_cartao, nome_titular, validade, cvv) values
-(7, '5555666677778888', 'FELIPE MENDES', '10/2029', '012'),
-(9, '9999000011112222', 'GUSTAVO PEREIRA', '03/2025', '345'),
-(6, '1470369258147036', 'ANA PAULA LIMA', '11/2025', '234'),
-(8, '2581470369258147', 'LARISSA SOARES', '04/2027', '567'),
-(10, '3692581470369258', 'CAMILA ROCHA', '06/2028', '890');
+insert  into cartao (formapagamento_id, numero_cartao, nome_titular, validade, cvv) values
+(2, '9999000011112222', 'GUSTAVO PEREIRA', '03/2025', '345'),
+(4, '2581470369258147', 'LARISSA SOARES', '04/2027', '567');
 """)
 
 # ==========================================
@@ -369,12 +365,10 @@ create table if not exists pix (
 """)
 
 cursor.execute("""
-insert ignore into pix (formapagamento_id, tipo_de_chave, chave) values
-(6, 'CPF', '55.666.777/0001-88'),
-(8, 'ALEATORIA', 'a1b2c3d4e5f6g7h8i9j0'),
-(10, 'EMAIL', 'camila.rocha@exemplo.com'),
-(7, 'EMAIL', 'felipe.mendes@exemplo.com'),
-(9, 'TELEFONE', '(92) 91111-0000');
+insert  into pix (formapagamento_id, tipo_de_chave, chave) values
+(1, 'CPF', '55.666.777/0001-88'),
+(3, 'ALEATORIA', 'a1b2c3d4e5f6g7h8i9j0'),
+(5, 'EMAIL', 'camila.rocha@exemplo.com');
 """)
 
 # ==========================================
