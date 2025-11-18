@@ -10,7 +10,7 @@ from validate_docbr import CPF, CNPJ                                     # Impor
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id', 'nome', 'email', 'telefone', 'login',
+        fields = ['id', 'nome', 'email', 'telefone', 'role',
                     'senha', 'cidade', 'estado', 'bairro']
     
 # ==========================================

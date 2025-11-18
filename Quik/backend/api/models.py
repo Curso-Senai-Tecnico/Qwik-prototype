@@ -11,7 +11,7 @@ class Usuario(models.Model):
     nome = models.CharField(max_length=100, null=False)
     email = models.CharField(max_length=250, null=False, unique=True)
     telefone = models.CharField(max_length=15, null=True, unique=True)
-    login = models.CharField(max_length=50, null=False, unique=True)
+    role = models.CharField(max_length=50, null=False)
     senha = models.CharField(max_length=255, null=False)
     cidade = models.CharField(max_length=100, null=True)
     estado = models.CharField(max_length=100, null=True)
@@ -111,6 +111,23 @@ class Vaga(models.Model):
 
     class Meta:
         db_table = 'vaga'
+
+# ==========================================
+#               tags da vaga
+# ==========================================
+
+
+class VagaTag(models.Model):
+    vaga_id = models.ForeignKey('Vaga', on_delete=models.CASCADE)
+    tag_id = models.ForeignKey('Tag', on_delete=models.CASCADE)
+
+# ==========================================
+#              tags de perfil
+# ==========================================
+
+class PerfilTag(models.Model):
+    perfil_id = models.ForeignKey('Tag', on_delete=models.CASCADE)
+    tag_id = models.ForeignKey('Tag', on_delete=models.CASCADE)
 
 # ==========================================
 #              forma de pagamento
