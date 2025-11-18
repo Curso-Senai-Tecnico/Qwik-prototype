@@ -7,8 +7,7 @@ import { Lightbulb } from "lucide-react";
 import Logo from "/logoSvg.svg";
 import { useRole } from "../../contexts/RoleContext";
 import { useUser } from "../../contexts/UserContext";
-//import { useToken } from "../../contexts/TokenContext";
-//import { useEffect, useState } from "react";
+
 
 // COMENTANDO UM MONTE DE COISA PQ O BACKEND TA TODO BUGADO
 
@@ -21,8 +20,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   const toggleTheme = () => {
     setDarkMode((prevMode) => !prevMode);
   };
-
-  if (loadingUser) 
+ 
   return (
     <header>
       <nav

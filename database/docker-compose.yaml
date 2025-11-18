@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:8.0.43-debian
+    image: docker.io/mysql:8.0.43-debian
     container_name: mysql
     restart: always
     env_file:

@@ -60,7 +60,7 @@ create table if not exists usuarios (
     nome varchar(100) not null,
     email varchar(250) unique not null,
     telefone varchar(15) unique,
-    role varchar(50) unique not null,
+    role varchar(50) not null,
     senha varchar(255) not null,
     cidade varchar(100),
     estado varchar(100),
@@ -143,7 +143,7 @@ create table if not exists perfil (
 """)
 
 cursor.execute("""
-insert ignore into perfil (usuario_id, foto, nome_perfil, data_nascimento_perfil, curriculo) values
+insert ignore into perfil (candidato_id, foto, nome_perfil, data_nascimento_perfil, curriculo) values
 (1, 'database/fotos/foto1.jpg', 'Carlos S. Dev', '1990-05-15', 'database/curriculos/curriculo_alexandre.pdf'),
 (2, 'database/fotos/foto2.jpg', 'Mariana Designer', '1995-10-20', 'database/curriculos/curriculo_barbara.pdf'),
 (3, 'database/fotos/foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'database/curriculos/curriculo_francisco'),
@@ -272,13 +272,8 @@ create table if not exists formapagamento (
 
 cursor.execute("""
 insert ignore into formapagamento (recrutador_id, tipo, status) values
-(3, 'Cartão', 'Ativo'),
 (7, 'Pix', 'Ativo'),
 (6, 'Cartão', 'Ativo'),
-(1, 'Pix', 'Inativo'),
-(2, 'Cartão', 'Ativo'),
-(4, 'Pix', 'Ativo'),
-(5, 'Cartão', 'Inativo'),
 (8, 'Pix', 'Ativo'),
 (9, 'Cartão', 'Ativo'),
 (10, 'Pix', 'Ativo');
@@ -304,16 +299,11 @@ create table if not exists pagamento (
 
 cursor.execute("""
 insert ignore into pagamento (recrutador_id, formapagamento_id, tipo_servico, valor, status) values
-(3, 1, 'Plano Mensal', 199.90, 'Ativo'),
-(7, 2, 'Destaque Vaga', 49.90, 'Ativo'),
-(6, 3, 'Plano Anual', 1999.00, 'Ativo'),
-(1, 4, 'Plano Mensal', 199.90, 'Ativo'),
-(2, 5, 'Destaque Vaga', 49.90, 'Ativo'),
-(4, 6, 'Plano Mensal', 199.90, 'Ativo'),
-(5, 7, 'Plano Anual', 1999.00, 'Ativo'),
-(8, 8, 'Destaque Vaga', 49.90, 'Ativo'),
-(9, 9, 'Plano Mensal', 199.90, 'Ativo'),
-(10, 10, 'Plano Anual', 1999.00, 'Expirado');
+(7, 1, 'Destaque Vaga', 49.90, 'Ativo'),
+(6, 2, 'Plano Anual', 1999.00, 'Ativo'),
+(8, 3, 'Destaque Vaga', 49.90, 'Ativo'),
+(9, 4, 'Plano Mensal', 199.90, 'Ativo'),
+(10, 5, 'Plano Anual', 1999.00, 'Expirado');
 """)
 
 # ==========================================
@@ -334,16 +324,11 @@ create table if not exists assinatura (
 
 cursor.execute("""
 insert ignore into assinatura (pagamento_id, tipo, data_inicio, data_vencimento, forma_pgt) values
-(1, 'Básico', '2025-10-01 10:00:00', '2025-11-01', 'Cartão'),
-(3, 'Premium', '2025-09-15 15:30:00', '2026-09-15', 'Cartão'),
-(4, 'Básico', '2025-10-25 08:00:00', '2025-11-25', 'Pix'),
 (6, 'Básico', '2025-10-05 14:00:00', '2025-11-05', 'Pix'),
 (7, 'Premium', '2025-09-01 11:00:00', '2026-09-01', 'Cartão'),
 (9, 'Básico', '2025-10-10 09:00:00', '2025-11-10', 'Cartão'),
 (10, 'Premium', '2024-10-01 12:00:00', '2025-10-01', 'Pix'),
-(5, 'Básico', '2025-10-28 16:00:00', '2025-11-28', 'Cartão'),
-(8, 'Premium', '2025-10-07 13:00:00', '2026-10-07', 'Pix'),
-(2, 'Básico', '2025-10-29 17:00:00', '2025-11-29', 'Pix');
+(8, 'Premium', '2025-10-07 13:00:00', '2026-10-07', 'Pix');
 """)
 
 # ==========================================
@@ -363,13 +348,8 @@ create table if not exists cartao (
 
 cursor.execute("""
 insert ignore into cartao (formapagamento_id, numero_cartao, nome_titular, validade, cvv) values
-(1, '1234567890123456', 'RICARDO OLIVEIRA', '12/2028', '123'),
-(3, '9876543210987654', 'JULIA COSTA', '05/2027', '456'),
-(5, '1111222233334444', 'MARIANA SANTOS', '01/2026', '789'),
 (7, '5555666677778888', 'FELIPE MENDES', '10/2029', '012'),
 (9, '9999000011112222', 'GUSTAVO PEREIRA', '03/2025', '345'),
-(2, '1357924680135790', 'PEDRO ALMEIDA', '07/2030', '678'),
-(4, '0246813579024681', 'CARLOS SILVA', '09/2026', '901'),
 (6, '1470369258147036', 'ANA PAULA LIMA', '11/2025', '234'),
 (8, '2581470369258147', 'LARISSA SOARES', '04/2027', '567'),
 (10, '3692581470369258', 'CAMILA ROCHA', '06/2028', '890');
@@ -390,14 +370,9 @@ create table if not exists pix (
 
 cursor.execute("""
 insert ignore into pix (formapagamento_id, tipo_de_chave, chave) values
-(2, 'EMAIL', 'pedro.almeida@exemplo.com'),
-(4, 'TELEFONE', '(21) 98765-4321'),
 (6, 'CPF', '55.666.777/0001-88'),
 (8, 'ALEATORIA', 'a1b2c3d4e5f6g7h8i9j0'),
 (10, 'EMAIL', 'camila.rocha@exemplo.com'),
-(1, 'TELEFONE', '(31) 91234-5678'),
-(3, 'CPF', '22.333.444/0001-55'),
-(5, 'ALEATORIA', 'z9y8x7w6v5u4t3s2r1q0'),
 (7, 'EMAIL', 'felipe.mendes@exemplo.com'),
 (9, 'TELEFONE', '(92) 91111-0000');
 """)
@@ -421,20 +396,6 @@ create table if not exists video_chamada (
 ) default charset = utf8mb4;
 """)
 
-cursor.execute("""
-insert ignore into video_chamada (candidato_id, recrutador_id, vaga_id, log, record, data_realizacao) values
-(1, 3, 1, 'Log da chamada 1', 'link/gravacao1', '2025-10-30 10:00:00'),
-(2, 7, 2, 'Log da chamada 2', 'link/gravacao2', '2025-10-30 14:30:00'),
-(4, 6, 3, 'Log da chamada 3', null, '2025-10-31 09:00:00'),
-(5, 4, 6, 'Log da chamada 4', 'link/gravacao4', '2025-10-31 11:30:00'),
-(6, 1, 4, 'Log da chamada 5', null, '2025-11-01 15:00:00'),
-(7, 2, 5, 'Log da chamada 6', 'link/gravacao6', '2025-11-04 10:00:00'),
-(9, 5, 7, 'Log da chamada 7', null, '2025-11-04 13:00:00'),
-(10, 8, 8, 'Log da chamada 8', 'link/gravacao8', '2025-11-05 09:30:00'),
-(8, 9, 9, 'Log da chamada 9', null, '2025-11-05 14:00:00'),
-(3, 10, 10, 'Log da chamada 10', 'link/gravacao10', '2025-11-06 16:00:00');
-""")
-
 # ==========================================
 #  tabela de pv + população 
 # ==========================================
@@ -451,19 +412,6 @@ create table if not exists chat_pv (
 ) default charset = utf8mb4;
 """)
 
-cursor.execute("""
-insert ignore into chat_pv (candidato_id, recrutador_id, log, data) values
-(1, 3, 'Início da conversa com Carlos.', '2025-10-28 10:00:00'),
-(2, 7, 'Mariana enviou o portfólio.', '2025-10-28 11:30:00'),
-(4, 6, 'Dúvidas sobre a vaga 3 esclarecidas.', '2025-10-29 14:00:00'),
-(5, 4, 'Felipe perguntou sobre a tecnologia.', '2025-10-29 16:30:00'),
-(6, 1, 'Agendamento de entrevista com Julia.', '2025-10-30 09:00:00'),
-(7, 2, 'Pedro confirmou o horário.', '2025-10-30 11:00:00'),
-(9, 5, 'Gustavo solicitou feedback.', '2025-10-31 15:00:00'),
-(10, 8, 'Camila questionou o salário.', '2025-11-01 08:00:00'),
-(8, 9, 'Larissa enviou CV atualizado.', '2025-11-04 14:00:00'),
-(3, 10, 'Ricardo recebeu a proposta.', '2025-11-05 10:30:00');
-""")
 
 # ==============================================================================
 # 				           ENCERRAMENTO DA CONEXÃO
