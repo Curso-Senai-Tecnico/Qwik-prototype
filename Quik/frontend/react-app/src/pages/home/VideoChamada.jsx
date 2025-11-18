@@ -12,26 +12,40 @@ export default function VideoChamada() {
   const [video, setVideo] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const localStreamRef = useRef<MediaStream | null>(null);
+  const videoRef = useRef(null);
+  const localStreamRef = useRef(null);
 
   useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
+    let mounted = true;
+
+    const startLocalMedia = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+
+        if (!mounted) return;
+
         localStreamRef.current = stream;
-        if (videoRef.current){
-          videoRef.current.srcObject = stream
-        }
-      })
-      .catch((err) => console.error("Erro ao acessar webcam/microfone: ", err));
+        if (videoRef.current) videoRef.current.srcObject = stream;
+      } catch (err) {
+        console.error("Erro ao acessar câmera/microfone:", err);
+      }
+    };
+
+    startLocalMedia();
+
+    return () => {
+      mounted = false;
+      if (localStreamRef.current) {
+        localStreamRef.current.getTracks().forEach((t) => t.stop());
+        localStreamRef.current = null;
+      }
+    };
   }, []);
 
-  useEffect(() => {
-    if (videoRef.current && localStreamRef.current) {
-      videoRef.current.srcObject = localStreamRef.current;
-    }
-  }, []);
+  
 
   const startCall = () => {
     setIsLoading(true);
@@ -70,8 +84,8 @@ export default function VideoChamada() {
           autoPlay
           playsInline
           muted
-          className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-500 ${
-            isLoading ? "opacity-100" : "opacity-0"
+          className={`absolute w-235 h-164 z-0 transition-opacity duration-500 ${
+            isLoading ? "opacity-50 blur-2xl" : "opacity-100"
           }`}
         />
         <div className="relative z-10 flex flex-col h-full justify-between group">
@@ -96,7 +110,7 @@ export default function VideoChamada() {
             {mic ? (
               <Mic color="white" onClick={changeMic} />
             ) : (
-              <MicOff color="white" onClick={() => setMic(!mic)} />
+              <MicOff color="white" onClick={changeMic} />
             )}
             {headset ? (
               <Headphones color="white" onClick={changeHeadset} />
@@ -109,7 +123,7 @@ export default function VideoChamada() {
             {video ? (
               <Video color="white" onClick={changeVideo} />
             ) : (
-              <VideoOff color="white" onClick={() => setVideo(!video)} />
+              <VideoOff color="white" onClick={changeVideo} />
             )}
             <Phone size={35} className="border bg-red-500 p-1 rounded-full" />
           </div>
