@@ -11,7 +11,15 @@ export default function VideoChamada() {
   const [headset, setHeadset] = useState(true);
   const [video, setVideo] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeMic, setActiveMic] = useState(false)
+  const [activeCall, setActiveCall] = useState(false)
+
+  const handleCall = (prev) => {
+    setActiveCall(true)
+  }
+
+  const refuseCall = () => {
+    setActiveCall(false)
+  }
 
   const videoRef = useRef(null);
   const localStreamRef = useRef(null);
@@ -45,12 +53,6 @@ export default function VideoChamada() {
       }
     };
   }, []);
-
-  const detectMic = () => {
-    if (localStreamRef.getAudioTracks()){
-      
-    }
-  }
 
   const startCall = () => {
     setIsLoading(true);
@@ -109,6 +111,10 @@ export default function VideoChamada() {
               <LogoLoading />
             </div>
           )}
+
+          <button className="bg-white group-hover:opacity-100 opacity-0 transition-opacity duration-300 w-fit self-center" onClick={handleCall}>
+            Testar contrato
+          </button>
 
           {/* BOTÕES */}
           <div className="flex justify-around opacity-0 group-hover:opacity-100 transition-opacity duration-300">
