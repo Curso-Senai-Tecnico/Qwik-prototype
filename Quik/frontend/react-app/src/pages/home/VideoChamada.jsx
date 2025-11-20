@@ -128,14 +128,26 @@ export default function VideoChamada() {
             transition={{duration: 0.3, ease: "easeInOut"}}
             onClick={refuseCall}
             >
-              <motion.div className="bg-orange-400 min-w-fit max-w-screen min-h-fit max-h-screen flex"
+              <motion.div className=" h-[90vh] w-[60vw] flex"
               initial={{scale: 0.9, opacity: 0, y:20}}
               animate={{scale: 1, opacity: 1, y: 0}}
               exit={{scale: 0.8, opacity: 0, y: 20}}
               onClick={(e) => e.stopPropagation()}
               transition={{duration:0.3, ease: "easeInOut"}}
               >
-                <h1> Teste</h1>
+               {role === "candidato" && (
+                <div className="flex h-full w-full justify-center items-center gap-10 bg-none">
+                <iframe src="/curriculo_alexandre.pdf" className=" w-full h-full rounded-xl"/>
+                <div className="flex flex-col gap-10">
+                  <button className="bg-orange-400 rounded-full text-white p-2 cursor-pointer hover:bg-orange-500 active:scale-90 transition-transform duration-200 ease-in-out">
+                    Aceitar chamada
+                  </button>
+                  <button onClick={refuseCall} className="bg-orange-400 rounded-full text-white p-2 cursor-pointer hover:bg-orange-500 active:scale-90 transition-transform duration-200 ease-in-out">
+                    Recusar Chamada
+                  </button>
+                </div>
+                </div>
+               )}
 
               </motion.div>
             </motion.div>
