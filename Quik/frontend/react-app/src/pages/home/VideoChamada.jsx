@@ -5,15 +5,19 @@ import { Video } from "lucide-react";
 import { Headphones } from "lucide-react";
 import LogoLoading from "./LogoLoading";
 import Logo from "/logoNova.png";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRole } from "../../contexts/RoleContext";
 
 export default function VideoChamada() {
+  const {role} = useRole()
   const [mic, setMic] = useState(true);
   const [headset, setHeadset] = useState(true);
   const [video, setVideo] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeCall, setActiveCall] = useState(false)
+  const [activeCall, setActiveCall] = useState(false);
+  
 
-  const handleCall = (prev) => {
+  const handleCall = () => {
     setActiveCall(true)
   }
 
@@ -115,7 +119,29 @@ export default function VideoChamada() {
           <button className="bg-white group-hover:opacity-100 opacity-0 transition-opacity duration-300 w-fit self-center" onClick={handleCall}>
             Testar contrato
           </button>
+<AnimatePresence mode="wait">
+          {activeCall && (
+            <motion.div className="fixed inset-0 backdrop-blur bg-black/50 flex items-center justify-center"
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+            transition={{duration: 0.3, ease: "easeInOut"}}
+            onClick={refuseCall}
+            >
+              <motion.div className="bg-orange-400 min-w-fit max-w-screen min-h-fit max-h-screen flex"
+              initial={{scale: 0.9, opacity: 0, y:20}}
+              animate={{scale: 1, opacity: 1, y: 0}}
+              exit={{scale: 0.8, opacity: 0, y: 20}}
+              onClick={(e) => e.stopPropagation()}
+              transition={{duration:0.3, ease: "easeInOut"}}
+              >
+                <h1> Teste</h1>
 
+              </motion.div>
+            </motion.div>
+            
+          )}
+</AnimatePresence>
           {/* BOTÕES */}
           <div className="flex justify-around opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             {mic ? (
