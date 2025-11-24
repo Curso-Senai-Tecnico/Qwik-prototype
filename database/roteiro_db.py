@@ -254,6 +254,16 @@ primary key (perfil_id, tag_id),
 foreign key (perfil_id) references perfil(candidato_id) on delete cascade,
 foreign key (tag_id) references tag(id) on delete cascade);
 """)
+
+cursor.execute("""
+INSERT INTO PerfilTag (perfil_id, tag_id) VALUES
+
+(1, 2), (1, 5), (1, 7), (1, 9), (1, 10),
+(2, 1), (2, 3), (2, 4), (2, 6), (2, 8),
+(3, 2), (3, 4), (3, 6), (3, 7), (3, 9),
+(4, 1), (4, 3), (4, 5), (4, 8), (4, 10),
+(5, 2), (5, 4), (5, 6), (5, 7), (5, 9);
+""")
 # ==========================================
 #  tabela de forma de pagamento + população 
 # ==========================================
