@@ -21,7 +21,7 @@ export default function DashNav({ darkMode, activeTab, onNavClick }) {
       className={`flex flex-col gap-6 border-r h-dvh w-2/12  items-center justify-center  ${
         darkMode
           ? "bg-[#22303c] text-white border-r-white"
-          : "bg-[#D9D9D9] text-black"
+          : "bg-white text-black"
       }`}
     >
       {navItems.map(({ id, label, icon: Icon }) => (
