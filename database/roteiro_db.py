@@ -73,17 +73,17 @@ create table if not exists usuarios (
 ) default charset = utf8mb4;
 """)
 cursor.execute("""
-insert  into usuarios (nome, email, telefone, role, password, cidade, estado, bairro) values
-('Carlos Silva', 'carlos.silva@exemplo.com', '(21) 98765-4321', 'candidato', 'hashsenha1', 'Rio de Janeiro', 'RJ', 'Tijuca'),
-('Mariana Santos', 'mariana.santos@exemplo.com', '(11) 99887-7665', 'candidato', 'hashsenha2', 'São Paulo', 'SP', 'Pinheiros'),
-('Ricardo Oliveira', 'ricardo.oliveira@exemplo.com', '(31) 91234-5678', 'candidato', 'hashsenha3', 'Belo Horizonte', 'MG', 'Savassi'),
-('Ana Paula Lima', 'ana.lima@exemplo.com', '(41) 96543-2109', 'candidato', 'hashsenha4', 'Curitiba', 'PR', 'Centro'),
-('Felipe Mendes', 'felipe.mendes@exemplo.com', '(51) 97777-8888', 'candidato', 'hashsenha5', 'Porto Alegre', 'RS', 'Moinhos de Vento'),
-('Julia Costa', 'julia.costa@exemplo.com', '(81) 95555-4444', 'recrutador', 'hashsenha6', 'Recife', 'PE', 'Boa Viagem'),
-('Pedro Almeida', 'pedro.almeida@exemplo.com', '(71) 93333-2222', 'recrutador', 'hashsenha7', 'Salvador', 'BA', 'Pituba'),
-('Larissa Soares', 'larissa.soares@exemplo.com', '(61) 92222-1111', 'recrutador', 'hashsenha8', 'Brasília', 'DF', 'Asa Sul'),
-('Gustavo Pereira', 'gustavo.pereira@exemplo.com', '(92) 91111-0000', 'recrutador', 'hashsenha9', 'Manaus', 'AM', 'Adrianópolis'),
-('Camila Rocha', 'camila.rocha@exemplo.com', '(85) 90000-9999', 'recrutador', 'hashsenha10', 'Fortaleza', 'CE', 'Meireles');
+INSERT INTO usuarios (nome, email, telefone, role, password, cidade, estado, bairro) VALUES
+('Carlos Silva', 'carlos.silva@exemplo.com', '(21) 98765-4321', 'candidato', 'pbkdf2_sha256$1000000$CqnFR2GKno1DENy4UcJf0x$H3IfArKXQCcTFYQX0T3yKrSs/plbbBuv9/3KBEjOB5o=', 'Rio de Janeiro', 'RJ', 'Tijuca'), 
+('Mariana Santos', 'mariana.santos@exemplo.com', '(11) 99887-7665', 'candidato', 'pbkdf2_sha256$1000000$Fr5lj4yleI9x9XPcJ3D6z7$j6Xt6z9I3pHCUe6K5s8CeZiJHbJ1xucHmCyRUeTZYN8=', 'São Paulo', 'SP', 'Pinheiros'),
+('Ricardo Oliveira', 'ricardo.oliveira@exemplo.com', '(31) 91234-5678', 'candidato', 'pbkdf2_sha256$1000000$UsdLVsm6QhXgheCls4HZ1z$c1U94xssfqLJBbFne9ZOQvqQBU/+dlx5zaUnpmUqF6Y=', 'Belo Horizonte', 'MG', 'Savassi'),
+('Ana Paula Lima', 'ana.lima@exemplo.com', '(41) 96543-2109', 'candidato', 'pbkdf2_sha256$1000000$KgujLbdvitbwz0i1bUjiwb$hJPWeYZDgFHJQ1LPoW4eMa5XbTbGbq83dA+rn0Gq8RI=', 'Curitiba', 'PR', 'Centro'),
+('Felipe Mendes', 'felipe.mendes@exemplo.com', '(51) 97777-8888', 'candidato', 'pbkdf2_sha256$1000000$uu8yQsrEHdkdFcC5GdgZVf$kqlCkbgeYZIfXrFrKTlyjPOCaApMFc9i7SwiLHUvcyY=', 'Porto Alegre', 'RS', 'Moinhos de Vento'),
+('Julia Costa', 'julia.costa@exemplo.com', '(81) 95555-4444', 'recrutador', 'pbkdf2_sha256$1000000$1KY1it6d9UvwHIO6Hx9eB7$rTjB07CSolyDjjHqbMr/VATx8/g+/7OEspwUVxDwbNU=', 'Recife', 'PE', 'Boa Viagem'),
+('Pedro Almeida', 'pedro.almeida@exemplo.com', '(71) 93333-2222', 'recrutador', 'pbkdf2_sha256$1000000$jQmdF3JMCz2GghKGNEeLxo$E3wYSHguCY0neWztf5h3/UNe+GJ1wAtHFF+9RV0EedU=', 'Salvador', 'BA', 'Pituba'),
+('Larissa Soares', 'larissa.soares@exemplo.com', '(61) 92222-1111', 'recrutador', 'pbkdf2_sha256$1000000$hdO2CyVZRwg2SARktruf8k$GZXOK6hCUhC9x6PJMFDPGB/2mLQpHdoeCY+WOqPq4bM=', 'Brasília', 'DF', 'Asa Sul'),
+('Gustavo Pereira', 'gustavo.pereira@exemplo.com', '(92) 91111-0000', 'recrutador', 'pbkdf2_sha256$1000000$pDw9EUtQWGMA42GWjvJJMA$eWDvzlr0gVEhGmkXwDpwn0EcIKkUT6yBLhS1mjcTLjI=', 'Manaus', 'AM', 'Adrianópolis'),
+('Camila Rocha', 'camila.rocha@exemplo.com', '(85) 90000-9999', 'recrutador', 'pbkdf2_sha256$1000000$8nPo2hJWqnCYaaXKNdX81o$viKrUpxBib9cMNPa8go0ZXz0C7WizTeMtgLp24pR254=', 'Fortaleza', 'CE', 'Meireles');
 """)
 
 # ==========================================

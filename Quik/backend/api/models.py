@@ -9,6 +9,7 @@ from django.contrib.auth.models import AbstractUser
 
 class Usuario(AbstractUser):
     # o django já cria um id para cada tabela automaticamente
+    id = models.AutoField(primary_key=True)
     username = None
     first_name = None
     last_name = None

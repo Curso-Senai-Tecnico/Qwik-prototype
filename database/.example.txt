@@ -2,3 +2,14 @@ MYSQL_ROOT_PASSWORD=
 MYSQL_DATABASE=
 MYSQL_HOST=
 MYSQL_PORT=
+
+carlos = senha1
+mariana = senha2
+ricardo = senha3
+ana paula = senha4
+felipe mendes = senha5
+julia costa = senha6
+pedro almeida = senha7
+larissa soares =senha8
+gustavo pereira = senha9
+camila rocha = senha10

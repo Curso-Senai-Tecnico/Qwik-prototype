@@ -13,12 +13,15 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(e.target); // pega os inputs do forms
-
+    const email = e.target.email.value // pega os inputs do forms
+    const password = e.target.password.value
     try {
-      const response = await fetch("/login/", {
+      const response = await fetch("http://127.0.0.1:8000/api/login/", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({username: email, password}),
       });
 
       if (!response.ok) throw new Error("Usuário ou senha inválidos");
@@ -26,6 +29,7 @@ export default function Login() {
       const data = await response.json();
       setRole(data.role)
       setToken(data.token)
+      navigate("/home")
     } catch (err) {
       console.error(err.message);
     }
