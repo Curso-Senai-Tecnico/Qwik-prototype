@@ -26,7 +26,7 @@ services:
       - backend
   frontend:
     build:
-      context: ./Quik/frontend
+      context: ./Quik/frontend/react-app
     container_name: quik_frontend
     ports:
       - "8080:80"

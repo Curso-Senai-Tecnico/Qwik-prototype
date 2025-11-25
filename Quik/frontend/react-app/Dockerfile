@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:alpine
+FROM docker.io/library/nginx:alpine
 
 COPY --from=builder /react-vite-app/dist /usr/share/nginx/html
 

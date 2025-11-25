@@ -57,19 +57,23 @@ cursor.execute("""use qwik;""")
 cursor.execute("""
 create table if not exists usuarios (
     id int auto_increment primary key,
-    nome varchar(100) not null,
+    nome varchar(255) not null,
     email varchar(250) unique not null,
     telefone varchar(15) unique,
-    role varchar(50) not null,
-    senha varchar(255) not null,
+    role varchar(20) not null,
+    password varchar(255) not null,
     cidade varchar(100),
     estado varchar(100),
-    bairro varchar(100)
+    bairro varchar(100),
+    is_superuser boolean not null default 0,
+    is_staff boolean not null default 0,
+    is_active boolean not null default 1,
+    last_login datetime null,
+    date_joined datetime not null default current_timestamp
 ) default charset = utf8mb4;
 """)
-
 cursor.execute("""
-insert  into usuarios (nome, email, telefone, role, senha, cidade, estado, bairro) values
+insert  into usuarios (nome, email, telefone, role, password, cidade, estado, bairro) values
 ('Carlos Silva', 'carlos.silva@exemplo.com', '(21) 98765-4321', 'candidato', 'hashsenha1', 'Rio de Janeiro', 'RJ', 'Tijuca'),
 ('Mariana Santos', 'mariana.santos@exemplo.com', '(11) 99887-7665', 'candidato', 'hashsenha2', 'São Paulo', 'SP', 'Pinheiros'),
 ('Ricardo Oliveira', 'ricardo.oliveira@exemplo.com', '(31) 91234-5678', 'candidato', 'hashsenha3', 'Belo Horizonte', 'MG', 'Savassi'),

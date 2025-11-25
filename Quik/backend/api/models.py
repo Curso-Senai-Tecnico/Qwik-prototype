@@ -1,24 +1,40 @@
 from django.db import models
 from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeField
+from django.contrib.auth.models import AbstractUser
 
 # ==========================================
 #                usuários
 # ==========================================
 
 
-class Usuario(models.Model):
+class Usuario(AbstractUser):
     # o django já cria um id para cada tabela automaticamente
-    nome = models.CharField(max_length=100, null=False)
-    email = models.CharField(max_length=250, null=False, unique=True)
+    username = None
+    first_name = None
+    last_name = None
+    nome = models.CharField(max_length=255, null=False)
+    email = models.EmailField(null=False, unique=True)
     telefone = models.CharField(max_length=15, null=True, unique=True)
-    login = models.CharField(max_length=50, null=False, unique=True)
-    senha = models.CharField(max_length=255, null=False)
     cidade = models.CharField(max_length=100, null=True)
     estado = models.CharField(max_length=100, null=True)
     bairro = models.CharField(max_length=100, null=True)
+    role = models.CharField(
+        max_length=20,
+        choices=[
+            ("candidato", "Candidato"),
+            ("recrutador", "Recrutador")
+        ],
+        default="candidato"
+    )
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["nome", "role"]
 
     class Meta:
         db_table = "usuarios"
+
+    def __str__(self):
+        return self.email
 
 # ==========================================
 #                candidatos
@@ -34,13 +50,13 @@ class Candidato(models.Model):
         MASCULINO = 'M', 'Masculino'
         FEMININO = 'F', 'Feminino'
         OUTRO = 'OUTRO', "Prefiro não dizer"
-    genero = models.CharField(max_length=20, choices=generos.choices, null=False)
+    genero = models.CharField(max_length=20, choices=generos.choices, default=generos.OUTRO, null=False)
     class CivilStatus(models.TextChoices):
         SOLTEIRO = 'Solteiro(a)', 'Solteiro(a)'
         CASADO = 'Casado(a)', 'Casado(a)'
         DIVORCIADO = 'Divorciado(a)', 'Divorciado(a)'
         VIUVO = 'Viúvo(a)', 'Viúvo(a)'
-    estado_civil = models.CharField(max_length=15, choices=CivilStatus.choices, null=False)
+    estado_civil = models.CharField(max_length=15, choices=CivilStatus.choices, default=CivilStatus.SOLTEIRO, null=False)
 
     class Meta:
         db_table = "candidatos"
@@ -69,7 +85,7 @@ class Recrutador(models.Model):
     # Ligação um-para-um com Usuario
     usuario = models.OneToOneField('Usuario', on_delete=models.CASCADE, primary_key=True)
     cnpj = models.CharField(max_length=18, unique=True)# Formato: 00.000.000/0000-00
-    perfil_recrutador = models.CharField(max_length=100, null=False)
+    perfil_recrutador = models.CharField(max_length=100, null=False, default='padrao')
 
     class Meta:
         db_table = 'recrutador'
@@ -107,10 +123,31 @@ class Vaga(models.Model):
         ATIVA = 'Ativa', 'Ativa'
         EXPIRADA = 'Expirada', 'Expirada'
     status = models.CharField(max_length=10, choices=Vagatacomo.choices, default='Ativa')
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(
+        Tag,
+        through='VagaTag',
+        related_name='vagas'
+        )
 
     class Meta:
         db_table = 'vaga'
+
+
+class VagaTag(models.Model):
+    vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'VagaTag'
+        unique_together = (('vaga', 'tag'),)
+
+class PerfilTag(models.Model):
+    perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'PerfilTag'
+        unique_together = (('perfil', 'tag'),)
 
 # ==========================================
 #              forma de pagamento

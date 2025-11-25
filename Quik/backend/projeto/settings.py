@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
-    'drf_yasg',
     'rest_framework.authtoken',
 ]
 
@@ -81,8 +80,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'qwik',
         'USER': 'root',                 
-        'PASSWORD': 'admin',            
-        'PORT': '3306',                 
+        'PASSWORD': 'admin',
+        'HOST': '127.0.0.1',            
+        'PORT': '3308',                 
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'" # meio q diz pro django “Assim que conectar, execute esse comando SQL para deixar o MySQL mais rigoroso e seguro"
         },
