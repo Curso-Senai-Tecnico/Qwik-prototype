@@ -11,7 +11,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = ['id', 'nome', 'email', 'telefone', 'login',
-                    'senha', 'cidade', 'estado', 'bairro']
+                    'password', 'cidade', 'estado', 'bairro', 'role']
     
 # ==========================================
 #         serializer de candidato
