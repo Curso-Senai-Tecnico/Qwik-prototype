@@ -1,12 +1,14 @@
 from django.http import JsonResponse                                     # Importa JsonResponse para retornar respostas JSON
 from rest_framework import viewsets                                      # Importa viewsets do Django REST Framework
 from validate_docbr import CPF, CNPJ                                     # Importa validadores de CPF e CNPJ
-from .models import Candidato, Recrutador                                # Importa os modelos Candidato e Recrutador
+from .models import Candidato, Recrutador, Vaga, Perfil                              # Importa os modelos Candidato e Recrutador
 from .serializers import (
     CandidatoSerializer, 
     RecrutadorSerializer, 
     CandidatoRegistrationSerializer, 
-    RecrutadorRegistrationSerializer
+    RecrutadorRegistrationSerializer,
+    VagaSerializer,
+    PerfilSerializer
 )                                                                        # Importa os serializers necessários
 
                             # View para verificar a validade de um CNPJ
@@ -49,3 +51,43 @@ class RecrutadorViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return RecrutadorRegistrationSerializer                      # Retorna o serializer de registro de recrutador
         return RecrutadorSerializer                                      # Caso contrário, retorna o serializer padrão de recrutador
+
+
+class VagaViewSet(viewsets.ModelViewSet):
+    
+                             #Viewset para CRUD completo de Vagas
+    queryset = Vaga.objects.all()
+    serializer_class =  VagaSerializer # Usa o serializer de recrutador para as vagas
+
+    def get_serializer_class(self):                                      # Define o serializer a ser usado com base na ação
+        if self.action == 'create':
+            return VagaSerializer                                       # Retorna o serializer de vaga para criação
+        
+        return VagaSerializer
+        
+                                           # Retorna o serializer padrão de vaga
+
+class PerfilViewSet(viewsets.ModelViewSet):
+     
+                             #Viewset para CRUD completo de Perfis
+    queryset = Perfil.objects.all()
+    serializer_class = PerfilSerializer                                  # Usa o serializer de perfil
+
+    def get_serializer_class(self):                                      # Define o serializer a ser usado com base na ação
+        if self.action == 'create':
+            return PerfilSerializer                                     # Retorna o serializer de perfil para criação
+        
+        return PerfilSerializer 
+        
+                                 # Retorna o serializer padrão de perfil
+class MeViewSet(viewsets.ModelViewSet):
+    queryset = Candidato.objects.all()
+    serializer_class = CandidatoSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.role == 'candidato':
+            return Candidato.objects.filter(usuario=user), Perfil.objects.filter(usuario=user)
+        elif user.role == 'recrutador':
+            return Recrutador.objects.filter(usuario=user), Perfil.objects.filter(usuario=user)
+        return Candidato.objects.none()

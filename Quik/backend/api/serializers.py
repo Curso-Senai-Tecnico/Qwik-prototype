@@ -183,6 +183,28 @@ class PVSerializer(serializers.ModelSerializer):
         model = PV
         fields = ['candidato', 'recrutador', 'log', 'data']
 
+#Serializador para registro do perfil (POST)
+class PerfilRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Perfil
+        fields = ['usuario', 'foto', 'nome_perfil',
+                  'data_nascimento', 'curriculo']
+    @transaction.atomic                                                  #transaction.atomic garante que a criação do usuário seja atômicas
+    def create(self, validated_data):
+        perfil = Perfil.objects.create(**validated_data)
+        return perfil
+
+#Serializador para registro de vaga (POST)
+class VagaRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vaga
+        fields = ['recrutador', 'tipo', 'contato', 'cargo', 'resumo',
+                    'responsabilidades', 'requisitos', 'beneficios', 'salario',
+                        'quantidade', 'localizacao', 'data_publicacao', 'status', 'tags']
+    @transaction.atomic                                                  #transaction.atomic garante que a criação do usuário seja atômicas
+    def create(self, validated_data):
+        vaga = Vaga.objects.create(**validated_data)
+        return vaga
 
 
 #Serializador para registro de candidato (POST)

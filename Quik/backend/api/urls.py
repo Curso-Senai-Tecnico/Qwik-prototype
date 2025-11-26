@@ -7,7 +7,9 @@ from .views import CandidatoViewSet, RecrutadorViewSet
 router = DefaultRouter()
 router.register(r'candidatos', CandidatoViewSet, basename='candidato')
 router.register(r'recrutadores', RecrutadorViewSet, basename='recrutador')
-
+router.register(r'vagas', VagaViewSet, basename='vaga') 
+router.register(r'perfis', PerfilViewSet, basename='perfil')    
+router.register(r'me', MeViewSet, basename='me')
 # As URLs da API são agora determinadas automaticamente pelo router.
 urlpatterns = [
     path('', include(router.urls)),
