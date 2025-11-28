@@ -13,15 +13,22 @@ export default function Cadastro() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/candidato/create/", {
+      const response = await fetch("http://127.0.0.1:8000/api/candidatos/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          user: {
           nome: data.nome,
           email: data.email,
-          cpf: data.cpf,
-          senha: data.pass,
+          telefone: null,
+          password: data.pass,
+          cidade: null,
+          estado: null,
+          bairro: null,
           role: "candidato"
+          },
+          cpf: data.cpf,
+          data_nascimento: "2000-01-01",
         }),
       });
 

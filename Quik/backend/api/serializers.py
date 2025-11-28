@@ -216,6 +216,7 @@ class VagaRegistrationSerializer(serializers.ModelSerializer):
 #Serializador para registro de candidato (POST)
 class CandidatoRegistrationSerializer(serializers.ModelSerializer):
     user = UsuarioSerializer()
+    
 
     class Meta:
         model = Candidato

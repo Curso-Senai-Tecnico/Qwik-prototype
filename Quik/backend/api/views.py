@@ -1,17 +1,20 @@
-from django.http import JsonResponse                                     # Importa JsonResponse para retornar respostas JSON
-from rest_framework import viewsets                                      # Importa viewsets do Django REST Framework
-from validate_docbr import CPF, CNPJ                                     # Importa validadores de CPF e CNPJ
-from .models import Candidato, Recrutador, Vaga, Perfil                              # Importa os modelos Candidato e Recrutador
+from django.http import JsonResponse
+from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from validate_docbr import CPF, CNPJ
+from .models import Candidato, Recrutador, Vaga, Perfil
 from .serializers import (
+    UsuarioSerializer,
     CandidatoSerializer, 
     RecrutadorSerializer, 
     CandidatoRegistrationSerializer, 
     RecrutadorRegistrationSerializer,
     VagaSerializer,
     PerfilSerializer
-)                                                                        # Importa os serializers necessários
+)
 
-                            # View para verificar a validade de um CNPJ
 def VerficarCnpjView(request):                                           # Define a view para verificar CNPJ
     cnpj_recebido = request.GET.get('cnpj', None)                        # Obtém o CNPJ da requisição GET
     if cnpj_recebido is None:                                            # Verifica se o CNPJ foi fornecido
@@ -80,14 +83,28 @@ class PerfilViewSet(viewsets.ModelViewSet):
         return PerfilSerializer 
         
                                  # Retorna o serializer padrão de perfil
-class MeViewSet(viewsets.ModelViewSet):
-    queryset = Candidato.objects.all()
-    serializer_class = CandidatoSerializer
 
-    def get_queryset(self):
-        user = self.request.user
-        if user.role == 'candidato':
-            return Candidato.objects.filter(usuario=user), Perfil.objects.filter(usuario=user)
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        perfil = Perfil.objects.filter(usuario=user).first()
+
+        if user.role  == 'candidato':
+            candidato = Candidato.objects.filter(usuario=user).first()
+            return Response({
+                "usuario": UsuarioSerializer(user).data,
+                "candidato": CandidatoSerializer(candidato).data if candidato else None,
+                "perfil": PerfilSerializer(perfil).data if perfil else None
+            })
+        
         elif user.role == 'recrutador':
-            return Recrutador.objects.filter(usuario=user), Perfil.objects.filter(usuario=user)
-        return Candidato.objects.none()
+            recrutador = Recrutador.objects.filter(usuario=user).first()
+            return Response({
+                "usuario": UsuarioSerializer(user).data,
+                "recrutador": RecrutadorSerializer(recrutador).data if recrutador else None,
+                "perfil": PerfilSerializer(perfil).data if perfil else None
+            })
+
+        return Response({"usuario": UsuarioSerializer(user).data})

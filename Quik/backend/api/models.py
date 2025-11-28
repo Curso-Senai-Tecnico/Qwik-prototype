@@ -1,10 +1,33 @@
 from django.db import models
 from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeField
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.base_user import BaseUserManager
 
 # ==========================================
 #                usuários
 # ==========================================
+
+class UsuarioManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("O email é obrigatório")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser precisa ter is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser precisa ter is_superuser=True.")
+
+        return self.create_user(email, password, **extra_fields)
+
 
 
 class Usuario(AbstractUser):
@@ -30,6 +53,8 @@ class Usuario(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["nome", "role"]
+
+    objects = UsuarioManager()
 
     class Meta:
         db_table = "usuarios"
@@ -68,7 +93,7 @@ class Candidato(models.Model):
 
 
 class Perfil(models.Model):
-    usuario = models.OneToOneField('Usuario', on_delete=models.CASCADE, primary_key=True)
+    candidato = models.OneToOneField('Candidato', on_delete=models.CASCADE, primary_key=True, null=False)
     foto = models.CharField(max_length=255, null=False)
     nome_perfil = models.CharField(max_length=100, null=False)
     data_nascimento_perfil = models.DateField(null=False)
