@@ -13,15 +13,15 @@ export default function Cadastro() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("/candidato/register/", {
+      const response = await fetch("http://127.0.0.1:8000/api/candidato/create/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           nome: data.nome,
-          login: data.login,
           email: data.email,
           cpf: data.cpf,
           senha: data.pass,
+          role: "candidato"
         }),
       });
 
@@ -71,14 +71,6 @@ export default function Cadastro() {
               id="nome"
               name="nome"
               placeholder="Nome"
-              className="font-inter border rounded-full p-3 shadow-lg"
-              size={40}
-            />
-            <input
-              type="text"
-              id="login"
-              name="login"
-              placeholder="Login"
               className="font-inter border rounded-full p-3 shadow-lg"
               size={40}
             />

@@ -13,6 +13,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         fields = ['id', 'nome', 'email', 'telefone',
                     'password', 'cidade', 'estado', 'bairro', 'role']
         extra_kwargs = {'password': {'write_only': True}}
+    
 # ==========================================
 #         serializer de candidato
 # ==========================================
@@ -34,11 +35,16 @@ class CandidatoSerializer(serializers.ModelSerializer):
 # ==========================================
 
 class PerfilSerializer(serializers.ModelSerializer):
+    tags = serializers.SerializerMethodField()
     class Meta:
         model = Perfil
         fields = ['usuario', 'foto', 'nome_perfil',
-                  'data_nascimento', 'curriculo']
-
+                  'data_nascimento', 'curriculo', 'tags']
+    def get_tags(self, obj):
+        from .models import PerfilTag, Tag
+        tag_ids = PerfilTag.objects.filter(perfil_id=obj.usuario_id).values_list("tag_id", flat=True)
+        tags = Tag.objects.filter(id__in=tag_ids).values_list("nome", flat=True)
+        return list(tags)
 # ==========================================
 #         serializer de recrutador
 # ==========================================
