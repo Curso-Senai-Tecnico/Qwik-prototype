@@ -215,19 +215,19 @@ class VagaRegistrationSerializer(serializers.ModelSerializer):
 
 #Serializador para registro de candidato (POST)
 class CandidatoRegistrationSerializer(serializers.ModelSerializer):
-    user = UsuarioSerializer()
+    usuario = UsuarioSerializer()
     
 
     class Meta:
         model = Candidato
-        fields = ['user', 'cpf', 'data_nascimento']
+        fields = ['usuario', 'cpf', 'data_nascimento']
 
                                 
     @transaction.atomic                                                  #transaction.atomic garante que a criação do usuário seja atômicas
     def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        user = Usuario.objects.create_user(**user_data)
-        candidato = Candidato.objects.create(user=user, **validated_data)
+        user_data = validated_data.pop('usuario')
+        usuario = Usuario.objects.create_user(**user_data)
+        candidato = Candidato.objects.create(usuario=usuario, **validated_data)
         return candidato
 
                                 #Serializador para registro de recrutador (POST)

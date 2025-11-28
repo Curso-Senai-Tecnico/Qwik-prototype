@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react";
 import { RoleContext } from "./RoleContext";
+import { useToken } from "./TokenContext";
 
 export function RoleProvider({ children }) {
   const [role, setRole] = useState(localStorage.getItem("role") || null);
+  const {token, setToken} = useToken()
 
   useEffect(() => {
     async function fetchRole() {
       try {
-        const token = localStorage.getItem("token")
+        if (!token) return
         const res = await fetch("http://127.0.0.1:8000/api/me/", {
           headers: {
             Authorization: `Token ${token}`,
             "Content-Type": "application/json"
           }
         });
-        const data = await res.json()
-        if (data.usuario?.role) {
+        
+        if (res.ok) {
+          const data = await res.json()
           setRole(data.usuario.role)
         }
       } catch(err) {
@@ -23,10 +26,10 @@ export function RoleProvider({ children }) {
       }
     }
 
-    if (!role) {
+     
       fetchRole()
-    }
-  }, [])
+    
+  }, [token])
 
   useEffect(() => {
     if (role){

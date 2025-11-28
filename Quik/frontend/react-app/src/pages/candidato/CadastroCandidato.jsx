@@ -17,7 +17,7 @@ export default function Cadastro() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          user: {
+          usuario: {
           nome: data.nome,
           email: data.email,
           telefone: null,

@@ -104,7 +104,7 @@ export default function InfoContent() {
       {role === "candidato" && (
       <>
         <header className=" flex bg-gradient-to-r from-orange-400 to-orange-500 w-full h-1/10">
-          <img src={user != null ? `http://127.0.0.1:8000/media/${user.perfil.foto}` : "/qwikpadrao.png"} className="absolute w-40 h-40 rounded-full left-2 top-4 border-4 border-white active:scale-90 cursor-pointer transition-transform duration-200 ease-in-out"/>
+          <img src={user != null && user.perfil.foto != null ? `http://127.0.0.1:8000/media/${user?.perfil?.foto}` : "/qwikpadrao.png"} className="absolute w-40 h-40 rounded-full left-2 top-4 border-4 border-white active:scale-90 cursor-pointer transition-transform duration-200 ease-in-out"/>
         </header>
         <main className="flex flex-col mt-25 ml-6 mr-5">
           <div className="flex justify-between items-center">

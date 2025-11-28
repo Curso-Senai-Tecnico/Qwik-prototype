@@ -2,16 +2,17 @@ import { motion } from "motion/react";
 import { ChevronLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "/logoSvg.svg";
-import { useRole } from "../contexts/RoleContext";
 import { useToken } from "../contexts/TokenContext";
 
 export default function Login() {
   const navigate = useNavigate();
-  const {role, setRole} = useRole()
-  const {token, setToken} = useToken()
+
+  const {setToken} = useToken()
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    localStorage.clear()
+
 
     const email = e.target.email.value // pega os inputs do forms
     const password = e.target.password.value
@@ -25,25 +26,20 @@ export default function Login() {
       });
 
       if (!response.ok) throw new Error("Usuário ou senha inválidos");
-
+      console.log(response)
       const data = await response.json();
+      console.log(data.token)
       setToken(data.token)
 
-      const resMe = await fetch("http://127.0.0.1:8000/api/me/", {
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const meData = await resMe.json();
-    setRole(meData.usuario.role);
+      
 
       navigate("/home")
-    } catch (err) {
+      }catch (err) {
       console.error(err.message);
+      
+    } 
     }
-  };
+  ;
 
   return (
     <motion.div

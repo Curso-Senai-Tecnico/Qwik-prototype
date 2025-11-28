@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token # Importe esta view
-from .views import CandidatoViewSet, RecrutadorViewSet, VagaViewSet, PerfilViewSet, MeView
+from .views import CandidatoViewSet, RecrutadorViewSet, VagaViewSet, PerfilViewSet, MeView, serve_files
 
 # Cria um router e registra nossos viewsets com ele.
 router = DefaultRouter()
@@ -14,4 +14,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('login/', obtain_auth_token, name='api-token-auth'), # Adicione esta linha para o login
     path('me/',MeView.as_view(), name='me'),
+    path('file/<path:path>', serve_files, name='serve_files')
 ]

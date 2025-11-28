@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from validate_docbr import CPF, CNPJ
 from .models import Candidato, Recrutador, Vaga, Perfil
 from .serializers import (
@@ -14,6 +15,12 @@ from .serializers import (
     VagaSerializer,
     PerfilSerializer
 )
+from django.conf import settings
+from django.views.static import serve
+from django.views.decorators.clickjacking import xframe_options_exempt
+import mimetypes
+import os
+from django.http import FileResponse
 
 def VerficarCnpjView(request):                                           # Define a view para verificar CNPJ
     cnpj_recebido = request.GET.get('cnpj', None)                        # Obtém o CNPJ da requisição GET
@@ -38,12 +45,17 @@ class CandidatoViewSet(viewsets.ModelViewSet):
     
                              #viewset para CRUD completo de Candidatos
     queryset = Candidato.objects.all()
+    
 
     def get_serializer_class(self):                                      # Define o serializer a ser usado com base na ação
         if self.action == 'create':                                      # Se a ação for 'create', usa o serializer de registro
             return CandidatoRegistrationSerializer                       # Retorna o serializer de registro de candidato
         return CandidatoSerializer                                       # Caso contrário, retorna o serializer padrão de candidato
-
+    
+    def get_permissions(self):
+        if self.action == "create":
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
 class RecrutadorViewSet(viewsets.ModelViewSet):
    
@@ -109,3 +121,9 @@ class MeView(APIView):
             })
 
         return Response({"usuario": UsuarioSerializer(user).data})
+    
+@xframe_options_exempt
+def serve_files(request,path):
+    filepath = os.path.join(settings.MEDIA_ROOT, path)
+    content_type, _ = mimetypes.guess_type(filepath)
+    return FileResponse(open(filepath,"rb"),content_type=content_type)
