@@ -89,10 +89,11 @@ class MeView(APIView):
 
     def get(self, request):
         user = request.user
-        perfil = Perfil.objects.filter(usuario=user).first()
+        
 
         if user.role  == 'candidato':
             candidato = Candidato.objects.filter(usuario=user).first()
+            perfil = Perfil.objects.filter(candidato=candidato).first()
             return Response({
                 "usuario": UsuarioSerializer(user).data,
                 "candidato": CandidatoSerializer(candidato).data if candidato else None,

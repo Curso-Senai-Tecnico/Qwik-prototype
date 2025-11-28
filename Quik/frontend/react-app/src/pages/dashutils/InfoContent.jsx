@@ -1,7 +1,7 @@
 import { useRole } from "../../contexts/RoleContext";
 import { PencilLine } from "lucide-react";
 import { CalendarDays } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VenusAndMars } from "lucide-react";
 import { Phone } from "lucide-react";
 import { Mail } from "lucide-react";
@@ -10,6 +10,7 @@ import { useUser } from "../../contexts/UserContext";
 import { useToken } from "../../contexts/TokenContext";
 import { CircleCheck } from "lucide-react";
 import { CircleX } from "lucide-react";
+import { Gem } from "lucide-react";
 
 export default function InfoContent() {
   const { role } = useRole();
@@ -17,21 +18,38 @@ export default function InfoContent() {
   const [isEditing, setEditing] = useState(false);
   const {user, setUser} = useUser()
   const [formData, setFormData] = useState({
-    nascimento: user?.data_nascimento || "",
-    genero: user?.genero || "",
-    telefone: user?.telefone || "",
-    email: user?.email || "",
-    bairro: user?.bairro || "",
-    cidade: user?.cidade || "",
-    estado: user?.estado || ""
+    nascimento: user?.candidato?.data_nascimento || "",
+    genero: user?.candidato?.genero || "",
+    estado_civil: user?.candidato?.estado_civil || "",
+    telefone: user?.usuario?.telefone || "",
+    email: user?.usuario?.email || "",
+    bairro: user?.usuario?.bairro || "",
+    cidade: user?.usuario?.cidade || "",
+    estado: user?.usuario?.estado || ""
   })
 
-  const [nome, setNome] = useState({nome: user?.nome || ""})
+  const [nome, setNome] = useState({nome: user?.usuario.nome || ""})
   const [isEditingName, setEditingName] = useState(false)
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        nascimento: user?.candidato?.data_nascimento || "",
+    genero: user?.candidato?.genero || "",
+    estado_civil: user?.candidato?.estado_civil || "",
+    telefone: user?.usuario?.telefone || "",
+    email: user?.usuario?.email || "",
+    bairro: user?.usuario?.bairro || "",
+    cidade: user?.usuario?.cidade || "",
+    estado: user?.usuario?.estado || ""
+      });
+      setNome({nome: user.usuario?.nome})
+    }
+  }, [user])
 
   async function salvarAlteracoes() {
     const data = {... nome, ... formData}
-    const response = await fetch ("/api/me", {
+    const response = await fetch (`http://127.0.0.1:800/api/${role}s`, {
       method: "PUT",
       headers: {Authorization: `Bearer ${token}`, "Content-Type": "application/json"},
       body: JSON.stringify(data)
@@ -86,7 +104,7 @@ export default function InfoContent() {
       {role === "candidato" && (
       <>
         <header className=" flex bg-gradient-to-r from-orange-400 to-orange-500 w-full h-1/10">
-          <img src={user != null ? `${user.foto}` : "/qwikpadrao.png"} className="absolute w-40 h-40 rounded-full left-2 top-4 border-4 border-white active:scale-90 cursor-pointer transition-transform duration-200 ease-in-out"/>
+          <img src={user != null ? `http://127.0.0.1:8000/media/${user.perfil.foto}` : "/qwikpadrao.png"} className="absolute w-40 h-40 rounded-full left-2 top-4 border-4 border-white active:scale-90 cursor-pointer transition-transform duration-200 ease-in-out"/>
         </header>
         <main className="flex flex-col mt-25 ml-6 mr-5">
           <div className="flex justify-between items-center">
@@ -107,10 +125,10 @@ export default function InfoContent() {
           </div>
           <br/>
           <span className="font-inter font-semibold text-xl">Habilidades</span>
-          {user != null && user.tags && user.tags.length > 0 && (
+          {user != null && user.perfil.tags && user.perfil.tags.length > 0 && (
           <div className="flex w-full gap-6 mt-10">  
-          {user.tags.map(tag => (
-            <div key={tag.id} className="bg-orange-200 p-2 rounded-l-full rounded-r-full hover:scale-110 transition-transform duration-300 ease-in-out ">
+          {user.perfil.tags.map(tag => (
+            <div key={tag} className="bg-orange-200 p-2 rounded-l-full rounded-r-full hover:scale-110 transition-transform duration-300 ease-in-out ">
               <span className="font-inter text-orange-800">{tag}</span>
             </div>
           ))}
@@ -128,6 +146,10 @@ export default function InfoContent() {
             <label className="flex gap-2">
               <VenusAndMars/>
               <input type="text" id="gender" name="gender" disabled={!isEditing} placeholder={user != null ? user.genero : "Gênero"} value={formData.genero} onChange={(e) => setFormData({...formData, genero: e.target.value})} />
+            </label>
+            <label className="flex gap-2">
+            <Gem/>
+            <input type="text" id="civil" name="civil" disabled={!isEditing} placeholder={user != null ? user.estado_civil : "Estado Civil"} value={formData.estado_civil} onChange={(e) => setFormData({...formData, estado_civil: e.target.value})}/>
             </label>
             <label className="flex gap-2">
               <Phone />

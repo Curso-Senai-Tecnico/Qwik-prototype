@@ -83,7 +83,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
     
     <>
       <Circle size={75} fill="rgba(114,114,114,1)" strokeWidth={0.5} />
-      <span className="ml-3">{user?.nome}</span>
+      <span className="ml-3">{user?.usuario.nome}</span>
     </>
   )}
             </button>

@@ -27,8 +27,18 @@ export default function Login() {
       if (!response.ok) throw new Error("Usuário ou senha inválidos");
 
       const data = await response.json();
-      setRole(data.role)
       setToken(data.token)
+
+      const resMe = await fetch("http://127.0.0.1:8000/api/me/", {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const meData = await resMe.json();
+    setRole(meData.usuario.role);
+
       navigate("/home")
     } catch (err) {
       console.error(err.message);

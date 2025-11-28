@@ -38,11 +38,11 @@ class PerfilSerializer(serializers.ModelSerializer):
     tags = serializers.SerializerMethodField()
     class Meta:
         model = Perfil
-        fields = ['usuario', 'foto', 'nome_perfil',
-                  'data_nascimento', 'curriculo', 'tags']
+        fields = ['candidato', 'foto', 'nome_perfil',
+                  'data_nascimento_perfil', 'curriculo', 'tags']
     def get_tags(self, obj):
         from .models import PerfilTag, Tag
-        tag_ids = PerfilTag.objects.filter(perfil_id=obj.usuario_id).values_list("tag_id", flat=True)
+        tag_ids = PerfilTag.objects.filter(perfil_id=obj.candidato_id).values_list("tag_id", flat=True)
         tags = Tag.objects.filter(id__in=tag_ids).values_list("nome", flat=True)
         return list(tags)
 # ==========================================

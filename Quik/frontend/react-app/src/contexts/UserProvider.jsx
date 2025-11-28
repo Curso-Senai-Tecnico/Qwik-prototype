@@ -31,6 +31,7 @@ export function UserProvider({ children }) {
         }
 
         const data = await response.json();
+        console.log(data)
         setUser(data);
 
       } catch (err) {
