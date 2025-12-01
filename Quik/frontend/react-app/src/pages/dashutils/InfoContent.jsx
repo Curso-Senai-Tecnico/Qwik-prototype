@@ -25,10 +25,10 @@ export default function InfoContent() {
     email: user?.usuario?.email || "",
     bairro: user?.usuario?.bairro || "",
     cidade: user?.usuario?.cidade || "",
-    estado: user?.usuario?.estado || ""
+    estado: user?.usuario?.estado || "",
   })
 
-  const [nome, setNome] = useState({nome: user?.usuario.nome || ""})
+  const [nome, setNome] = useState(user?.usuario?.nome || "")
   const [isEditingName, setEditingName] = useState(false)
 
   useEffect(() => {
@@ -41,17 +41,25 @@ export default function InfoContent() {
     email: user?.usuario?.email || "",
     bairro: user?.usuario?.bairro || "",
     cidade: user?.usuario?.cidade || "",
-    estado: user?.usuario?.estado || ""
+    estado: user?.usuario?.estado || "",
+    foto: user?.perfil?.foto || "/qwikpadrao.png"
       });
-      setNome({nome: user.usuario?.nome})
+      setNome(user?.usuario?.nome)
     }
   }, [user])
 
-  async function salvarAlteracoes() {
-    const data = {... nome, ... formData}
-    const response = await fetch (`http://127.0.0.1:800/api/${role}s`, {
-      method: "PUT",
-      headers: {Authorization: `Bearer ${token}`, "Content-Type": "application/json"},
+  async function salvarAlteracoesCandidato() {
+    const data = {
+    usuario: user?.usuario?.id,
+    data_nascimento: formData.nascimento,
+    genero: formData.genero,
+    estado_civil: formData.estado_civil,
+    cpf: user.candidato.cpf
+
+    }
+    const response = await fetch (`http://127.0.0.1:8000/api/candidatos/${user?.candidato?.usuario}/`, {
+      method: "PATCH",
+      headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
       body: JSON.stringify(data)
     })
 
@@ -69,14 +77,14 @@ export default function InfoContent() {
       {role === "recrutador" && (
         <>
         <header className=" flex bg-gradient-to-r from-orange-400 to-orange-500 w-full h-1/10">
-          <img src={user != null ? `${user.foto}` : "/qwikpadrao.png"} className="absolute w-40 h-40 rounded-full left-2 top-4 border-4 border-white active:scale-90 cursor-pointer transition-transform duration-200 ease-in-out"/>
+          <img src="/qwikpadrao.png" className="absolute w-40 h-40 rounded-full left-2 top-4 border-4 border-white active:scale-90 cursor-pointer transition-transform duration-200 ease-in-out"/>
         </header>
         <main className="flex flex-col mt-25 ml-6 mr-5">
           <div className="flex justify-between items-center">
           <form id="formNome" className="flex">
           <input type="text" size={10} name="nome" id="nome" className="font-inter font-bold text-2xl" disabled={!isEditingName} value={nome.nome != "" ? nome.nome : "Nome de usuário"} onChange={(e) => {setNome({nome: e.target.value})}}/>
           {!isEditingName ?  <PencilLine onClick={() => setEditingName(true)}/> : (<>
-            <CircleCheck onClick={() => salvarAlteracoes()}/>
+            <CircleCheck onClick={() => salvarAlteracoesCandidato()}/>
             <CircleX onClick={() => setEditingName(false)} />
             </>
             )}
@@ -94,7 +102,7 @@ export default function InfoContent() {
           </form>
           {isEditing && (
             <div className="flex justify-end items-center gap-5">
-                <button type="submit" className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => salvarAlteracoes()}> Salvar </button>
+                <button type="submit" className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => salvarAlteracoesCandidato()}> Salvar </button>
                 <button className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
             </div>
           )}
@@ -104,16 +112,16 @@ export default function InfoContent() {
       {role === "candidato" && (
       <>
         <header className=" flex bg-gradient-to-r from-orange-400 to-orange-500 w-full h-1/10">
-          <img src={user != null && user.perfil.foto != null ? `http://127.0.0.1:8000/media/${user?.perfil?.foto}` : "/qwikpadrao.png"} className="absolute w-40 h-40 rounded-full left-2 top-4 border-4 border-white active:scale-90 cursor-pointer transition-transform duration-200 ease-in-out"/>
+          <img src={user != null && user?.perfil?.foto != null ? `http://127.0.0.1:8000/media/${user?.perfil?.foto}` : "/qwikpadrao.png"} className="absolute w-40 h-40 rounded-full left-2 top-4 border-4 border-white active:scale-90 cursor-pointer transition-transform duration-200 ease-in-out"/>
         </header>
         <main className="flex flex-col mt-25 ml-6 mr-5">
           <div className="flex justify-between items-center">
           <form id="formNome" className="flex">
-          <input type="text" size={10} name="nome" id="nome" className="font-inter font-bold text-2xl" disabled={!isEditingName} value={nome.nome != "" ? nome.nome : "Nome de usuário"} onChange={(e) => {setNome({nome: e.target.value})}}/>
+          <input type="text" size={10} name="nome" id="nome" className="font-inter font-bold text-2xl" disabled={!isEditingName} value={nome != "" ? nome : "Nome de usuário"} onChange={(e) => {setNome(e.target.value)}}/>
           {!isEditingName ?  <PencilLine className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" onClick={() => setEditingName(true)}/> : (<>
             <CircleCheck className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" type="submit" onClick={(e) => {
               e.preventDefault()
-              salvarAlteracoes()}}/>
+              salvarAlteracoesCandidato()}}/>
             <CircleX className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" onClick={() => setEditingName(false)} />
             </>
             )}
@@ -125,51 +133,60 @@ export default function InfoContent() {
           </div>
           <br/>
           <span className="font-inter font-semibold text-xl">Habilidades</span>
-          {user != null && user.perfil.tags && user.perfil.tags.length > 0 && (
+          {user != null && user?.perfil?.tags && user?.perfil?.tags.length > 0 && user?.perfil?.tags.length == 5 ? (
           <div className="flex w-full gap-6 mt-10">  
-          {user.perfil.tags.map(tag => (
+          {user?.perfil?.tags.map(tag => (
             <div key={tag} className="bg-orange-200 p-2 rounded-l-full rounded-r-full hover:scale-110 transition-transform duration-300 ease-in-out ">
               <span className="font-inter text-orange-800">{tag}</span>
             </div>
           ))}
           </div>
+          ) : (
+          <div className="flex w-full gap-6 mt-10">  
+          {user?.perfil?.tags.map(tag => (
+            <div key={tag} className="bg-orange-200 p-2 rounded-l-full rounded-r-full hover:scale-110 transition-transform duration-300 ease-in-out ">
+              <span className="font-inter text-orange-800">{tag}</span>
+            </div>
+          ))}
+          <button className="bg-orange-200 p-2 rounded-l-full rounded-r-full hover:scale-110 transition-transform duration-300 ease-in-out font-inter text-orange-800 cursor-pointer active:scale-90"> + Adicionar Tags</button>
+          </div>
           )}
           <h2 className="mt-10 font-inter font-bold">Informações Pessoais</h2>
           <form id="info" className="grid grid-cols-2 grid-rows-6 gap-y-8 justify-between mt-5" onSubmit={(e) => {
             e.preventDefault()
-            salvarAlteracoes()
+            salvarAlteracoesCandidato()
           }}>
             <label className="flex gap-2">
               <CalendarDays />
-              <input type="text" id="nascimento" name="nascimento" disabled={!isEditing} placeholder={user != null ? user.data_nascimento : "Data de Nascimento"} value={formData.nascimento} onChange={(e) => setFormData({...formData, nascimento: e.target.value})} />
+              <input type="text" id="nascimento" name="nascimento" disabled={!isEditing} placeholder={"Data de Nascimento"} value={formData.nascimento} onChange={(e) => setFormData({...formData, nascimento: e.target.value})} />
             </label>
             <label className="flex gap-2">
               <VenusAndMars/>
-              <input type="text" id="gender" name="gender" disabled={!isEditing} placeholder={user != null ? user.genero : "Gênero"} value={formData.genero} onChange={(e) => setFormData({...formData, genero: e.target.value})} />
+              <input type="text" id="gender" name="gender" disabled={!isEditing} placeholder={"Gênero"} value={formData.genero} onChange={(e) => setFormData({...formData, genero: e.target.value})} />
             </label>
             <label className="flex gap-2">
             <Gem/>
-            <input type="text" id="civil" name="civil" disabled={!isEditing} placeholder={user != null ? user.estado_civil : "Estado Civil"} value={formData.estado_civil} onChange={(e) => setFormData({...formData, estado_civil: e.target.value})}/>
+            <input type="text" id="civil" name="civil" disabled={!isEditing} placeholder={"Estado Civil"} value={formData.estado_civil} onChange={(e) => setFormData({...formData, estado_civil: e.target.value})}/>
             </label>
             <label className="flex gap-2">
               <Phone />
-              <input type="text" id="phone" name="phone" disabled={!isEditing} placeholder={user != null ? user.telefone : "Telefone"} value={formData.telefone} onChange={(e) => setFormData({...formData, telefone: e.target.value })} />
+              <input type="text" id="phone" name="phone" disabled={!isEditing} placeholder={"Telefone"} value={formData.telefone} onChange={(e) => setFormData({...formData, telefone: e.target.value })} />
             </label>
             <label className="flex gap-2">
               <Mail />
-              <input type="email" id="email" name="email" disabled={!isEditing} placeholder={user != null ? user.email : "E-mail"} value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value })} />
+              <input type="email" id="email" name="email" disabled={!isEditing} placeholder={"E-mail"} value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value })} />
             </label>
             <label className="flex gap-2">
               <MapPin />
-              <input type="text" id="block" name="block" disabled={!isEditing} placeholder={user != null ? user.bairro : "Bairro"} value={formData.bairro} onChange={(e) => setFormData({...formData, bairro: e.target.value })} />
+              <input type="text" id="block" name="block" disabled={!isEditing} placeholder={"Bairro"} value={formData.bairro} onChange={(e) => setFormData({...formData, bairro: e.target.value })} />
             </label>
             <label className="flex gap-2">
               <MapPin />
-              <input type="text" id="city" name="city" disabled={!isEditing} placeholder={user != null ? user.cidade : "Cidade"} value={formData.cidade} onChange={(e) => setFormData({...formData, cidade: e.target.value })} />
+              <input type="text" id="city" name="city" disabled={!isEditing} placeholder={"Cidade"} value={formData.cidade} onChange={(e) => setFormData({...formData, cidade: e.target.value })} />
             </label>
             <label className="flex gap-2">
               <MapPin />
-              <input type="text" id="state" name="state" disabled={!isEditing} placeholder={user != null ? user.estado : "Estado"} value={formData.estado} onChange={(e) => setFormData({...formData, estado: e.target.value })} />
+              <input type="text" id="state" name="state" disabled={!isEditing} placeholder={"Estado"} value={formData.estado} onChange={(e) => setFormData({...formData, estado: e.target.value })} />
             </label>
           </form>
 

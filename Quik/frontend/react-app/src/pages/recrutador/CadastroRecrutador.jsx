@@ -22,8 +22,8 @@ export default function Cadastro() {
           nome: data.nome,
           perfil_recrutador: data.cargo,
           cnpj: data.cnpj,
-          senha: data.pass,
-          role: "recrutador"
+          password: data.pass,
+          role: 'recrutador'
         }),
       });
 

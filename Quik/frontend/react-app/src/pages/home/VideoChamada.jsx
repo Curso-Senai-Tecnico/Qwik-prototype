@@ -17,9 +17,6 @@ export default function VideoChamada() {
   const [activeCall, setActiveCall] = useState(false);
   
 
-  const handleCall = () => {
-    setActiveCall(true)
-  }
 
   const refuseCall = () => {
     setActiveCall(false)
@@ -60,8 +57,15 @@ export default function VideoChamada() {
 
   const startCall = () => {
     setIsLoading(true);
+    console.log(isLoading)
+    console.log(activeCall)
     setTimeout(() => {
+      
       setIsLoading(false);
+      console.log(isLoading)
+      
+      setActiveCall(true);
+      console.log(activeCall)
     }, 5000);
   };
 
@@ -116,9 +120,7 @@ export default function VideoChamada() {
             </div>
           )}
 
-          <button className="bg-white group-hover:opacity-100 opacity-0 transition-opacity duration-300 w-fit self-center" onClick={handleCall}>
-            Testar contrato
-          </button>
+          
 <AnimatePresence mode="wait">
           {activeCall && (
             <motion.div className="fixed inset-0 backdrop-blur bg-black/50 flex items-center justify-center"
