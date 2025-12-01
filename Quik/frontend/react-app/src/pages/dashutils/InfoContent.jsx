@@ -17,46 +17,62 @@ export default function InfoContent() {
   const {token} = useToken();
   const [isEditing, setEditing] = useState(false);
   const {user, setUser} = useUser()
-  const [formData, setFormData] = useState({
-    nascimento: user?.candidato?.data_nascimento || "",
-    genero: user?.candidato?.genero || "",
-    estado_civil: user?.candidato?.estado_civil || "",
+  const [userData, setuserData] = useState({
+    nome: user?.usuario?.nome || "",
     telefone: user?.usuario?.telefone || "",
     email: user?.usuario?.email || "",
     bairro: user?.usuario?.bairro || "",
     cidade: user?.usuario?.cidade || "",
     estado: user?.usuario?.estado || "",
+    role: user?.usuario?.role || "candidato"
   })
 
+  const [candidateData, setCandidateData] = useState({
+    usuario: user?.usuario?.id,
+    data_nascimento: user?.candidato?.data_nascimento || "",
+    genero: user?.candidato?.genero || "",
+    estado_civil: user?.candidato?.estado_civil || "",
+    cpf: user?.candidato?.cpf || ""
+  })
+
+  const [foto, setFoto] = useState(user?.perfil?.foto || "")
+
+  
   const [nome, setNome] = useState(user?.usuario?.nome || "")
   const [isEditingName, setEditingName] = useState(false)
 
   useEffect(() => {
     if (user) {
-      setFormData({
-        nascimento: user?.candidato?.data_nascimento || "",
-    genero: user?.candidato?.genero || "",
-    estado_civil: user?.candidato?.estado_civil || "",
-    telefone: user?.usuario?.telefone || "",
-    email: user?.usuario?.email || "",
-    bairro: user?.usuario?.bairro || "",
-    cidade: user?.usuario?.cidade || "",
-    estado: user?.usuario?.estado || "",
-    foto: user?.perfil?.foto || "/qwikpadrao.png"
+      setuserData({
+      nome: user?.usuario?.nome || "",
+      telefone: user?.usuario?.telefone || "",
+      email: user?.usuario?.email || "",
+      bairro: user?.usuario?.bairro || "",
+      cidade: user?.usuario?.cidade || "",
+      estado: user?.usuario?.estado || "",
+      role: user?.usuario?.role || "candidato"
       });
       setNome(user?.usuario?.nome)
+      setCandidateData({
+        usuario: user?.usuario?.id,
+        data_nascimento: user?.candidato?.data_nascimento || "",
+        genero: user?.candidato?.genero || "",
+        estado_civil: user?.candidato?.estado_civil || "",
+        cpf: user?.candidato?.cpf || ""
+      })
     }
   }, [user])
 
   async function salvarAlteracoesCandidato() {
     const data = {
     usuario: user?.usuario?.id,
-    data_nascimento: formData.nascimento,
-    genero: formData.genero,
-    estado_civil: formData.estado_civil,
+    data_nascimento: candidateData.data_nascimento,
+    genero: candidateData.genero,
+    estado_civil: candidateData.estado_civil,
     cpf: user.candidato.cpf
 
     }
+    try {
     const response = await fetch (`http://127.0.0.1:8000/api/candidatos/${user?.candidato?.usuario}/`, {
       method: "PATCH",
       headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
@@ -64,9 +80,44 @@ export default function InfoContent() {
     })
 
     const newData = await response.json()
-    setUser(newData)
+    setUser({...user, candidato: newData})
     setEditing(false)
     setEditingName(false)
+    } catch(err) {
+      console.error(err)
+    }
+  }
+
+  async function saveUsuario() {
+    const data = {
+      usuario:{
+      nome: nome,
+      email: userData.email,
+      telefone: userData.telefone,
+      cidade: userData.cidade,
+      estado: userData.estado,
+      bairro: userData.bairro,
+      role: userData.role
+      }
+    }
+
+    try {
+    const response = await fetch(`http://127.0.0.1:8000/api/candidatos/${user?.usuario?.id}/`, {
+      method: "PATCH",
+      headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
+      body: JSON.stringify(data)
+    })
+
+    if (response.ok){
+      const newData = await response.json()
+      setUser({...user, usuario: newData})
+      setEditing(false)
+      setEditingName(false)
+    } 
+  } catch (err) {
+    console.error(err)
+  }
+    
   }
   
 
@@ -121,7 +172,7 @@ export default function InfoContent() {
           {!isEditingName ?  <PencilLine className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" onClick={() => setEditingName(true)}/> : (<>
             <CircleCheck className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" type="submit" onClick={(e) => {
               e.preventDefault()
-              salvarAlteracoesCandidato()}}/>
+              saveUsuario()}}/>
             <CircleX className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" onClick={() => setEditingName(false)} />
             </>
             )}
@@ -151,48 +202,61 @@ export default function InfoContent() {
           <button className="bg-orange-200 p-2 rounded-l-full rounded-r-full hover:scale-110 transition-transform duration-300 ease-in-out font-inter text-orange-800 cursor-pointer active:scale-90"> + Adicionar Tags</button>
           </div>
           )}
-          <h2 className="mt-10 font-inter font-bold">Informações Pessoais</h2>
-          <form id="info" className="grid grid-cols-2 grid-rows-6 gap-y-8 justify-between mt-5" onSubmit={(e) => {
+          <h2 className="mt-10 font-inter font-bold">Informações de Usuário</h2>
+          <form id="infoUser" className="grid grid-cols-2 grid-rows-4 gap-y-8 justify-between mt-5" onSubmit={(e) => {
             e.preventDefault()
-            salvarAlteracoesCandidato()
+            saveUsuario()
           }}>
             <label className="flex gap-2">
-              <CalendarDays />
-              <input type="text" id="nascimento" name="nascimento" disabled={!isEditing} placeholder={"Data de Nascimento"} value={formData.nascimento} onChange={(e) => setFormData({...formData, nascimento: e.target.value})} />
-            </label>
-            <label className="flex gap-2">
-              <VenusAndMars/>
-              <input type="text" id="gender" name="gender" disabled={!isEditing} placeholder={"Gênero"} value={formData.genero} onChange={(e) => setFormData({...formData, genero: e.target.value})} />
-            </label>
-            <label className="flex gap-2">
-            <Gem/>
-            <input type="text" id="civil" name="civil" disabled={!isEditing} placeholder={"Estado Civil"} value={formData.estado_civil} onChange={(e) => setFormData({...formData, estado_civil: e.target.value})}/>
-            </label>
-            <label className="flex gap-2">
               <Phone />
-              <input type="text" id="phone" name="phone" disabled={!isEditing} placeholder={"Telefone"} value={formData.telefone} onChange={(e) => setFormData({...formData, telefone: e.target.value })} />
+              <input type="text" id="phone" name="phone" disabled={!isEditing} placeholder={"Telefone"} value={userData.telefone} onChange={(e) => setuserData({...userData, telefone: e.target.value })} />
             </label>
             <label className="flex gap-2">
               <Mail />
-              <input type="email" id="email" name="email" disabled={!isEditing} placeholder={"E-mail"} value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value })} />
+              <input type="email" id="email" name="email" disabled={!isEditing} placeholder={"E-mail"} value={userData.email} onChange={(e) => setuserData({...userData, email: e.target.value })} />
             </label>
             <label className="flex gap-2">
               <MapPin />
-              <input type="text" id="block" name="block" disabled={!isEditing} placeholder={"Bairro"} value={formData.bairro} onChange={(e) => setFormData({...formData, bairro: e.target.value })} />
+              <input type="text" id="block" name="block" disabled={!isEditing} placeholder={"Bairro"} value={userData.bairro} onChange={(e) => setuserData({...userData, bairro: e.target.value })} />
             </label>
             <label className="flex gap-2">
               <MapPin />
-              <input type="text" id="city" name="city" disabled={!isEditing} placeholder={"Cidade"} value={formData.cidade} onChange={(e) => setFormData({...formData, cidade: e.target.value })} />
+              <input type="text" id="city" name="city" disabled={!isEditing} placeholder={"Cidade"} value={userData.cidade} onChange={(e) => setuserData({...userData, cidade: e.target.value })} />
             </label>
             <label className="flex gap-2">
               <MapPin />
-              <input type="text" id="state" name="state" disabled={!isEditing} placeholder={"Estado"} value={formData.estado} onChange={(e) => setFormData({...formData, estado: e.target.value })} />
+              <input type="text" id="state" name="state" disabled={!isEditing} placeholder={"Estado"} value={userData.estado} onChange={(e) => setuserData({...userData, estado: e.target.value })} />
             </label>
           </form>
+          
 
           {isEditing && (
             <div className="flex justify-end items-center gap-5">
-                <button type="submit" form="info" className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer"> Salvar </button>
+                <button type="submit" form="infoUser" className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer"> Salvar </button>
+                <button className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
+            </div>
+          )}
+          <h1 className="mt-10 font-inter font-bold">Informações de Candidato</h1>
+          <form id="infoCandidato" onSubmit={(e) => {
+            e.preventDefault()
+            salvarAlteracoesCandidato()
+          }} className="grid grid-cols-2 grid-rows-3 gap-y-8 justify-between mt-5">
+            <label className="flex gap-2">
+              <CalendarDays />
+              <input type="text" id="nascimento" name="nascimento" disabled={!isEditing} placeholder={"Data de Nascimento"} value={candidateData.data_nascimento} onChange={(e) => setCandidateData({...candidateData, data_nascimento: e.target.value})} />
+            </label>
+            <label className="flex gap-2">
+              <VenusAndMars/>
+              <input type="text" id="gender" name="gender" disabled={!isEditing} placeholder={"Gênero"} value={candidateData.genero} onChange={(e) => setCandidateData({...candidateData, genero: e.target.value})} />
+            </label>
+            <label className="flex gap-2">
+            <Gem/>
+            <input type="text" id="civil" name="civil" disabled={!isEditing} placeholder={"Estado Civil"} value={candidateData.estado_civil} onChange={(e) => setCandidateData({...candidateData, estado_civil: e.target.value})}/>
+            </label>
+          </form>
+          {isEditing && (
+            <div className="flex justify-end items-center gap-5">
+                <button type="submit" form="infoCandidato" className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer"> Salvar </button>
                 <button className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
             </div>
           )}

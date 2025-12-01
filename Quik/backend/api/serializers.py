@@ -24,11 +24,26 @@ class CandidatoSerializer(serializers.ModelSerializer):
         fields = ['usuario', 'data_nascimento', 'cpf',
                   'genero', 'estado_civil']
 
-        def validate_cpf(self, value):                             # Validação personalizada para CPF
-            cpf_validator = CPF()                                  # Cria uma instância do validador de CPF
-            if not cpf_validator.validate(value):
-                raise serializers.ValidationError("CPF inválido.") # Levanta erro se o CPF for inválido
-            return value                                           # Retorna o valor se for válido
+    def validate_cpf(self, value):                             # Validação personalizada para CPF
+        cpf_validator = CPF()                                  # Cria uma instância do validador de CPF
+        if not cpf_validator.validate(value):
+            raise serializers.ValidationError("CPF inválido.") # Levanta erro se o CPF for inválido
+        return value                                           # Retorna o valor se for válido
+    
+    def update(self, instance, validated_data):
+        usuario_data = validated_data.pop('usuario', None)
+        if usuario_data:
+            # atualiza os campos do usuário
+            for attr, value in usuario_data.items():
+                setattr(instance.usuario, attr, value)
+            instance.usuario.save()
+
+        # atualiza os campos do candidato
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
+
 
 # ==========================================
 #         serializer de perfil
@@ -45,6 +60,7 @@ class PerfilSerializer(serializers.ModelSerializer):
         tag_ids = PerfilTag.objects.filter(perfil_id=obj.candidato_id).values_list("tag_id", flat=True)
         tags = Tag.objects.filter(id__in=tag_ids).values_list("nome", flat=True)
         return list(tags)
+    
 # ==========================================
 #         serializer de recrutador
 # ==========================================

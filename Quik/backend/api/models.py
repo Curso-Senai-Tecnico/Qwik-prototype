@@ -94,10 +94,10 @@ class Candidato(models.Model):
 
 class Perfil(models.Model):
     candidato = models.OneToOneField('Candidato', on_delete=models.CASCADE, primary_key=True, null=False, default=1)
-    foto = models.CharField(max_length=255, null=False)
-    nome_perfil = models.CharField(max_length=100, null=False)
-    data_nascimento_perfil = models.DateField(null=False)
-    curriculo = models.CharField(max_length=255, null=True)
+    foto = models.ImageField(upload_to='fotos/', null=True, blank=True)
+    nome_perfil = models.CharField(max_length=100, null=True)
+    data_nascimento_perfil = models.DateField(null=True)
+    curriculo = models.FileField(upload_to='curriculos/', null=True)
 
     class Meta:
         db_table = 'perfil'
