@@ -60,6 +60,7 @@ class PerfilSerializer(serializers.ModelSerializer):
         tag_ids = PerfilTag.objects.filter(perfil_id=obj.candidato_id).values_list("tag_id", flat=True)
         tags = Tag.objects.filter(id__in=tag_ids).values_list("nome", flat=True)
         return list(tags)
+    
 # ==========================================
 #         serializer de recrutador
 # ==========================================
