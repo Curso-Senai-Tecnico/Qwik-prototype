@@ -12,24 +12,46 @@ services:
     networks:
       - backend
     user: "0"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  init_db:
-    build:
-      context: ./database
-      dockerfile: Dockerfile
-    container_name: init_db
-    depends_on:
-      - db
-    env_file:
-      - .env
-    networks:
-      - backend
+
+  #init_db:
+  #  build:
+  #    context: ./database
+  #    dockerfile: Dockerfile
+  #  container_name: init_db
+  #  depends_on:
+  #    db:
+  #      condition: service_healthy
+  #  env_file:
+  #    - .env
+  #  networks:
+  #    - backend
   frontend:
     build:
       context: ./Quik/frontend/react-app
     container_name: quik_frontend
     ports:
       - "8080:80"
+    networks:
+      - backend
+    restart: always
+  
+  backend:
+    build: 
+      context: ./Quik/backend
+      dockerfile: Dockerfile
+    container_name: quik_backend
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - backend
     restart: always

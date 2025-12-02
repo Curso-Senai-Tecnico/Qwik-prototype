@@ -10,7 +10,7 @@ export function RoleProvider({ children }) {
     async function fetchRole() {
       try {
         if (!token) return
-        const res = await fetch("http://127.0.0.1:8000/api/me/", {
+        const res = await fetch("http://localhost:8000/api/me/", {
           headers: {
             Authorization: `Token ${token}`,
             "Content-Type": "application/json"

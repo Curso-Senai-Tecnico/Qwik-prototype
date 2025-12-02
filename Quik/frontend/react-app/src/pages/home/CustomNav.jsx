@@ -82,7 +82,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   ) : (
     
     <>
-      <Circle size={75} fill="rgba(114,114,114,1)" strokeWidth={0.5} />
+      {user?.perfil?.foto ? <img src={`http://localhost:8000/${user?.perfil?.foto}`} /> : <img src="/qwikpadrao.png" />}
       <span className="ml-3">{user?.usuario.nome}</span>
     </>
   )}
