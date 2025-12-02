@@ -35,7 +35,14 @@ export default function InfoContent() {
     cpf: user?.candidato?.cpf || ""
   })
 
-  const [foto, setFoto] = useState(user?.perfil?.foto || "")
+  const [perfil, setPerfil] = useState({
+    candidato: user?.candidato?.usuario,
+    nome_perfil: user?.usuario?.nome || "",
+    foto: user?.perfil?.foto || "/qwikpadrao.png",
+    data_nascimento_perfil: candidateData.data_nascimento,
+    tags: user?.perfil?.tags
+  })
+  const [file, setFile] = useState(null)
 
   
   const [nome, setNome] = useState(user?.usuario?.nome || "")
@@ -62,6 +69,14 @@ export default function InfoContent() {
       })
     }
   }, [user])
+
+  useEffect(() => {
+    async function ensureProfile() {
+      if (!user?.perfil){
+        const response = await fetch
+      }
+    }
+  })
 
   async function salvarAlteracoesCandidato() {
     const data = {
@@ -120,7 +135,22 @@ export default function InfoContent() {
     
   }
   
+  async function upload() {
+    if (!file) return;
 
+    const formData = new FormData();
+    formData.append("foto", file)
+
+    const response = await fetch(`http://127.0.0.1:8000/api/perfis${user?.candidato?.usuario}/`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+      body: formData
+    })
+    const newPerfil = await response.json()
+    setUser({...user, perfil: newPerfil})
+  }
   
 
   return (
