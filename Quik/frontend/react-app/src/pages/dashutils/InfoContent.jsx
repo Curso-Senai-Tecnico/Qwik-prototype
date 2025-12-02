@@ -49,7 +49,7 @@ export default function InfoContent() {
   const [isEditingName, setEditingName] = useState(false)
 
   useEffect(() => {
-    if (user) {
+    if (user?.usuario) {
       setuserData({
       nome: user?.usuario?.nome || "",
       telefone: user?.usuario?.telefone || "",
@@ -60,6 +60,8 @@ export default function InfoContent() {
       role: user?.usuario?.role || "candidato"
       });
       setNome(user?.usuario?.nome)
+    }
+    if (user?.candidato){
       setCandidateData({
         usuario: user?.usuario?.id,
         data_nascimento: user?.candidato?.data_nascimento || "",
@@ -70,28 +72,34 @@ export default function InfoContent() {
     }
   }, [user])
 
-  useEffect(() => {
-    async function ensureProfile() {
-      if (!user?.perfil){
-        const response = await fetch
-      }
+  function cleanFields(newData, oldData) {
+  const result = {};
+  for (const key in newData) {
+    if (newData[key] !== oldData[key]) {
+      result[key] = newData[key];
     }
-  })
+  }
+  return result;
+}
 
   async function salvarAlteracoesCandidato() {
+
+    
     const data = {
-    usuario: user?.usuario?.id,
     data_nascimento: candidateData.data_nascimento,
     genero: candidateData.genero,
     estado_civil: candidateData.estado_civil,
     cpf: user.candidato.cpf
-
     }
+
+    const cleanData = cleanFields(data, user.candidato)
+
+    
     try {
     const response = await fetch (`http://localhost:8000/api/candidatos/${user?.candidato?.usuario}/`, {
       method: "PATCH",
       headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
-      body: JSON.stringify(data)
+      body: JSON.stringify(cleanData)
     })
 
     const newData = await response.json()
@@ -104,28 +112,34 @@ export default function InfoContent() {
   }
 
   async function saveUsuario() {
+
     const data = {
-      usuario:{
+      
       nome: nome,
-      email: userData.email,
       telefone: userData.telefone,
       cidade: userData.cidade,
       estado: userData.estado,
       bairro: userData.bairro,
       role: userData.role
-      }
+      
     }
+
+    const payload = cleanFields(data, user.usuario)
+
+    if (Object.keys(payload).length === 0) return;
+
+    const cleanData = {usuario: payload}
 
     try {
     const response = await fetch(`http://localhost:8000/api/candidatos/${user?.usuario?.id}/`, {
       method: "PATCH",
       headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
-      body: JSON.stringify(data)
+      body: JSON.stringify(cleanData)
     })
 
     if (response.ok){
       const newData = await response.json()
-      setUser({...user, usuario: newData})
+      setUser({...user, usuario: newData.usuario})
       setEditing(false)
       setEditingName(false)
     } 
@@ -193,12 +207,12 @@ export default function InfoContent() {
       {role === "candidato" && (
       <>
         <header className=" flex bg-gradient-to-r from-orange-400 to-orange-500 w-full h-1/10">
-          <img src={user != null && user?.perfil?.foto != null ? `http://127.0.0.1:8000/media/${user?.perfil?.foto}` : "/qwikpadrao.png"} className="absolute w-40 h-40 rounded-full left-2 top-4 border-4 border-white active:scale-90 cursor-pointer transition-transform duration-200 ease-in-out"/>
+          <img src={user != null && user?.perfil?.foto != null ? `http://127.0.0.1:8000/${user?.perfil?.foto}` : "/qwikpadrao.png"} className="absolute w-40 h-40 rounded-full left-2 top-4 border-4 border-white active:scale-90 cursor-pointer transition-transform duration-200 ease-in-out"/>
         </header>
         <main className="flex flex-col mt-25 ml-6 mr-5">
           <div className="flex justify-between items-center">
           <form id="formNome" className="flex">
-          <input type="text" size={10} name="nome" id="nome" className="font-inter font-bold text-2xl" disabled={!isEditingName} value={nome != "" ? nome : "Nome de usuário"} onChange={(e) => {setNome(e.target.value)}}/>
+          <input type="text" size={10} name="nome" id="nome" className="font-inter font-bold text-2xl" disabled={!isEditingName} value={nome} placeholder="Nome de usuário" onChange={(e) => {setNome(e.target.value)}}/>
           {!isEditingName ?  <PencilLine className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" onClick={() => setEditingName(true)}/> : (<>
             <CircleCheck className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" type="submit" onClick={(e) => {
               e.preventDefault()

@@ -19,28 +19,31 @@ class UsuarioSerializer(serializers.ModelSerializer):
 # ==========================================
 
 class CandidatoSerializer(serializers.ModelSerializer):
+    usuario = UsuarioSerializer()
     class Meta:
         model = Candidato
         fields = ['usuario', 'data_nascimento', 'cpf',
                   'genero', 'estado_civil']
 
-    def validate_cpf(self, value):                             # Validação personalizada para CPF
-        cpf_validator = CPF()                                  # Cria uma instância do validador de CPF
+    def validate_cpf(self, value):
+        cpf_validator = CPF()
         if not cpf_validator.validate(value):
-            raise serializers.ValidationError("CPF inválido.") # Levanta erro se o CPF for inválido
-        return value                                           # Retorna o valor se for válido
+            raise serializers.ValidationError("CPF inválido.")
+        return value
     
     def update(self, instance, validated_data):
         usuario_data = validated_data.pop('usuario', None)
         if usuario_data:
-            # atualiza os campos do usuário
-            for attr, value in usuario_data.items():
-                setattr(instance.usuario, attr, value)
-            instance.usuario.save()
-
-        # atualiza os campos do candidato
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
+            usuario_instance = instance.usuario
+            if isinstance(usuario_data, dict):
+                for attr, value in usuario_data.items():
+                    setattr(usuario_instance, attr, value)
+            else:
+                usuario_instance = usuario_data
+            usuario_instance.save()
+            
+        for attr,value in validated_data.items():
+            setattr(instance,attr,value)
         instance.save()
         return instance
 
