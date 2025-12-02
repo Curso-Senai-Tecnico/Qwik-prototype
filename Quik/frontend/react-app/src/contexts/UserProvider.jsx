@@ -19,7 +19,7 @@ export function UserProvider({ children }) {
       try {
         setLoadingUser(true);
 
-        const response = await fetch("http://127.0.0.1:8000/api/me/", {
+        const response = await fetch("http://localhost:8000/api/me/", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Token ${token}`,

@@ -88,7 +88,7 @@ export default function InfoContent() {
 
     }
     try {
-    const response = await fetch (`http://127.0.0.1:8000/api/candidatos/${user?.candidato?.usuario}/`, {
+    const response = await fetch (`http://localhost:8000/api/candidatos/${user?.candidato?.usuario}/`, {
       method: "PATCH",
       headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
       body: JSON.stringify(data)
@@ -117,7 +117,7 @@ export default function InfoContent() {
     }
 
     try {
-    const response = await fetch(`http://127.0.0.1:8000/api/candidatos/${user?.usuario?.id}/`, {
+    const response = await fetch(`http://localhost:8000/api/candidatos/${user?.usuario?.id}/`, {
       method: "PATCH",
       headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
       body: JSON.stringify(data)
@@ -141,7 +141,7 @@ export default function InfoContent() {
     const formData = new FormData();
     formData.append("foto", file)
 
-    const response = await fetch(`http://127.0.0.1:8000/api/perfis${user?.candidato?.usuario}/`, {
+    const response = await fetch(`http://localhost:8000/api/perfis${user?.candidato?.usuario}/`, {
       method: "PATCH",
       headers: {
         Authorization: `Token ${token}`,
