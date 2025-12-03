@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion,AnimatePresence } from "motion/react";
 import { ChevronLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "/logoSvg.svg";
@@ -11,9 +11,11 @@ export default function Login() {
 
   const {setToken} = useToken()
   const [showPassword, setShowPassword] = useState(false)
+  const [loginError, setLoginError] = useState("")
   const handleLogin = async (e) => {
     e.preventDefault();
     localStorage.clear()
+    setLoginError("")
 
 
     const email = e.target.email.value // pega os inputs do forms
@@ -38,6 +40,7 @@ export default function Login() {
       navigate("/home")
       }catch (err) {
       console.error(err.message);
+      setLoginError("E-mail ou senha inválidos")
       
     } 
     }
@@ -85,15 +88,28 @@ export default function Login() {
               size={48}
               className="border rounded-full w-11/12 p-5 font-inter font-semibold"
             />
+            <div className="relative w-11/12">
             <input
               type={showPassword ? "text" : "password"}
               name="password"
               id="password"
               placeholder="Senha"
               size={48}
-              className="border rounded-full w-11/12 p-5 font-inter font-semibold"
+              className="border rounded-full w-full p-5 font-inter font-semibold"
             />
-            <button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute right-30 bottom-73">{showPassword ? <EyeOff size={25}/> : <Eye size={25}/>}</button>
+            <button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute right-5 bottom-5">{showPassword ? <EyeOff size={25}/> : <Eye size={25}/>}</button>
+            </div>
+            <AnimatePresence>
+            <motion.div 
+            initial={{opacity: 0, y:-4, filter:"blur(4px)"}}
+            animate={{opacity: 1, y: 0, filter: "blur(0px)"}}
+            exit={{opacity: 0, y: -4, filter: "blur(4px)"}}
+            transition={{duration:0.25, ease: "easeOut"}}
+            className="text-red-600 text-sm mt-1">
+              {loginError}
+            </motion.div>
+            </AnimatePresence>
+            
             <div className="flex gap-2 self-start ml-8 items-center">
               <input
                 type="checkbox"

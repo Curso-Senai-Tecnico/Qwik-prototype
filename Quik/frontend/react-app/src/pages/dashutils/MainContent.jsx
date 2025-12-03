@@ -13,7 +13,7 @@ export default function MainContent({ darkMode, activeTab }) {
           : "bg-white text-black"
       }`}
     >
-      {activeTab === "info" && <InfoContent />}
+      {activeTab === "info" && <InfoContent darkMode={darkMode} />}
       {activeTab === "access" && <AccessContent />}
       {activeTab === "docs" && <DocsContent />}
     </div>

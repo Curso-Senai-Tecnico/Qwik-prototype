@@ -12,7 +12,7 @@ import { CircleCheck } from "lucide-react";
 import { CircleX } from "lucide-react";
 import { Gem } from "lucide-react";
 
-export default function InfoContent() {
+export default function InfoContent({darkMode}) {
   const { role } = useRole();
   const {token} = useToken();
   const [isEditing, setEditing] = useState(false);
@@ -47,6 +47,7 @@ export default function InfoContent() {
   
   const [nome, setNome] = useState(user?.usuario?.nome || "")
   const [isEditingName, setEditingName] = useState(false)
+
 
   useEffect(() => {
     if (user?.usuario) {
@@ -285,17 +286,30 @@ export default function InfoContent() {
             e.preventDefault()
             salvarAlteracoesCandidato()
           }} className="grid grid-cols-2 grid-rows-3 gap-y-8 justify-between mt-5">
-            <label className="flex gap-2">
+            <label className="flex items-center justify-center gap-2">
               <CalendarDays />
               <input type="text" id="nascimento" name="nascimento" disabled={!isEditing} placeholder={"Data de Nascimento"} value={candidateData.data_nascimento} onChange={(e) => setCandidateData({...candidateData, data_nascimento: e.target.value})} />
             </label>
-            <label className="flex gap-2">
+            <label className="flex justify-center items-center gap-2">
               <VenusAndMars/>
-              <input type="text" id="gender" name="gender" disabled={!isEditing} placeholder={"Gênero"} value={candidateData.genero} onChange={(e) => setCandidateData({...candidateData, genero: e.target.value})} />
+              <select name="gender" className={`border px-3 py-2 rounded w-full ${darkMode ? "bg-[#22303c] text-white" : "bg-white text-black"}`} disabled={!isEditing} value={candidateData.genero} onChange={(e) => setCandidateData({...candidateData, genero: e.target.value})}>
+                <option value={""}>Selecione o seu gênero</option>
+                <option value={"M"}>Masculino</option>
+                <option value={"F"}>Feminino</option>
+                <option value={"OUTRO"}>Outros/Prefiro não responder</option>
+              </select>
+              {/* <input type="text" id="gender" name="gender" disabled={!isEditing} placeholder={"Gênero"} value={candidateData.genero} onChange={(e) => setCandidateData({...candidateData, genero: e.target.value})} /> */}
             </label>
-            <label className="flex gap-2">
+            <label className="flex items-center justify-center gap-2">
             <Gem/>
-            <input type="text" id="civil" name="civil" disabled={!isEditing} placeholder={"Estado Civil"} value={candidateData.estado_civil} onChange={(e) => setCandidateData({...candidateData, estado_civil: e.target.value})}/>
+            <select name="civil" className={`border px-3 py-2 rounded w-full ${darkMode ? "bg-[#22303c] text-white" : "bg-white text-black"}`} disabled={!isEditing} value={candidateData.estado_civil} onChange={(e) => setCandidateData({...candidateData, estado_civil: e.target.value})}>
+              <option value={""}>Selecio o seu gênero</option>
+              <option value={"Casado(a)"}>Casado(a)</option>
+              <option value={"Solteiro(a)"}>Solteiro(a)</option>
+              <option value={"Divorciado(a)"}>Divorciado(a)</option>
+              <option value={"Viúvo(a)"}>Viúvo(a)</option>
+            </select>
+            {/* <input type="text" id="civil" name="civil" disabled={!isEditing} placeholder={"Estado Civil"} value={candidateData.estado_civil} onChange={(e) => setCandidateData({...candidateData, estado_civil: e.target.value})}/> */}
             </label>
           </form>
           {isEditing && (
