@@ -10,11 +10,11 @@ export default function Messenger({ darkMode, setDarkMode }) {
   const [selectedContact, setSelectedContact] = useState(null);
 
   const [contatos] = useState([
-    { id: 1, nome: "Jackson Jailson", foto: "./sai.png", online: false },
-    { id: 2, nome: "Phelipe Games", foto: "./sakura.png", online: true },
-    { id: 3, nome: "Pedro Games", foto: "./kakashi.png", online: false },
-    { id: 4, nome: "Julio Jogos", foto: "./naruto.png", online: true },
-    { id: 5, nome: "Thiago Zabumba", foto: "./sasuke.png", online: true },
+    { id: 1, nome: "Jackson Jailson", foto: "./jack.png", online: false },
+    { id: 2, nome: "Phelipe Lima", foto: "./phelipe.png", online: true },
+    { id: 3, nome: "Pedro Cardoso", foto: "./pedro.png", online: false },
+    { id: 4, nome: "Diogo Souza", foto: "./diogo.png", online: true },
+    { id: 5, nome: "Thiago Muniz", foto: "./thiago.png", online: true },
   ]);
 
   const toggleChat = () => setIsOpen((prev) => !prev);

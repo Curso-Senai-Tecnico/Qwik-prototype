@@ -2,9 +2,12 @@ import { motion } from "motion/react";
 import { ChevronLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "/logoSvg.svg";
+import { useState } from "react";
+import { Eye,EyeOff } from "lucide-react";
 
 export default function Cadastro() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false)
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -98,13 +101,14 @@ export default function Cadastro() {
               size={40}
             />
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="pass"
               name="pass"
               placeholder="Senha"
               className="font-inter border rounded-full p-3 shadow-lg"
               size={40}
             />
+            <button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute right-33 bottom-59">{showPassword ? <EyeOff size={25}/> : <Eye size={25}/>}</button>
             <br />
             <button
               type="submit"
