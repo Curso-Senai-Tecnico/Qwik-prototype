@@ -73,11 +73,11 @@ class RecrutadorSerializer(serializers.ModelSerializer):
         model = Recrutador
         fields = ['usuario', 'cnpj', 'perfil_recutador']
 
-        def validate_cnpj(self, value):                             # Validação personalizada para CNPJ
-            cnpj_validator = CNPJ()                                 # Cria uma instância do validador de CNPJ
-            if not cnpj_validator.validate(value):
-                raise serializers.ValidationError("CNPJ inválido.") # Levanta erro se o CNPJ for inválido
-            return value                                            # Retorna o valor se for válido
+    def validate_cnpj(self, value):                             # Validação personalizada para CNPJ
+        cnpj_validator = CNPJ()                                 # Cria uma instância do validador de CNPJ
+        if not cnpj_validator.validate(value):
+            raise serializers.ValidationError("CNPJ inválido.") # Levanta erro se o CNPJ for inválido
+        return value                                            # Retorna o valor se for válido
 
 # ==========================================
 #            serializer de tags

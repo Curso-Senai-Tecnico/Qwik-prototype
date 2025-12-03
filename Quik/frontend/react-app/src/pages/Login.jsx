@@ -5,6 +5,7 @@ import Logo from "/logoSvg.svg";
 import { useToken } from "../contexts/TokenContext";
 import { useState } from "react";
 import { Eye,EyeOff } from "lucide-react";
+import { CircleAlert } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -100,14 +101,17 @@ export default function Login() {
             <button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute right-5 bottom-5">{showPassword ? <EyeOff size={25}/> : <Eye size={25}/>}</button>
             </div>
             <AnimatePresence>
+            {loginError != "" && (
             <motion.div 
             initial={{opacity: 0, y:-4, filter:"blur(4px)"}}
             animate={{opacity: 1, y: 0, filter: "blur(0px)"}}
             exit={{opacity: 0, y: -4, filter: "blur(4px)"}}
             transition={{duration:0.25, ease: "easeOut"}}
-            className="text-red-600 text-sm mt-1">
+            className="text-red-600 text-sm mt-1 flex gap-2 items-center">
+              <CircleAlert />
               {loginError}
             </motion.div>
+            )}
             </AnimatePresence>
             
             <div className="flex gap-2 self-start ml-8 items-center">

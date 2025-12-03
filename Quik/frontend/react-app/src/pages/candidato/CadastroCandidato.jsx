@@ -8,6 +8,7 @@ import { Eye,EyeOff } from "lucide-react";
 export default function Cadastro() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false)
+  const [rgError, setRgError] = useState("")
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -36,13 +37,27 @@ export default function Cadastro() {
       });
 
       const responseData = await response.json();
-      if (response.ok) {
-        navigate("/login");
-      } else {
-        console.log("Erro: ", responseData);
+      if (!response.ok) {
+        if(!responseData.cpf){
+          setRgError(responseData.cpf[0])
+          return
+        }
+        if(responseData.usuario){
+          if(responseData.usuario.email){
+            setRgError(responseData.usuario.email[0])
+            return;
+          }
+          if(responseData.usuario.password){
+            setRgError(responseData.usuario.password)
+            return
+          }
+        }
+        setRgError("Erro ao cadastrar. Verifique os dados.")
       }
+      navigate("/login") 
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
+      setRgError("Erro ao conectar com servidor")
     }
   };
   return (
@@ -100,6 +115,7 @@ export default function Cadastro() {
               className="font-inter border rounded-full p-3 shadow-lg"
               size={40}
             />
+            <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
               id="pass"
@@ -108,7 +124,8 @@ export default function Cadastro() {
               className="font-inter border rounded-full p-3 shadow-lg"
               size={40}
             />
-            <button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute right-33 bottom-59">{showPassword ? <EyeOff size={25}/> : <Eye size={25}/>}</button>
+            <button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute right-5 bottom-3">{showPassword ? <EyeOff size={25}/> : <Eye size={25}/>}</button>
+            </div>
             <br />
             <button
               type="submit"

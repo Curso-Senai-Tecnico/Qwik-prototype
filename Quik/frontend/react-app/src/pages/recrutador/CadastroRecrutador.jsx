@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
-import { motion } from "framer-motion";
+import { AnimatePresence, easeInOut, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Logo from "/logoSvg.svg";
 import { Eye, EyeOff } from "lucide-react";
+import { CircleAlert } from "lucide-react";
 
 export default function Cadastro() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false)
+  const [rgError, setRgError] = useState("Cadastro inválido")
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -30,15 +32,44 @@ export default function Cadastro() {
       });
 
       const responseData = await response.json();
-      if (response.ok) {
-        navigate("/login");
-      } else {
-        console.log("Erro: ", responseData);
+      if (!response.ok) {
+
+      
+      if (responseData.cnpj) {
+        setRgError(responseData.cnpj[0]);
+        return;
       }
-    } catch (err) {
-      console.log(err.message);
+
+  
+      if (responseData.usuario) {
+
+        
+        if (responseData.usuario.email) {
+          setRgError(responseData.usuario.email[0]);
+          return;
+        }
+
+        
+        if (responseData.usuario.password) {
+          setRgError(responseData.usuario.password[0] || responseData.usuario.password);
+          return;
+        }
+      }
+
+      
+      console.log("Erro: ", responseData);
+      setRgError("Erro ao cadastrar.");
+      return;
     }
-  };
+
+    
+    navigate("/login");
+
+  } catch (err) {
+    console.log(err.message);
+    setRgError("Erro de conexão no servidor");
+  }
+};
   return (
     <motion.div
       className="bg-gradient-to-br from-[#ffd064] via-[#ffab4b] to-[#934500] flex w-vh h-dvh bg-[length:200%_200%] justify-center items-center"
@@ -87,6 +118,14 @@ export default function Cadastro() {
               size={40}
             />
             <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="E-mail"
+            className="font-inter border rounded-full p-3 shadow-lg"
+            size={40}
+            />
+            <input
               type="text"
               id="cnpj"
               name="cnpj"
@@ -94,6 +133,7 @@ export default function Cadastro() {
               className="font-inter border rounded-full p-3 shadow-lg"
               size={40}
             />
+            <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
               id="pass"
@@ -102,7 +142,21 @@ export default function Cadastro() {
               className="font-inter border rounded-full p-3 shadow-lg"
               size={40}
             />
-            <button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute right-33 bottom-59">{showPassword ? <EyeOff size={25}/> : <Eye size={25}/>}</button>
+            <button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute right-5 bottom-3">{showPassword ? <EyeOff size={25}/> : <Eye size={25}/>}</button>
+            </div>
+            <AnimatePresence>
+            {rgError != "" && (
+              <motion.div
+              initial={{opacity:0, filter: "blur(6px"}}
+              animate={{opacity:1, filter: "blur(0px)"}}
+              exit={{opacity:1, filter: "blur(6px)"}}
+              transition={{duration: 0.25, ease: easeInOut}}
+              className="flex gap-2">
+                <CircleAlert color="red"/>
+                <span className="font-inter text-red-600 text-sm mt-1">{rgError}</span>
+              </motion.div>
+            )}
+            </AnimatePresence>
             <br />
             <button
               type="submit"
