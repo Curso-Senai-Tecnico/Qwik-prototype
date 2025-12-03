@@ -82,7 +82,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   ) : (
     
     <>
-      {user?.perfil?.foto ? <img src={`http://localhost:8000/${user?.perfil?.foto}`} /> : <img src="/qwikpadrao.png" />}
+      {user?.perfil?.foto ? <img src={`http://localhost:8000/${user?.perfil?.foto}`} width={80} height={80} className="rounded-full" /> : <img src="/qwikpadrao.png" width={80} height={80} className="rounded-full" />}
       <span className="ml-3">{user?.usuario.nome}</span>
     </>
   )}

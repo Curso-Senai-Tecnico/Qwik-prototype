@@ -3,12 +3,14 @@ import { ChevronLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "/logoSvg.svg";
 import { useToken } from "../contexts/TokenContext";
+import { useState } from "react";
+import { Eye,EyeOff } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
 
   const {setToken} = useToken()
-
+  const [showPassword, setShowPassword] = useState(false)
   const handleLogin = async (e) => {
     e.preventDefault();
     localStorage.clear()
@@ -84,13 +86,14 @@ export default function Login() {
               className="border rounded-full w-11/12 p-5 font-inter font-semibold"
             />
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               id="password"
               placeholder="Senha"
               size={48}
               className="border rounded-full w-11/12 p-5 font-inter font-semibold"
             />
+            <button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute right-30 bottom-73">{showPassword ? <EyeOff size={25}/> : <Eye size={25}/>}</button>
             <div className="flex gap-2 self-start ml-8 items-center">
               <input
                 type="checkbox"
