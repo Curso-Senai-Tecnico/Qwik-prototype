@@ -96,7 +96,7 @@ export default function InfoContent() {
 
     
     try {
-    const response = await fetch (`http://localhost:8000/api/candidatos/${user?.candidato?.usuario}/`, {
+    const response = await fetch (`http://localhost:8000/api/candidatos/${user?.usuario?.id}/`, {
       method: "PATCH",
       headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
       body: JSON.stringify(cleanData)
