@@ -10,7 +10,7 @@ import { CircleAlert } from "lucide-react";
 export default function Cadastro() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false)
-  const [rgError, setRgError] = useState("Cadastro inválido")
+  const [rgError, setRgError] = useState("")
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -150,7 +150,7 @@ export default function Cadastro() {
               initial={{opacity:0, filter: "blur(6px"}}
               animate={{opacity:1, filter: "blur(0px)"}}
               exit={{opacity:1, filter: "blur(6px)"}}
-              transition={{duration: 0.25, ease: easeInOut}}
+              transition={{duration: 0.25, ease: "easeInOut"}}
               className="flex gap-2">
                 <CircleAlert color="red"/>
                 <span className="font-inter text-red-600 text-sm mt-1">{rgError}</span>
