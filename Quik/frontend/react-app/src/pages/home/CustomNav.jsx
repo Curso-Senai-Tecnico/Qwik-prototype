@@ -25,13 +25,13 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   
   const notificacoes = [{
     id: 1,
-    icon: "./isquiloperfil.png",
+    icon: "/isquiloperfil.png",
     text: "Você precisa completar seu perfil.",
     path: `${user?.usuario?.role}/dashboard`
   }, 
     {
     id:2,
-    icon: "./saibamais.png",
+    icon: "/saibamais.png",
     text: "Quer saber mais sobre a equipe? Clique aqui!",
     path: "/saibamais" 
   }]

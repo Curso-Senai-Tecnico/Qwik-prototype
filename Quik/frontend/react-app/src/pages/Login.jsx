@@ -85,7 +85,7 @@ export default function Login() {
               type="email"
               name="email"
               id="email"
-              placeholder="E-mail ou CPNJ"
+              placeholder="E-mail"
               size={48}
               className="border rounded-full w-11/12 p-5 font-inter font-semibold"
             />
