@@ -7,6 +7,7 @@ export function UserProvider({ children }) {
   const { token } = useToken();
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
+  const API_URL = import.meta.env.VITE_API_URL
 
   useEffect(() => {
     async function loadUser() {
@@ -19,7 +20,7 @@ export function UserProvider({ children }) {
       try {
         setLoadingUser(true);
 
-        const response = await fetch("http://localhost:8000/api/me/", {
+        const response = await fetch(`${API_URL}/api/me/`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Token ${token}`,

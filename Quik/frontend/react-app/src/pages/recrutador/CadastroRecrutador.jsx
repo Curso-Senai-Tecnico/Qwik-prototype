@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
-import { AnimatePresence, easeInOut, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Logo from "/logoSvg.svg";
 import { Eye, EyeOff } from "lucide-react";
@@ -11,6 +11,7 @@ export default function Cadastro() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false)
   const [rgError, setRgError] = useState("")
+  const API_URL = import.meta.env.VITE_API_URL
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -19,7 +20,7 @@ export default function Cadastro() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("http://localhost:8000/api/recrutador/", {
+      const response = await fetch(`${API_URL}/api/recrutador/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

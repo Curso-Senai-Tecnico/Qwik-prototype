@@ -116,8 +116,7 @@ class MeView(APIView):
             recrutador = Recrutador.objects.filter(usuario=user).first()
             return Response({
                 "usuario": UsuarioSerializer(user).data,
-                "recrutador": RecrutadorSerializer(recrutador).data if recrutador else None,
-                "perfil": PerfilSerializer(perfil).data if perfil else None
+                "recrutador": RecrutadorSerializer(recrutador).data if recrutador else None
             })
 
         return Response({"usuario": UsuarioSerializer(user).data})

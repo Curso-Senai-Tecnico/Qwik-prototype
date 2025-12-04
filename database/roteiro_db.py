@@ -138,9 +138,9 @@ insert  into tag(nome) values
 cursor.execute("""
 create table if not exists perfil (
     candidato_id int primary key,
-    foto varchar(255) not null,
-    nome_perfil varchar(100) not null,
-    data_nascimento_perfil date not null,
+    foto varchar(255),
+    nome_perfil varchar(100),
+    data_nascimento_perfil date,
     curriculo varchar(255),
     foreign key (candidato_id) references candidatos(usuario_id) on delete cascade
 ) default charset = utf8mb4;

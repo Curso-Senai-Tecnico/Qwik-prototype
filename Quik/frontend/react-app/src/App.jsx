@@ -13,6 +13,7 @@ import MainLayout from "./MainLayout";
 import { RoleProvider } from "./contexts/RoleProvider";
 import { TokenProvider } from "./contexts/TokenProvider";
 import { UserProvider } from "./contexts/UserProvider";
+import SaibaMais from "./pages/SaibaMais";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -78,6 +79,12 @@ export default function App() {
             element={
               <Assinatura darkMode={darkMode} setDarkMode={setDarkMode} />
             }
+          />
+          <Route
+          path="/saibamais"
+          element={
+            <SaibaMais darkMode={darkMode}/>
+          }
           />
         </Route>
       </Routes>

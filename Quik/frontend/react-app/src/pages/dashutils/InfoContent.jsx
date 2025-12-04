@@ -1,7 +1,7 @@
 import { useRole } from "../../contexts/RoleContext";
 import { PencilLine } from "lucide-react";
 import { CalendarDays } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { VenusAndMars } from "lucide-react";
 import { Phone } from "lucide-react";
 import { Mail } from "lucide-react";
@@ -17,6 +17,7 @@ export default function InfoContent({darkMode}) {
   const {token} = useToken();
   const [isEditing, setEditing] = useState(false);
   const {user, setUser} = useUser()
+  const API_URL = import.meta.env.VITE_API_URL
   const [userData, setuserData] = useState({
     nome: user?.usuario?.nome || "",
     telefone: user?.usuario?.telefone || "",
@@ -42,7 +43,6 @@ export default function InfoContent({darkMode}) {
     data_nascimento_perfil: candidateData.data_nascimento,
     tags: user?.perfil?.tags
   })
-  const [file, setFile] = useState(null)
 
   
   const [nome, setNome] = useState(user?.usuario?.nome || "")
@@ -97,7 +97,7 @@ export default function InfoContent({darkMode}) {
 
     
     try {
-    const response = await fetch (`http://localhost:8000/api/candidatos/${user?.usuario?.id}/`, {
+    const response = await fetch (`${API_URL}/api/candidatos/${user?.usuario?.id}/`, {
       method: "PATCH",
       headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
       body: JSON.stringify(cleanData)
@@ -132,7 +132,7 @@ export default function InfoContent({darkMode}) {
     const cleanData = {usuario: payload}
 
     try {
-    const response = await fetch(`http://localhost:8000/api/candidatos/${user?.usuario?.id}/`, {
+    const response = await fetch(`${API_URL}/api/candidatos/${user?.usuario?.id}/`, {
       method: "PATCH",
       headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
       body: JSON.stringify(cleanData)
@@ -150,24 +150,42 @@ export default function InfoContent({darkMode}) {
     
   }
   
-  async function upload() {
+  async function upload(file) {
     if (!file) return;
 
     const formData = new FormData();
     formData.append("foto", file)
-
-    const response = await fetch(`http://localhost:8000/api/perfis${user?.candidato?.usuario}/`, {
+    try {
+    const response = await fetch(`${API_URL}/api/perfis/${user?.usuario?.id}/`, {
       method: "PATCH",
       headers: {
         Authorization: `Token ${token}`,
       },
       body: formData
     })
-    const newPerfil = await response.json()
-    setUser({...user, perfil: newPerfil})
-  }
-  
 
+    if (!response.ok){
+      throw new Error("Erro ao alterar foto de perfil")
+    }
+    const newPerfil = await response.json()
+    setUser((prev) => ({...prev, perfil: {
+      ...prev.perfil, foto: newPerfil.foto
+    }}))
+  } catch (err) {
+    console.error(err)
+  }
+}
+  
+const fileInputRef = useRef(null)
+function handleImageClick() {
+  fileInputRef.current?.click()
+}
+function handleFileChange(e) {
+  const selectedFile = e.target.files[0];
+  if (selectedFile) {
+    upload(selectedFile)
+  }
+}
   return (
     <div className="w-full h-full flex flex-col">
       {role === "recrutador" && (
@@ -207,10 +225,23 @@ export default function InfoContent({darkMode}) {
       )}
       {role === "candidato" && (
       <>
-        <header className=" flex bg-gradient-to-r from-orange-400 to-orange-500 w-full h-1/10">
-          <img src={user != null && user?.perfil?.foto != null ? `http://127.0.0.1:8000/${user?.perfil?.foto}` : "/qwikpadrao.png"} className="absolute w-40 h-40 rounded-full left-2 top-4 border-4 border-white active:scale-90 cursor-pointer transition-transform duration-200 ease-in-out"/>
+        <header className=" flex bg-gradient-to-r from-orange-400 to-orange-500 w-full h-1/12">
+        <div className="relative w-40 h-40 top-0 left-3 group">
+          <img src={user != null && user?.perfil?.foto != null ? `${API_URL}/${user?.perfil?.foto}` : "/qwikpadrao.png"} className="rounded-full w-full h-full object-cover active:scale-90 cursor-pointer transition-all duration-200 ease-in-out" onClick={handleImageClick}/>
+          <div className="absolute inset-5 rounded-full bg-black/30 backdrop-blur-xs 
+               opacity-0 group-hover:opacity-100 flex justify-center items-center 
+               transition-all duration-200 ease-in-out w-30 h-30 cursor-pointer">
+                <PencilLine size={28}/>
+          </div>
+          <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          className="hidden"/>
+          </div>
         </header>
-        <main className="flex flex-col mt-25 ml-6 mr-5">
+        <main className="flex flex-col mt-18 ml-6 mr-5">
           <div className="flex justify-between items-center">
           <form id="formNome" className="flex">
           <input type="text" size={10} name="nome" id="nome" className="font-inter font-bold text-2xl" disabled={!isEditingName} value={nome} placeholder="Nome de usuário" onChange={(e) => {setNome(e.target.value)}}/>
@@ -298,7 +329,6 @@ export default function InfoContent({darkMode}) {
                 <option value={"F"}>Feminino</option>
                 <option value={"OUTRO"}>Outros/Prefiro não responder</option>
               </select>
-              {/* <input type="text" id="gender" name="gender" disabled={!isEditing} placeholder={"Gênero"} value={candidateData.genero} onChange={(e) => setCandidateData({...candidateData, genero: e.target.value})} /> */}
             </label>
             <label className="flex items-center justify-center gap-2">
             <Gem/>
@@ -309,7 +339,7 @@ export default function InfoContent({darkMode}) {
               <option value={"Divorciado(a)"}>Divorciado(a)</option>
               <option value={"Viúvo(a)"}>Viúvo(a)</option>
             </select>
-            {/* <input type="text" id="civil" name="civil" disabled={!isEditing} placeholder={"Estado Civil"} value={candidateData.estado_civil} onChange={(e) => setCandidateData({...candidateData, estado_civil: e.target.value})}/> */}
+            
             </label>
           </form>
           {isEditing && (

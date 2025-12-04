@@ -4,7 +4,6 @@ dist
 .gitignore
 Dockerfile
 *.md
-.env
 .vscode
 *.swo
 *.swp

@@ -37,6 +37,8 @@ services:
     container_name: quik_frontend
     ports:
       - "8080:80"
+    env_file:
+      - ./Quik/frontend/react-app/.env
     networks:
       - backend
     restart: always
@@ -52,6 +54,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./Quik/backend:/app
     networks:
       - backend
     restart: always
