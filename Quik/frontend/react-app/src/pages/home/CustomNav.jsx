@@ -7,6 +7,8 @@ import { Lightbulb } from "lucide-react";
 import Logo from "/logoSvg.svg";
 import { useRole } from "../../contexts/RoleContext";
 import { useUser } from "../../contexts/UserContext";
+import { useState } from "react";
+import { motion, AnimatePresence, easeInOut } from "framer-motion";
 
 
 // COMENTANDO UM MONTE DE COISA PQ O BACKEND TA TODO BUGADO
@@ -16,7 +18,13 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   const navigate = useNavigate();
   const {user, loadingUser} = useUser()
   const {role} = useRole()
+  const [profile, setProfile] = useState(user?.perfil)
+  const [openNotif, setOpenNotif] = useState(false)
   
+  const notificacoes = [{icon: "./isquiloperfil.png",
+    text: "Você precisa completar seu perfil."}, 
+    {icon: "./saibamais.png",
+    text: "Quer saber mais sobre a equipe? Clique aqui!"}]
   const toggleTheme = () => {
     setDarkMode((prevMode) => !prevMode);
   };
@@ -43,7 +51,11 @@ export default function CustomNav({ darkMode, setDarkMode }) {
               <User />
             </div>
             <div className="flex justify-center items-center gap-1.5">
-              
+              <Circle
+                fill="rgba(9,230,49,1)"
+                color="rgba(9,230,49,1)"
+                size={20}
+              />
               <span className="pr-2.5 font-inter font-semibold"> +120K</span>
             </div>
           </div>
@@ -54,13 +66,36 @@ export default function CustomNav({ darkMode, setDarkMode }) {
             <span className="font-inter font-semibold"> +500k </span>
           </div>
           <div className="flex gap-4 justify-center items-center mr-5 dark:text-white">
+            <div className="relative">
             <BellIcon
               className={`border rounded-full p-1 cursor-pointer hover:scale-110 transition active:scale-95 ${
                 darkMode ? "border-white" : "border-black"
               }`}
               size={35}
               color={darkMode ? "white" : "black"}
+              onClick={() => setOpenNotif((prev) => !prev)}
             />
+            <AnimatePresence>
+            {openNotif && (
+              <motion.div 
+              initial={{opacity: 0, y: 9, filter: "blur(10px)"}}
+              animate={{opacity: 1, y: 0, filter: "blur(0px)"}}
+              exit={{opacity: 0, y: 9, filter: "blur(10px)"}}
+              transition={{duration: 0.25, ease: easeInOut}}
+              className={`absolute top-10 right-0 w-60 h-fit ${darkMode ? "bg-[#22303c] text-white" : "bg-white text-black"}`}
+              >
+                <div className="flex flex-col border">
+                  {notificacoes.map((notifs) => (
+                    <div key={notifs} className="border-b gap-2 p-2 cursor-pointer flex">
+                      <img src={notifs.icon} width={40} height={40} className="rounded"/>
+                      <span className="font-inter italic text-sm">{notifs.text}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+            </AnimatePresence>
+            </div>
             <button
               onClick={() => !loadingUser && navigate(`/${role}/dashboard`)}
               className={`flex w-fit border rounded-4xl h-full justify-between items-center pl-2.5 pr-2.5 cursor-pointer active:scale-95 transition ${
@@ -78,16 +113,18 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   ) : (
     
     <>
-      <Circle size={75} fill="rgba(114,114,114,1)" strokeWidth={0.5} />
+      {user?.perfil?.foto ? <img src={`http://localhost:8000/${user?.perfil?.foto}`} width={80} height={80} className="rounded-full" /> : <img src="/qwikpadrao.png" width={80} height={80} className="rounded-full" />}
       <span className="ml-3">{user?.usuario.nome}</span>
     </>
   )}
             </button>
+            
             <Lightbulb
               onClick={toggleTheme}
               color={darkMode ? "yellow" : "black"}
               className="hover:scale-110 active:scale-95 cursor-pointer transition-colors duration-300"
             />
+            
           </div>
         </div>
       </nav>
