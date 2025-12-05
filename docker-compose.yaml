@@ -55,7 +55,7 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./Quik/backend:/app
+      - ./Quik/backend:/app:z
     networks:
       - backend
     restart: always

@@ -227,10 +227,10 @@ function handleFileChange(e) {
       <>
         <header className=" flex bg-gradient-to-r from-orange-400 to-orange-500 w-full h-1/12">
         <div className="relative w-40 h-40 top-0 left-3 group">
-          <img src={user != null && user?.perfil?.foto != null ? `${API_URL}/${user?.perfil?.foto}` : "/qwikpadrao.png"} className="rounded-full w-full h-full object-cover active:scale-90 cursor-pointer transition-all duration-200 ease-in-out" onClick={handleImageClick}/>
-          <div className="absolute inset-5 rounded-full bg-black/30 backdrop-blur-xs 
+          <img src={user != null && user?.perfil?.foto != null ? `${API_URL}/${user?.perfil?.foto}` : "/qwikpadrao.png"} className="rounded-full w-full h-full object-cover group-active:scale-90 cursor-pointer transition-all duration-200 ease-in-out" onClick={handleImageClick}/>
+          <div onClick={handleImageClick} className="absolute inset-5 rounded-full bg-black/30 backdrop-blur-xs 
                opacity-0 group-hover:opacity-100 flex justify-center items-center 
-               transition-all duration-200 ease-in-out w-30 h-30 cursor-pointer">
+               transition-all duration-200 ease-in-out w-30 h-30 cursor-pointer pointer-events-none group-hover:pointer-events-auto group-active:scale-90">
                 <PencilLine size={28}/>
           </div>
           <input
@@ -244,7 +244,7 @@ function handleFileChange(e) {
         <main className="flex flex-col mt-18 ml-6 mr-5">
           <div className="flex justify-between items-center">
           <form id="formNome" className="flex">
-          <input type="text" size={10} name="nome" id="nome" className="font-inter font-bold text-2xl" disabled={!isEditingName} value={nome} placeholder="Nome de usuário" onChange={(e) => {setNome(e.target.value)}}/>
+          <input type="text" size={11} name="nome" id="nome" className="font-inter font-bold text-2xl" disabled={!isEditingName} value={nome} placeholder="Nome de usuário" onChange={(e) => {setNome(e.target.value)}}/>
           {!isEditingName ?  <PencilLine className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" onClick={() => setEditingName(true)}/> : (<>
             <CircleCheck className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" type="submit" onClick={(e) => {
               e.preventDefault()
@@ -317,7 +317,7 @@ function handleFileChange(e) {
             e.preventDefault()
             salvarAlteracoesCandidato()
           }} className="grid grid-cols-2 grid-rows-3 gap-y-8 justify-between mt-5">
-            <label className="flex items-center justify-center gap-2">
+            <label className="flex items-center gap-2">
               <CalendarDays />
               <input type="text" id="nascimento" name="nascimento" disabled={!isEditing} placeholder={"Data de Nascimento"} value={candidateData.data_nascimento} onChange={(e) => setCandidateData({...candidateData, data_nascimento: e.target.value})} />
             </label>

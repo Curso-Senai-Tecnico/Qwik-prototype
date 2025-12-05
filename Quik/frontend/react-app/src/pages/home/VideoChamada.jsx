@@ -93,13 +93,13 @@ export default function VideoChamada() {
 
   return (
     <div className="bg-black w-9/12 h-9/12 rounded-md mt-4 flex justify-center items-center">
-      <div className="bg-[rgb(26,26,26,100)] w-11/12 h-11/12 flex flex-col justify-between group">
+      <div className="relative bg-[rgb(26,26,26,100)] w-11/12 h-11/12 flex flex-col justify-between group">
         <video
           ref={videoRef}
           autoPlay
           playsInline
           muted
-          className={`absolute self-center w-280 h-120 z-0 transition-opacity duration-500 ${
+          className={`absolute inset-0 self-center w-280 h-120 z-0 transition-opacity duration-500 ${
             isLoading ? "opacity-50 blur-2xl" : "opacity-100"
           }`}
         />
@@ -139,7 +139,7 @@ export default function VideoChamada() {
               >
                {role === "candidato" && (
                 <div className="flex h-full w-full justify-center items-center gap-10">
-                <iframe src="./curriculo_alexandre.pdf" className=" w-full h-full rounded-xl"/>
+                <img src="/vaga.png" className=" w-full h-full rounded-xl"/>
                 <div className="flex flex-col gap-10">
                   <button className="bg-orange-400 rounded-full text-white p-2 cursor-pointer hover:bg-orange-500 active:scale-90 transition-transform duration-200 ease-in-out">
                     Aceitar chamada

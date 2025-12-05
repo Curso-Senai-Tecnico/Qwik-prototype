@@ -148,11 +148,11 @@ create table if not exists perfil (
 
 cursor.execute("""
 insert  into perfil (candidato_id, foto, nome_perfil, data_nascimento_perfil, curriculo) values
-(1, 'fotos/foto1.jpg', 'Carlos S. Dev', '1990-05-15', 'database/curriculos/curriculo_alexandre.pdf'),
-(2, 'fotos/foto2.jpg', 'Mariana Designer', '1995-10-20', 'database/curriculos/curriculo_barbara.pdf'),
-(3, 'fotos/foto3.jpg', 'Ricardo Recruta', '1980-02-29', 'database/curriculos/curriculo_francisco.pdf'),
-(4, 'fotos/foto4.jpg', 'Ana Marketing', '1988-03-01', 'database/curriculos/curriculo_gabriel.pdf'),
-(5, 'fotos/foto5.jpg', 'Felipe Eng', '2000-12-12', 'database/curriculos/curriculo_guilherme.pdf');
+(1, 'fotos/foto1.jpg', 'Carlos S. Dev', '1990-05-15', '/curriculos/curriculo_alexandre.pdf'),
+(2, 'fotos/foto2.jpg', 'Mariana Designer', '1995-10-20', '/curriculos/curriculo_barbara.pdf'),
+(3, 'fotos/foto3.jpg', 'Ricardo Recruta', '1980-02-29', '/curriculos/curriculo_francisco.pdf'),
+(4, 'fotos/foto4.jpg', 'Ana Marketing', '1988-03-01', '/curriculos/curriculo_gabriel.pdf'),
+(5, 'fotos/foto5.jpg', 'Felipe Eng', '2000-12-12', '/curriculos/curriculo_guilherme.pdf');
 """)
 
 
