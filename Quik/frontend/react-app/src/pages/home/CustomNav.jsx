@@ -109,7 +109,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
             </div>
             <button
               onClick={() => !loadingUser && navigate(`/${role}/dashboard`)}
-              className={`flex w-fit border rounded-4xl h-full justify-between items-center pl-2.5 pr-2.5 cursor-pointer active:scale-95 transition ${
+              className={`flex w-fit border hover:border-orange-600 rounded-4xl h-full justify-between items-center pl-2.5 pr-2.5 cursor-pointer active:scale-95 transition-all duration-200 ease-in-out ${
                 darkMode
                   ? "dark:hover:bg-gray-900"
                   : "hover:bg-gray-100 border-black text-black"

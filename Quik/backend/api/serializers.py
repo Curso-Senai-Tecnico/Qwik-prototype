@@ -79,6 +79,22 @@ class RecrutadorSerializer(serializers.ModelSerializer):
         if not cnpj_validator.validate(value):
             raise serializers.ValidationError("CNPJ inválido.") # Levanta erro se o CNPJ for inválido
         return value                                            # Retorna o valor se for válido
+    
+    def update(self, instance, validated_data):
+        usuario_data = validated_data.pop('usuario', None)
+        if usuario_data:
+            usuario_instance = instance.usuario
+            if isinstance(usuario_data, dict):
+                for attr, value in usuario_data.items():
+                    setattr(usuario_instance, attr, value)
+            else:
+                usuario_instance = usuario_data
+            usuario_instance.save()
+            
+        for attr,value in validated_data.items():
+            setattr(instance,attr,value)
+        instance.save()
+        return instance
 
 # ==========================================
 #            serializer de tags

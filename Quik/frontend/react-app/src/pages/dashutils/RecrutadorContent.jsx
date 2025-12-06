@@ -10,7 +10,9 @@ import { useUser } from "../../contexts/UserContext";
 import { useToken } from "../../contexts/TokenContext";
 import { CircleCheck } from "lucide-react";
 import { CircleX } from "lucide-react";
-import { Gem } from "lucide-react";
+import { Users } from "lucide-react";
+import { CheckCircle } from "lucide-react";
+import { Clock } from "lucide-react";
 
 
 export default function RecrutadorContent({darkMode}){
@@ -76,7 +78,7 @@ export default function RecrutadorContent({darkMode}){
     
         const data = {
         cnpj: recrutadorData.cnpj,
-        perfil_recrutador: recrutadorData.perfil_recrutador
+        perfil_recrutador: cargo
         }
 
         const cleanData = cleanFields(data, user.recrutador)
@@ -100,23 +102,28 @@ export default function RecrutadorContent({darkMode}){
     async function saveUsuario() {
 
         const data = {
-        
-        nome: nome,
-        telefone: userData.telefone,
-        cidade: userData.cidade,
-        estado: userData.estado,
-        bairro: userData.bairro,
-        role: userData.role
-        
-        }
+      
+      nome: nome,
+      telefone: userData.telefone,
+      cidade: userData.cidade,
+      estado: userData.estado,
+      bairro: userData.bairro,
+      role: userData.role
+      
+    }
 
-        const payload = cleanFields(data, user.usuario)
+    const payload = {}
+    for (const key in data) {
+    if (data[key] !== null && data[key] !== "") {
+      payload[key] = data[key]
+    }
+  }
 
-        if (Object.keys(payload).length === 0) return;
+    if (Object.keys(payload).length === 0) return;
 
-        const cleanData = {usuario: payload}
+    const cleanData = {usuario: payload}
 
-        try {
+      try {
         const response = await fetch(`${API_URL}/api/recrutadores/${user?.usuario?.id}/`, {
         method: "PATCH",
         headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
@@ -127,6 +134,7 @@ export default function RecrutadorContent({darkMode}){
         const newData = await response.json()
         setUser({...user, usuario: newData.usuario})
         setEditing(false)
+        setEditingName(false)
         setEditingCargo(false)
         } 
     } catch (err) {
@@ -135,8 +143,18 @@ export default function RecrutadorContent({darkMode}){
         
     }
 
+    const statistics = [{ icon: CalendarDays, label: 'Entrevistas Realizadas', value: 127, color: 'text-orange-600' },
+    { icon: Users, label: 'Candidatos em Análise', value: 23, color: 'text-orange-600' },
+    { icon: CheckCircle, label: 'Contratações Efetuadas', value: 8, color: 'text-orange-600' },
+    { icon: Clock, label: 'Média de Tempo por Processo', value: '3 dias', color: 'text-orange-600' }]
+
+    const monthly = [{label: 'Taxa de Contratação', value: '96%'},
+      {label: 'Recomendações de candidatos', value: 45},
+      {label: 'Vagas Ativas', value: '15'}
+    ]
+
     return (
-        <div className="w-full h-full flex flex-col">
+        <div className="w-full flex flex-col">
       {role === "recrutador" && (
         <>
       <header className="flex bg-gradient-to-r from-orange-400 to-orange-500 w-full h-1/12">
@@ -148,7 +166,7 @@ export default function RecrutadorContent({darkMode}){
         </div>
       </header>
 
-      <main className="flex flex-col mt-18 ml-6 mr-5">
+      <main className="flex flex-col mt-15 ml-6 mr-5">
         <div className="flex justify-between gap-2">
           <form id="formNome" className="flex">
           <input type="text" size={7} name="nome" id="nome" className="font-inter font-bold text-2xl" disabled={!isEditingName} value={nome} placeholder="Nome de usuário" onChange={(e) => {setNome(e.target.value)}}/>
@@ -160,7 +178,7 @@ export default function RecrutadorContent({darkMode}){
             </>
             )}
           </form>
-          {isEditing === false && <button className="bg-orange-500 gap-2 flex p-3 rounded-full shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(true)}>
+          {isEditing === false && <button className="bg-orange-400 border border-orange-600 gap-2 flex p-3 rounded-lg shadow-2xl shadow-black/50 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(true)}>
           <PencilLine color="white" size={15}/>
           <span className="font-inter text-white text-sm">Editar Perfil</span>
           </button>}
@@ -183,59 +201,67 @@ export default function RecrutadorContent({darkMode}){
        
         </form>
 
-        <h2 className="mt-10 font-inter font-bold">Informações de Usuário</h2>
-        <div className="grid grid-cols-2 grid-rows-4 gap-y-8 justify-between mt-5">
+        <h1 className="mt-10 font-inter font-bold text-xl" style={{borderBottom: '2px solid #FF8C00', paddingBottom: '5px'}}>Informações de Usuário</h1>
+        <form id="infoUser" className="grid grid-cols-2 grid-rows-4 gap-y-8 justify-between mt-5" onSubmit={(e) => {
+          e.preventDefault()
+          saveUsuario()
+        }}>
           <label className="flex gap-2">
-            <Phone />
-            <input
-              type="text"
-              disabled
-              placeholder="Telefone"
-              value={user?.usuario?.telefone || ""}
-              className="bg-gray-100 p-2 rounded"
-            />
-          </label>
-          <label className="flex gap-2">
-            <Mail />
-            <input
-              type="email"
-              disabled
-              placeholder="E-mail"
-              value={user?.usuario?.email || ""}
-              className="bg-gray-100 p-2 rounded"
-            />
-          </label>
-          <label className="flex gap-2">
-            <MapPin />
-            <input
-              type="text"
-              disabled
-              placeholder="Bairro"
-              value={user?.usuario?.bairro || ""}
-              className="bg-gray-100 p-2 rounded"
-            />
-          </label>
-          <label className="flex gap-2">
-            <MapPin />
-            <input
-              type="text"
-              disabled
-              placeholder="Cidade"
-              value={user?.usuario?.cidade || ""}
-              className="bg-gray-100 p-2 rounded"
-            />
-          </label>
-          <label className="flex gap-2">
-            <MapPin />
-            <input
-              type="text"
-              disabled
-              placeholder="Estado"
-              value={user?.usuario?.estado || ""}
-              className="bg-gray-100 p-2 rounded"
-            />
-          </label>
-        </div>
+              <Phone />
+              <input type="text" id="phone" name="phone" disabled={!isEditing} placeholder={"Telefone"} value={userData.telefone} onChange={(e) => setuserData({...userData, telefone: e.target.value })} />
+            </label>
+            <label className="flex gap-2">
+              <Mail />
+              <input type="email" id="email" name="email" disabled={!isEditing} placeholder={"E-mail"} value={userData.email} onChange={(e) => setuserData({...userData, email: e.target.value })} />
+            </label>
+            <label className="flex gap-2">
+              <MapPin />
+              <input type="text" id="block" name="block" disabled={!isEditing} placeholder={"Bairro"} value={userData.bairro} onChange={(e) => setuserData({...userData, bairro: e.target.value })} />
+            </label>
+            <label className="flex gap-2">
+              <MapPin />
+              <input type="text" id="city" name="city" disabled={!isEditing} placeholder={"Cidade"} value={userData.cidade} onChange={(e) => setuserData({...userData, cidade: e.target.value })} />
+            </label>
+            <label className="flex gap-2">
+              <MapPin />
+              <input type="text" id="state" name="state" disabled={!isEditing} placeholder={"Estado"} value={userData.estado} onChange={(e) => setuserData({...userData, estado: e.target.value })} />
+            </label>
+        </form>
+        {isEditing && (
+            <div className="flex justify-end items-center gap-5">
+                <button type="submit" form="infoUser" className="bg-orange-400 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer"> Salvar </button>
+                <button className="bg-orange-400 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
+            </div>
+          )}
+          <div>
+            <h1 className="font-inter font-bold text-xl text-shadow-lg" style={{borderBottom: '2px solid #FF8C00', paddingBottom: '5px'}}>Estatísticas de Recrutamento</h1>
+            <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
+              {statistics.map((stat, index) => (
+                <div key={index} className="flex flex-col gap-2 mt-5 rounded-xl p-6 border border-orange-400 shadow-black/40 shadow-2xl">
+                  <div className="flex gap-2 font-bold font-inter items-center">
+                    <stat.icon className={stat.color} size={25} />
+                    <span className="text-xl text-shadow text-shadow-2xl">{stat.value}</span>
+                  </div>
+                  <div>
+                    <span>{stat.label}</span>
+                  </div>
+                  
+                </div>
+              ))}
+
+            </div>
+          </div>
+          <div className="flex flex-col mt-10">
+              <h1 className="font-inter font-bold text-xl text-shadow-lg" style={{borderBottom: '2px solid #FF8C00', paddingBottom: '5px'}}>Desempenho Mensal</h1>
+              <div className="grid grid-cols-3 gap-4 mb-10">
+                {monthly.map((stat, index) => (
+                  <div key={index} className="flex flex-col mt-5 bg-orange-400 border rounded-lg border-orange-600 shadow-2xl shadow-black/50 p-2">
+                    <span className="font-bold text-white font-inter text-xl text-shadow-2xs ">{stat.value}</span>
+                    <span className="text-white font-inter text-md text-shadow-2xs">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+          </div>
       </main>
     </>
       )}

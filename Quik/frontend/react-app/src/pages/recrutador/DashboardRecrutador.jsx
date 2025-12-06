@@ -8,7 +8,7 @@ export default function Dashboard({ darkMode }) {
     setActiveTab(tab);
   };
   return (
-    <div className="flex gap-120 bg-orange-500 w-dvw h-dvh">
+    <div className="flex gap-80 bg-orange-500 w-screen overflow-x-hidden">
       <DashNav
         darkMode={darkMode}
         activeTab={activeTab}

@@ -141,10 +141,10 @@ export default function VideoChamada() {
                 <div className="flex h-full w-full justify-center items-center gap-10">
                 <img src="/vaga.png" className=" w-full h-full rounded-xl"/>
                 <div className="flex flex-col gap-10">
-                  <button onClick={refuseCall} className="bg-orange-400 rounded-full text-white p-2 cursor-pointer hover:bg-orange-500 active:scale-90 transition-transform duration-200 ease-in-out">
+                  <button onClick={refuseCall} className="bg-orange-400 rounded-lg text-white p-2 cursor-pointer hover:bg-orange-500 active:scale-90 transition-transform duration-200 ease-in-out">
                     Aceitar chamada
                   </button>
-                  <button onClick={refuseCall} className="bg-orange-400 rounded-full text-white p-2 cursor-pointer hover:bg-orange-500 active:scale-90 transition-transform duration-200 ease-in-out">
+                  <button onClick={refuseCall} className="bg-orange-400 rounded-lg text-white p-2 cursor-pointer hover:bg-orange-500 active:scale-90 transition-transform duration-200 ease-in-out">
                     Recusar Chamada
                   </button>
                 </div>
