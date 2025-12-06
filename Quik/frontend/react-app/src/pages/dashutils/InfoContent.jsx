@@ -333,7 +333,7 @@ function handleFileChange(e) {
             <label className="flex items-center justify-center gap-2">
             <Gem/>
             <select name="civil" className={`border px-3 py-2 rounded w-full ${darkMode ? "bg-[#22303c] text-white" : "bg-white text-black"}`} disabled={!isEditing} value={candidateData.estado_civil} onChange={(e) => setCandidateData({...candidateData, estado_civil: e.target.value})}>
-              <option value={""}>Selecio o seu gênero</option>
+              <option value={""}>Selecione seu estado civil</option>
               <option value={"Casado(a)"}>Casado(a)</option>
               <option value={"Solteiro(a)"}>Solteiro(a)</option>
               <option value={"Divorciado(a)"}>Divorciado(a)</option>
