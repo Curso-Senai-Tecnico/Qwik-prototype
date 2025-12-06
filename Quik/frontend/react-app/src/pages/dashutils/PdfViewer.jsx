@@ -10,11 +10,14 @@ export default function PdfViewer({ fileUrl }) {
         file={fileUrl}
         onLoadSuccess={(pdf) => setNumPages(pdf.numPages)}
       >
-        {Array.from({ length: numPages }, (_, i) => (
+
+        { numPages && Array.from({ length: numPages }, (_, i) => (
           <Page
             key={i}
             pageNumber={i + 1}
             width={500}
+            renderTextLayer={false}
+            renderAnnotationLayer={false}
           />
         ))}
       </Document>

@@ -11,6 +11,7 @@ import { useToken } from "../../contexts/TokenContext";
 import { CircleCheck } from "lucide-react";
 import { CircleX } from "lucide-react";
 import { Gem } from "lucide-react";
+import AddTagsButton from "./AddTagsButton";
 
 export default function InfoContent({darkMode}) {
   const { role } = useRole();
@@ -260,24 +261,9 @@ function handleFileChange(e) {
           </div>
           <br/>
           <span className="font-inter font-semibold text-xl">Habilidades</span>
-          {user != null && user?.perfil?.tags && user?.perfil?.tags.length > 0 && user?.perfil?.tags.length == 5 ? (
           <div className="flex w-full gap-6 mt-10">  
-          {user?.perfil?.tags.map(tag => (
-            <div key={tag} className="bg-orange-200 p-2 rounded-l-full rounded-r-full hover:scale-110 transition-transform duration-300 ease-in-out ">
-              <span className="font-inter text-orange-800">{tag}</span>
-            </div>
-          ))}
+          <AddTagsButton />
           </div>
-          ) : (
-          <div className="flex w-full gap-6 mt-10">  
-          {user?.perfil?.tags.map(tag => (
-            <div key={tag} className="bg-orange-200 p-2 rounded-l-full rounded-r-full hover:scale-110 transition-transform duration-300 ease-in-out ">
-              <span className="font-inter text-orange-800">{tag}</span>
-            </div>
-          ))}
-          <button className="bg-orange-200 p-2 rounded-l-full rounded-r-full hover:scale-110 transition-transform duration-300 ease-in-out font-inter text-orange-800 cursor-pointer active:scale-90"> + Adicionar Tags</button>
-          </div>
-          )}
           <h2 className="mt-10 font-inter font-bold">Informações de Usuário</h2>
           <form id="infoUser" className="grid grid-cols-2 grid-rows-4 gap-y-8 justify-between mt-5" onSubmit={(e) => {
             e.preventDefault()

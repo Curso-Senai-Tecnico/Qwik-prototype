@@ -1,11 +1,11 @@
 from django.http import JsonResponse
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny
 from validate_docbr import CPF, CNPJ
-from .models import Candidato, Recrutador, Vaga, Perfil
+from .models import Candidato, Recrutador, Vaga, Perfil, Tag, PerfilTag, VagaTag
 from .serializers import (
     UsuarioSerializer,
     CandidatoSerializer, 
@@ -13,7 +13,8 @@ from .serializers import (
     CandidatoRegistrationSerializer, 
     RecrutadorRegistrationSerializer,
     VagaSerializer,
-    PerfilSerializer
+    PerfilSerializer,
+    TagSerializer
 )
 from django.conf import settings
 from django.views.static import serve
@@ -126,3 +127,48 @@ def serve_files(request,path):
     filepath = os.path.join(settings.MEDIA_ROOT, path)
     content_type, _ = mimetypes.guess_type(filepath)
     return FileResponse(open(filepath,"rb"),content_type=content_type)
+
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+    permission_classes = [IsAuthenticated]
+    
+class AddTagPerfilView(APIView):
+    """
+    Adiciona uma tag a um perfil usando a tabela PerfilTag.
+    """
+    def post(self, request, perfil_id):
+        tag_id = request.data.get("tag_id")
+        if not tag_id:
+            return Response({"error": "tag_id é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            perfil = Perfil.objects.get(candidato_id=perfil_id)
+            tag = Tag.objects.get(id=tag_id)
+        except (Perfil.DoesNotExist, Tag.DoesNotExist):
+            return Response({"error": "Perfil ou Tag não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Cria a relação se ainda não existir
+        PerfilTag.objects.get_or_create(perfil=perfil, tag=tag)
+        
+        return Response({"success": True})
+
+class AddTagVagaView(APIView):
+    """
+    Adiciona uma tag a uma vaga usando a tabela VagaTag.
+    """
+    def post(self, request, vaga_id):
+        tag_id = request.data.get("tag_id")
+        if not tag_id:
+            return Response({"error": "tag_id é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            vaga = Vaga.objects.get(id=vaga_id)
+            tag = Tag.objects.get(id=tag_id)
+        except (Vaga.DoesNotExist, Tag.DoesNotExist):
+            return Response({"error": "Vaga ou Tag não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Cria a relação se ainda não existir
+        VagaTag.objects.get_or_create(vaga=vaga, tag=tag)
+        
+        return Response({"success": True})
