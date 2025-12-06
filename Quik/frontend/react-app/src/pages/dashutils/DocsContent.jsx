@@ -2,6 +2,7 @@ import { useRole } from "../../contexts/RoleContext";
 import { useToken } from "../../contexts/TokenContext";
 import { useUser } from "../../contexts/UserContext";
 import PdfViewer from "./PdfViewer";
+import Vagas from "./Vagas";
 
 export default function DocsContent() {
   const { role } = useRole();
@@ -85,7 +86,7 @@ export default function DocsContent() {
   console.log(trueUrl)
   return (
     <div className="w-full h-full">
-      {role === "recrutador" && <span> Vagas</span>}
+      {role === "recrutador" && (<Vagas />)}
       {role === "candidato" && (
         <div className="w-full h-full flex flex-col">
           <PdfViewer fileUrl={`${API_URL}/api/file/${trueUrl}`} />

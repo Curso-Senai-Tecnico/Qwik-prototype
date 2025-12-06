@@ -117,10 +117,9 @@ class VagaSerializer(serializers.ModelSerializer):
                                        write_only=True, # ele diz para o django que esse campo serve apenas para a escrita/entrada dos dados
                                        required=True) # ele obriga o cliente fornecer um dado, ou seja, precisa ter pelo menos uma tag  
     
-# ========== SERIALIZAÇÃO DOS CAMPOS ==========
     class Meta:
         model = Vaga
-        fields = ['recrutador', 'tipo', 'contato', 'cargo', 'resumo',
+        fields = ['recrutador', 'tipo', 'contrato', 'cargo', 'resumo',
                     'responsabilidades', 'requisitos', 'beneficios', 'salario',
                         'quantidade', 'localizacao', 'data_publicacao', 'status', 'tags', 'tags_nomes']
 
