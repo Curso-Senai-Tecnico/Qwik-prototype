@@ -96,8 +96,8 @@ DATABASES = {
         'NAME': 'qwik',
         'USER': 'root',                 
         'PASSWORD': 'admin',
-        'HOST': 'db',            
-        'PORT': '3306',                 
+        'HOST': '127.0.0.1',            
+        'PORT': '3308',                 
         'OPTIONS': {
             'ssl': {'disabled': True},
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'" # meio q diz pro django “Assim que conectar, execute esse comando SQL para deixar o MySQL mais rigoroso e seguro"

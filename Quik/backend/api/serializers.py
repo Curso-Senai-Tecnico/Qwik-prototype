@@ -69,9 +69,10 @@ class PerfilSerializer(serializers.ModelSerializer):
 # ==========================================
 
 class RecrutadorSerializer(serializers.ModelSerializer):
+    usuario = UsuarioSerializer()
     class Meta:
         model = Recrutador
-        fields = ['usuario', 'cnpj', 'perfil_recutador']
+        fields = ['usuario', 'cnpj', 'perfil_recrutador']
 
     def validate_cnpj(self, value):                             # Validação personalizada para CNPJ
         cnpj_validator = CNPJ()                                 # Cria uma instância do validador de CNPJ
@@ -251,18 +252,18 @@ class CandidatoRegistrationSerializer(serializers.ModelSerializer):
 
                                 #Serializador para registro de recrutador (POST)
 class RecrutadorRegistrationSerializer(serializers.ModelSerializer):
-    user = UsuarioSerializer()
+    usuario = UsuarioSerializer()
 
     class Meta:
         model = Recrutador
-        fields = ['user', 'cnpj']
+        fields = ['usuario', 'cnpj']
     
 
     @transaction.atomic                                                  #transaction.atomic garante que a criação do usuário seja atômicas
     def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        user = Usuario.objects.create_user(**user_data)
-        recrutador = Recrutador.objects.create(user=user, **validated_data)
+        user_data = validated_data.pop('usuario')
+        usuario = Usuario.objects.create_user(**user_data)
+        recrutador = Recrutador.objects.create(usuario=usuario, **validated_data)
         return recrutador
     
     """   Pra lembrar: 

@@ -68,7 +68,10 @@ class RecrutadorViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return RecrutadorRegistrationSerializer                      # Retorna o serializer de registro de recrutador
         return RecrutadorSerializer                                      # Caso contrário, retorna o serializer padrão de recrutador
-
+    def get_permissions(self):
+        if self.action == "create":
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
 class VagaViewSet(viewsets.ModelViewSet):
     

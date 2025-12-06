@@ -20,15 +20,22 @@ export default function Cadastro() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch(`${API_URL}/api/recrutador/`, {
+      const response = await fetch(`${API_URL}/api/recrutadores/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          usuario: {
           nome: data.nome,
+          email: data.email,
+          telefone: null,
+          password: data.pass,
+          cidade: null,
+          estado: null,
+          bairro: null,
+          role: "recrutador"
+          },
           perfil_recrutador: data.cargo,
           cnpj: data.cnpj,
-          password: data.pass,
-          role: 'recrutador'
         }),
       });
 

@@ -12,6 +12,8 @@ import { CircleCheck } from "lucide-react";
 import { CircleX } from "lucide-react";
 import { Gem } from "lucide-react";
 import AddTagsButton from "./AddTagsButton";
+import CandidatoContent from "./CandidatoContent";
+import RecrutadorContent from "./RecrutadorContent";
 
 export default function InfoContent({darkMode}) {
   const { role } = useRole();
@@ -190,153 +192,11 @@ function handleFileChange(e) {
   return (
     <div className="w-full h-full flex flex-col">
       {role === "recrutador" && (
-        <>
-        <header className=" flex bg-gradient-to-r from-orange-400 to-orange-500 w-full h-1/10">
-          <img src="/qwikpadrao.png" className="absolute w-40 h-40 rounded-full left-2 top-4 border-4 border-white active:scale-90 cursor-pointer transition-transform duration-200 ease-in-out"/>
-        </header>
-        <main className="flex flex-col mt-25 ml-6 mr-5">
-          <div className="flex justify-between items-center">
-          <form id="formNome" className="flex">
-          <input type="text" size={10} name="nome" id="nome" className="font-inter font-bold text-2xl" disabled={!isEditingName} value={nome.nome != "" ? nome.nome : "Nome de usuário"} onChange={(e) => {setNome({nome: e.target.value})}}/>
-          {!isEditingName ?  <PencilLine onClick={() => setEditingName(true)}/> : (<>
-            <CircleCheck onClick={() => salvarAlteracoesCandidato()}/>
-            <CircleX onClick={() => setEditingName(false)} />
-            </>
-            )}
-          </form>
-          {isEditing === false && <button className="bg-orange-500 gap-2 flex p-3 rounded-full shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(true)}>
-          <PencilLine color="white" size={15}/>
-          <span className="font-inter text-white text-sm">Editar Perfil</span>
-          </button>}
-          </div>
-          <span className="font-inter text-orange-400">{user != null ? user.perfil_recrutador : "Cargo na empresa"}</span>
-          <br/>
-          <h2 className="font-inter font-bold">Informações pessoais</h2>
-          <form className="grid grid-cols-2 grid-rows-6 gap-y-8 justify-between mt-5">
-
-          </form>
-          {isEditing && (
-            <div className="flex justify-end items-center gap-5">
-                <button type="submit" className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => salvarAlteracoesCandidato()}> Salvar </button>
-                <button className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
-            </div>
-          )}
-          </main>
-        </>
+        <RecrutadorContent darkMode={darkMode} />
       )}
+      
       {role === "candidato" && (
-      <>
-        <header className=" flex bg-gradient-to-r from-orange-400 to-orange-500 w-full h-1/12">
-        <div className="relative w-40 h-40 top-0 left-3 group">
-          <img src={user != null && user?.perfil?.foto != null ? `${API_URL}/${user?.perfil?.foto}` : "/qwikpadrao.png"} className="rounded-full w-full h-full object-cover group-active:scale-90 cursor-pointer transition-all duration-200 ease-in-out" onClick={handleImageClick}/>
-          <div onClick={handleImageClick} className="absolute inset-5 rounded-full bg-black/30 backdrop-blur-xs 
-               opacity-0 group-hover:opacity-100 flex justify-center items-center 
-               transition-all duration-200 ease-in-out w-30 h-30 cursor-pointer pointer-events-none group-hover:pointer-events-auto group-active:scale-90">
-                <PencilLine size={28}/>
-          </div>
-          <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          className="hidden"/>
-          </div>
-        </header>
-        <main className="flex flex-col mt-18 ml-6 mr-5">
-          <div className="flex justify-between items-center">
-          <form id="formNome" className="flex">
-          <input type="text" size={11} name="nome" id="nome" className="font-inter font-bold text-2xl" disabled={!isEditingName} value={nome} placeholder="Nome de usuário" onChange={(e) => {setNome(e.target.value)}}/>
-          {!isEditingName ?  <PencilLine className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" onClick={() => setEditingName(true)}/> : (<>
-            <CircleCheck className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" type="submit" onClick={(e) => {
-              e.preventDefault()
-              saveUsuario()}}/>
-            <CircleX className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" onClick={() => setEditingName(false)} />
-            </>
-            )}
-          </form>
-          {isEditing === false && <button className="bg-orange-500 gap-2 flex p-3 rounded-full shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(true)}>
-          <PencilLine color="white" size={15}/>
-          <span className="font-inter text-white text-sm">Editar Perfil</span>
-          </button>}
-          </div>
-          <br/>
-          <span className="font-inter font-semibold text-xl">Habilidades</span>
-          <div className="flex w-full gap-6 mt-10">  
-          <AddTagsButton />
-          </div>
-          <h2 className="mt-10 font-inter font-bold">Informações de Usuário</h2>
-          <form id="infoUser" className="grid grid-cols-2 grid-rows-4 gap-y-8 justify-between mt-5" onSubmit={(e) => {
-            e.preventDefault()
-            saveUsuario()
-          }}>
-            <label className="flex gap-2">
-              <Phone />
-              <input type="text" id="phone" name="phone" disabled={!isEditing} placeholder={"Telefone"} value={userData.telefone} onChange={(e) => setuserData({...userData, telefone: e.target.value })} />
-            </label>
-            <label className="flex gap-2">
-              <Mail />
-              <input type="email" id="email" name="email" disabled={!isEditing} placeholder={"E-mail"} value={userData.email} onChange={(e) => setuserData({...userData, email: e.target.value })} />
-            </label>
-            <label className="flex gap-2">
-              <MapPin />
-              <input type="text" id="block" name="block" disabled={!isEditing} placeholder={"Bairro"} value={userData.bairro} onChange={(e) => setuserData({...userData, bairro: e.target.value })} />
-            </label>
-            <label className="flex gap-2">
-              <MapPin />
-              <input type="text" id="city" name="city" disabled={!isEditing} placeholder={"Cidade"} value={userData.cidade} onChange={(e) => setuserData({...userData, cidade: e.target.value })} />
-            </label>
-            <label className="flex gap-2">
-              <MapPin />
-              <input type="text" id="state" name="state" disabled={!isEditing} placeholder={"Estado"} value={userData.estado} onChange={(e) => setuserData({...userData, estado: e.target.value })} />
-            </label>
-          </form>
-          
-
-          {isEditing && (
-            <div className="flex justify-end items-center gap-5">
-                <button type="submit" form="infoUser" className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer"> Salvar </button>
-                <button className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
-            </div>
-          )}
-          <h1 className="mt-10 font-inter font-bold">Informações de Candidato</h1>
-          <form id="infoCandidato" onSubmit={(e) => {
-            e.preventDefault()
-            salvarAlteracoesCandidato()
-          }} className="grid grid-cols-2 grid-rows-3 gap-y-8 justify-between mt-5">
-            <label className="flex items-center gap-2">
-              <CalendarDays />
-              <input type="text" id="nascimento" name="nascimento" disabled={!isEditing} placeholder={"Data de Nascimento"} value={candidateData.data_nascimento} onChange={(e) => setCandidateData({...candidateData, data_nascimento: e.target.value})} />
-            </label>
-            <label className="flex justify-center items-center gap-2">
-              <VenusAndMars/>
-              <select name="gender" className={`border px-3 py-2 rounded w-full ${darkMode ? "bg-[#22303c] text-white" : "bg-white text-black"}`} disabled={!isEditing} value={candidateData.genero} onChange={(e) => setCandidateData({...candidateData, genero: e.target.value})}>
-                <option value={""}>Selecione o seu gênero</option>
-                <option value={"M"}>Masculino</option>
-                <option value={"F"}>Feminino</option>
-                <option value={"OUTRO"}>Outros/Prefiro não responder</option>
-              </select>
-            </label>
-            <label className="flex items-center justify-center gap-2">
-            <Gem/>
-            <select name="civil" className={`border px-3 py-2 rounded w-full ${darkMode ? "bg-[#22303c] text-white" : "bg-white text-black"}`} disabled={!isEditing} value={candidateData.estado_civil} onChange={(e) => setCandidateData({...candidateData, estado_civil: e.target.value})}>
-              <option value={""}>Selecione seu estado civil</option>
-              <option value={"Casado(a)"}>Casado(a)</option>
-              <option value={"Solteiro(a)"}>Solteiro(a)</option>
-              <option value={"Divorciado(a)"}>Divorciado(a)</option>
-              <option value={"Viúvo(a)"}>Viúvo(a)</option>
-            </select>
-            
-            </label>
-          </form>
-          {isEditing && (
-            <div className="flex justify-end items-center gap-5">
-                <button type="submit" form="infoCandidato" className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer"> Salvar </button>
-                <button className="bg-orange-500 text-white font-inter p-2 rounded-md shadow shadow-black hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
-            </div>
-          )}
-        </main>
-        </>
-      )}
+      <CandidatoContent darkMode={darkMode} />)}
     </div>
   );
 }
