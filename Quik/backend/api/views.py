@@ -22,6 +22,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 import mimetypes
 import os
 from django.http import FileResponse
+from django.db import IntegrityError
 
 def VerficarCnpjView(request):                                           # Define a view para verificar CNPJ
     cnpj_recebido = request.GET.get('cnpj', None)                        # Obtém o CNPJ da requisição GET
@@ -134,9 +135,8 @@ class TagViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     
 class AddTagPerfilView(APIView):
-    """
-    Adiciona uma tag a um perfil usando a tabela PerfilTag.
-    """
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, perfil_id):
         tag_id = request.data.get("tag_id")
         if not tag_id:
@@ -148,15 +148,17 @@ class AddTagPerfilView(APIView):
         except (Perfil.DoesNotExist, Tag.DoesNotExist):
             return Response({"error": "Perfil ou Tag não encontrado"}, status=status.HTTP_404_NOT_FOUND)
         
-        # Cria a relação se ainda não existir
-        PerfilTag.objects.get_or_create(perfil=perfil, tag=tag)
-        
-        return Response({"success": True})
+        # ta aqui por causa da modelagem não ter tabela de id
+        try:
+            PerfilTag.objects.create(perfil=perfil, tag=tag)
+        except IntegrityError:
+            pass
+
+        tags = list(PerfilTag.objects.filter(perfil=perfil).values_list('tag__nome', flat=True))
+        return Response({"tags": tags}, status=status.HTTP_200_OK)
 
 class AddTagVagaView(APIView):
-    """
-    Adiciona uma tag a uma vaga usando a tabela VagaTag.
-    """
+    permission_classes = [IsAuthenticated]
     def post(self, request, vaga_id):
         tag_id = request.data.get("tag_id")
         if not tag_id:
@@ -169,6 +171,10 @@ class AddTagVagaView(APIView):
             return Response({"error": "Vaga ou Tag não encontrado"}, status=status.HTTP_404_NOT_FOUND)
         
         # Cria a relação se ainda não existir
-        VagaTag.objects.get_or_create(vaga=vaga, tag=tag)
-        
-        return Response({"success": True})
+        try:
+            VagaTag.objects.get_or_create(vaga=vaga, tag=tag)
+        except IntegrityError:
+            pass
+
+        tags = list(VagaTag.objects.filter(vaga=vaga).values_list('tag__nome', flat=True))
+        return Response({"tags": tags}, status=status.HTTP_200_OK)

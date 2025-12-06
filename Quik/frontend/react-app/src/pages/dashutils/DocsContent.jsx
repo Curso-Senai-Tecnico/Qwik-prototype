@@ -30,11 +30,13 @@ export default function DocsContent() {
       })
 
       const data = await response.json()
+      const curriculoUrl = formatCurriculoUrl(data.curriculo)
+      console.log(curriculoUrl)
 
       setUser(prev => ({
         ...prev, perfil: {
           ...prev.perfil,
-          curriculo: data.curriculo
+          curriculo: curriculoUrl
         }
       }))
     }
@@ -68,10 +70,17 @@ export default function DocsContent() {
 
   function formatCurriculoUrl(url) {
     if (!url) return "";
-    return url.replace(/^\/media\//, '')
+    try {
+      const u = new URL(url); // se for URL completa
+      return u.pathname.replace(/^\/media\//, '');
+    } catch {
+      // se for só caminho relativo, usa direto
+      return url.replace(/^\/media\//, '');
+    }
   }
 
   const curriculoUrl = user?.perfil?.curriculo
+  console.log(curriculoUrl)
   const trueUrl = formatCurriculoUrl(curriculoUrl)
   console.log(trueUrl)
   return (
@@ -79,7 +88,7 @@ export default function DocsContent() {
       {role === "recrutador" && <span> Vagas</span>}
       {role === "candidato" && (
         <div className="w-full h-full flex flex-col">
-          <PdfViewer fileUrl={`${API_URL}/api/file/ ${trueUrl}`} />
+          <PdfViewer fileUrl={`${API_URL}/api/file/${trueUrl}`} />
           <div className="flex items-center justify-center gap-2 bg-none">
             <button onClick={handleUpload} className="bg-orange-500 backdrop-blur-2xl p-2 m-4 text-white shadow shadow-black rounded-full hover:scale-110 active:scale-90 cursor-pointer transition-transform duration-300 ease-in-out">Enviar Currículo</button>
             <button onClick={handleUpload} className="bg-orange-500 backdrop-blur-2xl p-2 m-4 text-white shadow shadow-black rounded-full hover:scale-110 active:scale-90 cursor-pointer transition-transform duration-300 ease-in-out">Alterar Currículo</button>
