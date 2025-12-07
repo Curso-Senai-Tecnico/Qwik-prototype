@@ -31,12 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'rest_framework',
     'api',
     'rest_framework.authtoken',
@@ -85,7 +87,8 @@ TEMPLATES = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media'
 
-WSGI_APPLICATION = 'projeto.wsgi.application'
+ASGI_APPLICATION = 'projeto.asgi.application'
+# WSGI_APPLICATION = 'projeto.wsgi.application'
 
 
 # Database
@@ -162,3 +165,16 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://127.0.0.1:8080"
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}

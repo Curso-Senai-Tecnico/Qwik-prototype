@@ -1,20 +1,41 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import SignalIcon from "./SignalIcon";
-import { Mic, Phone, MicOff, VideoOff, HeadphoneOff } from "lucide-react";
-import { Video } from "lucide-react";
-import { Headphones } from "lucide-react";
+import { Mic, Phone, MicOff, VideoOff, HeadphoneOff, Video, Headphones } from "lucide-react";
 import LogoLoading from "./LogoLoading";
 import Logo from "/logoNova.png";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRole } from "../../contexts/RoleContext";
 
+//Config STUN (google)
+const iceConfiguration = {
+  iceServers: [
+    {
+      urls: ["stun:stun.l.google.com:19302", "stun:stun2.l.google.com:19302"],
+    },
+  ],
+};
+
 export default function VideoChamada() {
   const {role} = useRole()
+  const roomName = 'sala-teste';
+
   const [mic, setMic] = useState(true);
   const [headset, setHeadset] = useState(true);
   const [video, setVideo] = useState(true);
+
   const [isLoading, setIsLoading] = useState(false);
   const [activeCall, setActiveCall] = useState(false);
+  const [callStatus, setCallStatus] = useState("idle");
+  const [canCall, setCanCall] = useState(true);
+
+  const localVideoRef = useRef(null);
+  const remoteVideoRef = useRef(null);
+  const localStreamRef = useRef(null);
+  const peerConnectionRef = useRef(null);
+  const socketRef = useRef(null);
+
+
+  
   
 
 
@@ -22,8 +43,7 @@ export default function VideoChamada() {
     setActiveCall(false)
   }
 
-  const videoRef = useRef(null);
-  const localStreamRef = useRef(null);
+ 
 
   useEffect(() => {
     let mounted = true;
@@ -38,36 +58,163 @@ export default function VideoChamada() {
         if (!mounted) return;
 
         localStreamRef.current = stream;
-        if (videoRef.current) videoRef.current.srcObject = stream;
+        if (localVideoRef.current) localVideoRef.current.srcObject = stream;
       } catch (err) {
         console.error("Erro ao acessar câmera/microfone:", err);
       }
     };
 
+    const connectWebSocket = () => {
+      const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+      const wsUrl = `${wsScheme}://${window.location.host}/ws/signaling/${roomName}/`;
+      socketRef.current = new WebSocket(wsUrl);
+
+      socketRef.current.onopen = () => {
+        console.log("WebSocket conectado");
+      };
+
+      socketRef.current.onmessage = (message) => {
+        const data = JSON.parse(message.data);
+        console.log("Mensagem recebida:", data);
+      };
+
+      socketRef.current.onclose = () => {
+        console.log("WebSocket desconectado");
+      };
+
     startLocalMedia();
+    connectWebSocket();
 
     return () => {
       mounted = false;
       if (localStreamRef.current) {
-        localStreamRef.current.getTracks().forEach((t) => t.stop());
-        localStreamRef.current = null;
+        localStreamRef.current.getTracks().forEach((t) => t.stop());}
+      if (socketRef.current) socketRef.current.close();
+      if (peerConnectionRef.current) {
+        peerConnectionRef.current.close();}
       }
     };
   }, []);
 
-  const startCall = () => {
+  const handleSocketMessage = async (event) => {
+    const data = JSON.parse(event.data);
+
+    if (data.type === "user_update") {
+      if (data.status === "joined" && data.count >= 2) { 
+        setCanCall(true);
+    }
+    if (data.status === "left") {
+      endCall();
+    }
+  }
+  
+  if (data.type === "offer") await handleOffer(data);
+  if (data.type === "answer") await handleAnswer(data);
+  if (data.type === "candidate") await handleCandidate(data);
+};
+
+  const createPeerConnection = () => {
+    if (peerConnectionRef.current) return;
+
+    const pc = new RTCPeerConnection(iceConfiguration);
+    
+  pc.onicecandidate = (event) => {
+    if (event.candidate && socketRef.current) {
+      socketRef.current.send(
+        JSON.stringify({
+          type: "candidate",
+          candidate: event.candidate,
+        })
+      );
+    }
+  } 
+
+  pc.ontrack = (event) => {
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.srcObject = event.streams[0];
+    }
+  };
+
+  if (localStreamRef.current) {
+    localStreamRef.current.getTracks().forEach((track) => {
+      pc.addTrack(track, localStreamRef.current);
+    });
+  }
+
+  peerConnectionRef.current = pc;
+};
+
+  const startCall = async () => {
     setIsLoading(true);
+    setCallStatus("calling");
     console.log(isLoading)
-    console.log(activeCall)
+
+    createPeerConnection();
+
+    const offer = await peerConnectionRef.current.createOffer();
+    await peerConnectionRef.current.setLocalDescription(offer);
+
     setTimeout(() => {
-      
+      socketRef.current.send(
+        JSON.stringify({
+          type: "offer",
+          sdp: offer.sdp,
+        })
+      );
       setIsLoading(false);
-      console.log(isLoading)
-      
       setActiveCall(true);
       console.log(activeCall)
-    }, 5000);
+    },5000);
   };
+  
+  const handleOffer = async (data) => {
+    setCallStatus("receiving");
+    setActiveCall(true);
+
+    createPeerConnection();
+
+    const remoteDesc = new RTCSessionDescription({
+      type: "offer",
+      sdp: data.sdp,
+    });
+    await peerConnectionRef.current.setRemoteDescription(new RTCSessionDescription({type: "offer", sdp: data.sdp}));
+  };
+
+  const acceptCall = async () => {
+    const answer = await peerConnectionRef.current.createAnswer();
+    await peerConnectionRef.current.setLocalDescription(answer);
+
+    socketRef.current.send(
+      JSON.stringify({
+        type: "answer",
+        sdp: answer.sdp,
+      })
+    );
+    setCallStatus("connected");
+    setActiveCall(false);
+  };
+
+  const handleAnswer = async (data) => {
+    try {
+      if (peerConnectionRef.current) {
+        await peerConnectionRef.current.addIceCandidate(
+          new RTCIceCandidate(data.candidate)
+        );
+      }
+    } catch (err) {
+      console.error("Erro ao adicionar candidato ICE:", err);
+    }
+  };
+
+  const endCall = () => {
+    if (peerConnectionRef.current) {
+      peerConnectionRef.current.close();
+      peerConnectionRef.current = null;
+    }
+    setActiveCall(false);
+    setCallStatus("idle");
+    window.location.reload();
+  }
 
   const changeMic = () => {
     setMic((prev) => {
@@ -95,7 +242,7 @@ export default function VideoChamada() {
     <div className="bg-black w-9/12 h-9/12 rounded-md mt-4 flex justify-center items-center">
       <div className="bg-[rgb(26,26,26,100)] w-11/12 h-11/12 flex flex-col justify-between group">
         <video
-          ref={videoRef}
+          ref={localStreamRef}
           autoPlay
           playsInline
           muted
