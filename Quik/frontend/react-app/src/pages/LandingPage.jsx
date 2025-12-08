@@ -97,18 +97,16 @@ export default function LandingPage() {
             </button>
           </nav>
         </header>
-        <main className="flex-1 grid grid-cols-2">
+        <main className="grid grid-cols-2 grid-rows-1">
           <div className="flex flex-col items-center justify-center text-center ml-10">
-            <img src="/esquilo.png" alt="Logo Quik" className="w-60" />
-            <p className="font-bold mt-2">
-              Encontre vagas qualificadas e conecte-se com empresas sérias —
-              rápido e sem complicação. O lugar certo para sua próxima
-              oportunidade profissional.
+            <img src="/esquilo.png" alt="Logo Quik" className="w-60 mt-10" />
+            <p className="font-bold mt-2 font-inter text-2xl">
+              Achou,  Chamou,   Contratou.
             </p>
           </div>
           {/* Carrossel */}
           <div
-            className="relative w-full flex justify-center mt-30"
+            className="relative w-full flex justify-center mt-20"
             style={{
               WebkitMaskImage:
                 "linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)",

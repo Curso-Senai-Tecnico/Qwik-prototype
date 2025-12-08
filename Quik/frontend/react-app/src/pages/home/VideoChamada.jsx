@@ -5,6 +5,8 @@ import LogoLoading from "./LogoLoading";
 import Logo from "/logoNova.png";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRole } from "../../contexts/RoleContext";
+import PdfViewer from "../dashutils/PdfViewer";
+import VagaDemo from "../dashutils/VagaDemo";
 
 //Config STUN (google)
 const iceConfiguration = {
@@ -33,7 +35,7 @@ export default function VideoChamada() {
   const localStreamRef = useRef(null);
   const peerConnectionRef = useRef(null);
   const socketRef = useRef(null);
-
+  const API_URL = import.meta.env.VITE_API_URL
 
   
   
@@ -240,13 +242,13 @@ export default function VideoChamada() {
 
   return (
     <div className="bg-black w-9/12 h-9/12 rounded-md mt-4 flex justify-center items-center">
-      <div className="bg-[rgb(26,26,26,100)] w-11/12 h-11/12 flex flex-col justify-between group">
+      <div className="relative bg-[rgb(26,26,26,100)] w-11/12 h-11/12 flex flex-col justify-between group">
         <video
           ref={localStreamRef}
           autoPlay
           playsInline
           muted
-          className={`absolute self-center w-280 h-120 z-0 transition-opacity duration-500 ${
+          className={`absolute inset-0 self-center w-280 h-120 z-0 transition-opacity duration-500 ${
             isLoading ? "opacity-50 blur-2xl" : "opacity-100"
           }`}
         />
@@ -255,7 +257,7 @@ export default function VideoChamada() {
 
           {!isLoading ? (
             <button
-              className="self-center opacity-0 group-hover:opacity-100 transition-all duration-300 text-white font-inter text-2xl font-bold bg-orange-400 p-5 rounded-full cursor-pointer"
+              className="self-center opacity-0 group-hover:opacity-100 transition-all duration-300 text-white font-inter text-2xl font-bold bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/40 border border-orange-600 p-5 rounded-full cursor-pointer"
               onClick={startCall}
             >
               Faça um Quik
@@ -285,13 +287,26 @@ export default function VideoChamada() {
               transition={{duration:0.3, ease: "easeInOut"}}
               >
                {role === "candidato" && (
-                <div className="flex h-full w-full justify-center items-center gap-10">
-                <iframe src="/curriculo_alexandre.pdf" className=" w-full h-full rounded-xl"/>
+                <div className="flex h-full w-full justify-center items-center gap-[5%]">
+                <VagaDemo />
                 <div className="flex flex-col gap-10">
-                  <button className="bg-orange-400 rounded-full text-white p-2 cursor-pointer hover:bg-orange-500 active:scale-90 transition-transform duration-200 ease-in-out">
+                  <button onClick={refuseCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
                     Aceitar chamada
                   </button>
-                  <button onClick={refuseCall} className="bg-orange-400 rounded-full text-white p-2 cursor-pointer hover:bg-orange-500 active:scale-90 transition-transform duration-200 ease-in-out">
+                  <button onClick={refuseCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
+                    Recusar Chamada
+                  </button>
+                </div>
+                </div>
+               )}
+               {role === "recrutador" && (
+                <div className="flex h-full w-full justify-center items-center gap-[5%]">
+                  <PdfViewer fileUrl={`${API_URL}/api/file/curriculos/PedroCardosoCVenUS_sFhigql.pdf`} />
+                  <div className="flex flex-col gap-10">
+                  <button onClick={refuseCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
+                    Aceitar chamada
+                  </button>
+                  <button onClick={refuseCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
                     Recusar Chamada
                   </button>
                 </div>

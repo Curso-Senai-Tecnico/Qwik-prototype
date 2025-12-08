@@ -5,12 +5,13 @@ import { useToken } from "./TokenContext";
 export function RoleProvider({ children }) {
   const [role, setRole] = useState(localStorage.getItem("role") || null);
   const {token, setToken} = useToken()
+  const API_URL = import.meta.env.VITE_API_URL
 
   useEffect(() => {
     async function fetchRole() {
       try {
         if (!token) return
-        const res = await fetch("http://localhost:8000/api/me/", {
+        const res = await fetch(`${API_URL}/api/me/`, {
           headers: {
             Authorization: `Token ${token}`,
             "Content-Type": "application/json"

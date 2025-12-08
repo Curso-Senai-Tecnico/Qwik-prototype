@@ -18,7 +18,7 @@ export default function DashNav({ darkMode, activeTab, onNavClick }) {
 
   return (
     <nav
-      className={`flex flex-col gap-6 border-r h-dvh w-2/12  items-center justify-center  ${
+      className={`flex flex-col gap-6 border-r min-h-dvh max-h-screen w-2/12  items-center justify-center  ${
         darkMode
           ? "bg-[#22303c] text-white border-r-white"
           : "bg-white text-black"
@@ -28,12 +28,12 @@ export default function DashNav({ darkMode, activeTab, onNavClick }) {
         <div
           key={id}
           onClick={() => onNavClick(id)}
-          className={`flex items-center gap-1 min-w-full p-2 cursor-pointer transition-all duration-200 ${
+          className={`flex items-center gap-1 min-w-full max-w-full p-2 cursor-pointer transition-all duration-200 ${
             activeTab === id ? "rounded-full bg-[#FFD580]" : ""
           }`}
         >
           <Icon size={35} />
-          <span className="font-inter font-semibold text-2xl">{label}</span>
+          <span className="font-inter font-semibold lg:text-2xl md:text-lg sm:text-sm overflow-auto">{label}</span>
         </div>
       ))}
     </nav>

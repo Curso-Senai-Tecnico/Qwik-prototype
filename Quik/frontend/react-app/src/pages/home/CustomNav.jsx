@@ -9,6 +9,8 @@ import { useRole } from "../../contexts/RoleContext";
 import { useUser } from "../../contexts/UserContext";
 import { useState } from "react";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
+import { LogOut } from "lucide-react";
+import { useToken } from "../../contexts/TokenContext";
 
 
 // COMENTANDO UM MONTE DE COISA PQ O BACKEND TA TODO BUGADO
@@ -20,11 +22,22 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   const {role} = useRole()
   const [profile, setProfile] = useState(user?.perfil)
   const [openNotif, setOpenNotif] = useState(false)
+  const API_URL = import.meta.env.VITE_API_URL
+  const {logout} = useToken()
   
-  const notificacoes = [{icon: "./isquiloperfil.png",
-    text: "Você precisa completar seu perfil."}, 
-    {icon: "./saibamais.png",
-    text: "Quer saber mais sobre a equipe? Clique aqui!"}]
+  
+  const notificacoes = [{
+    id: 1,
+    icon: "/isquiloperfil.png",
+    text: "Você precisa completar seu perfil.",
+    path: `${user?.usuario?.role}/dashboard`
+  }, 
+    {
+    id:2,
+    icon: "/saibamais.png",
+    text: "Quer saber mais sobre a equipe? Clique aqui!",
+    path: "/saibamais" 
+  }]
   const toggleTheme = () => {
     setDarkMode((prevMode) => !prevMode);
   };
@@ -32,7 +45,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   return (
     <header>
       <nav
-        className={`flex  w-dvw h-25 border-b ${
+        className={`flex w-dvw h-25 border-b ${
           darkMode
             ? "border-white bg-[#22303c]  text-white"
             : "text-black bg-white"
@@ -82,11 +95,12 @@ export default function CustomNav({ darkMode, setDarkMode }) {
               animate={{opacity: 1, y: 0, filter: "blur(0px)"}}
               exit={{opacity: 0, y: 9, filter: "blur(10px)"}}
               transition={{duration: 0.25, ease: easeInOut}}
-              className={`absolute top-10 right-0 w-60 h-fit ${darkMode ? "bg-[#22303c] text-white" : "bg-white text-black"}`}
+              className={`absolute top-10 right-0 w-60 h-full bg-none z-10`}
               >
-                <div className="flex flex-col border">
+                <div className={`flex flex-col bg-none shadow`}>
+                  <div className={`rounded-t border-b p-1 ${darkMode ? "bg-[#23405a] text-white" : "bg-gray-50 text-black"} font-inter`}>Notificações</div>
                   {notificacoes.map((notifs) => (
-                    <div key={notifs} className="border-b gap-2 p-2 cursor-pointer flex">
+                    <div key={notifs.id} className={`gap-2 p-3 cursor-pointer flex shadow-inner ${darkMode ? "bg-[#22303c] text-white" : "bg-white text-black"}`} onClick={() => navigate(notifs.path)}>
                       <img src={notifs.icon} width={40} height={40} className="rounded"/>
                       <span className="font-inter italic text-sm">{notifs.text}</span>
                     </div>
@@ -98,7 +112,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
             </div>
             <button
               onClick={() => !loadingUser && navigate(`/${role}/dashboard`)}
-              className={`flex w-fit border rounded-4xl h-full justify-between items-center pl-2.5 pr-2.5 cursor-pointer active:scale-95 transition ${
+              className={`flex w-fit border hover:border-orange-600 rounded-4xl h-full justify-between items-center pl-2.5 pr-2.5 cursor-pointer active:scale-95 transition-all duration-200 ease-in-out gap-2 ${
                 darkMode
                   ? "dark:hover:bg-gray-900"
                   : "hover:bg-gray-100 border-black text-black"
@@ -113,8 +127,9 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   ) : (
     
     <>
-      {user?.perfil?.foto ? <img src={`http://localhost:8000/${user?.perfil?.foto}`} width={80} height={80} className="rounded-full" /> : <img src="/qwikpadrao.png" width={80} height={80} className="rounded-full" />}
+      {user?.perfil?.foto ? <img src={`${API_URL}/${user?.perfil?.foto}`} className="rounded-full w-[90px] h-[90px]" /> : <img src="/qwikpadrao.png" width={80} height={80} className="rounded-full" />}
       <span className="ml-3">{user?.usuario.nome}</span>
+      <LogOut className="hover:scale-110" onClick={logout} />
     </>
   )}
             </button>

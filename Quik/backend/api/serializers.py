@@ -69,15 +69,32 @@ class PerfilSerializer(serializers.ModelSerializer):
 # ==========================================
 
 class RecrutadorSerializer(serializers.ModelSerializer):
+    usuario = UsuarioSerializer()
     class Meta:
         model = Recrutador
-        fields = ['usuario', 'cnpj', 'perfil_recutador']
+        fields = ['usuario', 'cnpj', 'perfil_recrutador']
 
     def validate_cnpj(self, value):                             # Validação personalizada para CNPJ
         cnpj_validator = CNPJ()                                 # Cria uma instância do validador de CNPJ
         if not cnpj_validator.validate(value):
             raise serializers.ValidationError("CNPJ inválido.") # Levanta erro se o CNPJ for inválido
         return value                                            # Retorna o valor se for válido
+    
+    def update(self, instance, validated_data):
+        usuario_data = validated_data.pop('usuario', None)
+        if usuario_data:
+            usuario_instance = instance.usuario
+            if isinstance(usuario_data, dict):
+                for attr, value in usuario_data.items():
+                    setattr(usuario_instance, attr, value)
+            else:
+                usuario_instance = usuario_data
+            usuario_instance.save()
+            
+        for attr,value in validated_data.items():
+            setattr(instance,attr,value)
+        instance.save()
+        return instance
 
 # ==========================================
 #            serializer de tags
@@ -100,10 +117,9 @@ class VagaSerializer(serializers.ModelSerializer):
                                        write_only=True, # ele diz para o django que esse campo serve apenas para a escrita/entrada dos dados
                                        required=True) # ele obriga o cliente fornecer um dado, ou seja, precisa ter pelo menos uma tag  
     
-# ========== SERIALIZAÇÃO DOS CAMPOS ==========
     class Meta:
         model = Vaga
-        fields = ['recrutador', 'tipo', 'contato', 'cargo', 'resumo',
+        fields = ['recrutador', 'tipo', 'contrato', 'cargo', 'resumo',
                     'responsabilidades', 'requisitos', 'beneficios', 'salario',
                         'quantidade', 'localizacao', 'data_publicacao', 'status', 'tags', 'tags_nomes']
 
@@ -251,18 +267,18 @@ class CandidatoRegistrationSerializer(serializers.ModelSerializer):
 
                                 #Serializador para registro de recrutador (POST)
 class RecrutadorRegistrationSerializer(serializers.ModelSerializer):
-    user = UsuarioSerializer()
+    usuario = UsuarioSerializer()
 
     class Meta:
         model = Recrutador
-        fields = ['user', 'cnpj']
+        fields = ['usuario', 'cnpj']
     
 
     @transaction.atomic                                                  #transaction.atomic garante que a criação do usuário seja atômicas
     def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        user = Usuario.objects.create_user(**user_data)
-        recrutador = Recrutador.objects.create(user=user, **validated_data)
+        user_data = validated_data.pop('usuario')
+        usuario = Usuario.objects.create_user(**user_data)
+        recrutador = Recrutador.objects.create(usuario=usuario, **validated_data)
         return recrutador
     
     """   Pra lembrar: 

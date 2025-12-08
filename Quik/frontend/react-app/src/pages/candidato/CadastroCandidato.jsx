@@ -1,14 +1,16 @@
-import { motion } from "motion/react";
+import { motion,AnimatePresence } from "motion/react";
 import { ChevronLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "/logoSvg.svg";
 import { useState } from "react";
 import { Eye,EyeOff } from "lucide-react";
+import { CircleAlert } from "lucide-react";
 
 export default function Cadastro() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false)
   const [rgError, setRgError] = useState("")
+  const API_URL = import.meta.env.VITE_API_URL
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -17,7 +19,7 @@ export default function Cadastro() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("http://localhost:8000/api/candidatos/", {
+      const response = await fetch(`${API_URL}/api/candidatos/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -126,6 +128,19 @@ export default function Cadastro() {
             />
             <button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute right-5 bottom-3">{showPassword ? <EyeOff size={25}/> : <Eye size={25}/>}</button>
             </div>
+            <AnimatePresence>
+            {rgError != "" && (
+              <motion.div
+              initial={{opacity:0, filter: "blur(6px"}}
+              animate={{opacity:1, filter: "blur(0px)"}}
+              exit={{opacity:1, filter: "blur(6px)"}}
+              transition={{duration: 0.25, ease: "easeInOut"}}
+              className="flex gap-2">
+                <CircleAlert color="red"/>
+                <span className="font-inter text-red-600 text-sm mt-1">{rgError}</span>
+              </motion.div>
+            )}
+            </AnimatePresence>
             <br />
             <button
               type="submit"

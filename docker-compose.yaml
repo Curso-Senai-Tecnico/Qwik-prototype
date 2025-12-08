@@ -19,24 +19,26 @@ services:
       retries: 5
 
 
-  #init_db:
-  #  build:
-  #    context: ./database
-  #    dockerfile: Dockerfile
-  #  container_name: init_db
-  #  depends_on:
-  #    db:
-  #      condition: service_healthy
-  #  env_file:
-  #    - .env
-  #  networks:
-  #    - backend
+  # init_db:
+  #   build:
+  #     context: ./database
+  #     dockerfile: Dockerfile
+  #   container_name: init_db
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - backend
   frontend:
     build:
       context: ./Quik/frontend/react-app
     container_name: quik_frontend
     ports:
       - "8080:80"
+    env_file:
+      - ./Quik/frontend/react-app/.env
     networks:
       - backend
     restart: always
@@ -52,6 +54,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./Quik/backend:/app:z
     networks:
       - backend
     restart: always

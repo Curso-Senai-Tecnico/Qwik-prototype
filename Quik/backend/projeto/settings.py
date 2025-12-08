@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'rest_framework',
-    'api',
+    'api.apps.ApiConfig',
     'rest_framework.authtoken',
     'corsheaders',
     'django_extensions',
@@ -54,7 +54,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
-X_FRAME_OPTIONS = 'SAMEORIGIN'
+X_FRAME_OPTIONS = 'ALLOWALL'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -63,8 +63,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware'
 ]
 
 ROOT_URLCONF = 'projeto.urls'
@@ -100,8 +99,8 @@ DATABASES = {
         'NAME': 'qwik',
         'USER': 'root',                 
         'PASSWORD': 'admin',
-        'HOST': 'db',            
-        'PORT': '3306',                 
+        'HOST': '127.0.0.1',            
+        'PORT': '3308',                 
         'OPTIONS': {
             'ssl': {'disabled': True},
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'" # meio q diz pro django “Assim que conectar, execute esse comando SQL para deixar o MySQL mais rigoroso e seguro"

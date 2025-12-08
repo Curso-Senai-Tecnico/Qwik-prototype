@@ -93,7 +93,7 @@ class Candidato(models.Model):
 
 
 class Perfil(models.Model):
-    candidato = models.OneToOneField('Candidato', on_delete=models.CASCADE, primary_key=True, null=False, default=1)
+    candidato = models.OneToOneField('Candidato', on_delete=models.CASCADE, primary_key=True, null=False)
     foto = models.ImageField(upload_to='fotos/', null=True, blank=True)
     nome_perfil = models.CharField(max_length=100, null=True)
     data_nascimento_perfil = models.DateField(null=True)

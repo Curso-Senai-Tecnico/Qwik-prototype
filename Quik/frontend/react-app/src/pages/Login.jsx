@@ -9,7 +9,7 @@ import { CircleAlert } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
-
+  const API_URL = import.meta.env.VITE_API_URL
   const {setToken} = useToken()
   const [showPassword, setShowPassword] = useState(false)
   const [loginError, setLoginError] = useState("")
@@ -22,7 +22,7 @@ export default function Login() {
     const email = e.target.email.value // pega os inputs do forms
     const password = e.target.password.value
     try {
-      const response = await fetch("http://localhost:8000/api/login/", {
+      const response = await fetch(`${API_URL}/api/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export default function Login() {
               type="email"
               name="email"
               id="email"
-              placeholder="E-mail ou CPNJ"
+              placeholder="E-mail"
               size={48}
               className="border rounded-full w-11/12 p-5 font-inter font-semibold"
             />
