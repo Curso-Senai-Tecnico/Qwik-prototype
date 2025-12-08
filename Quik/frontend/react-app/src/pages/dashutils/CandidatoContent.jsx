@@ -209,8 +209,8 @@ function handleFileChange(e) {
           </div>
         </header>
         <main className="flex flex-col mt-18 ml-6 mr-5">
-          <div className="flex justify-between items-center">
-          <form id="formNome" className="flex">
+          <div className="flex flex-wrap justify-between items-center">
+          <form id="formNome" className="flex flex-wrap">
           <input type="text" size={11} name="nome" id="nome" className="font-inter font-bold text-2xl" disabled={!isEditingName} value={nome} placeholder="Nome de usuário" onChange={(e) => {setNome(e.target.value)}}/>
           {!isEditingName ?  <PencilLine className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" onClick={() => setEditingName(true)}/> : (<>
             <CircleCheck className="hover:scale-110 transition-transform duration-200 active:scale-90 cursor-pointer" type="submit" onClick={(e) => {
@@ -231,29 +231,29 @@ function handleFileChange(e) {
           <AddTagsButton />
           </div>
           <h2 className="mt-10 font-inter font-bold" style={{borderBottom: '2px solid #FF8C00', paddingBottom: '5px'}}>Informações de Usuário</h2>
-          <form id="infoUser" className="grid grid-cols-2 grid-rows-4 gap-y-8 justify-between mt-5" onSubmit={(e) => {
+          <form id="infoUser" className="grid grid-cols-2 grid-rows-4 gap-y-8 sm:grid-cols-1 justify-between mt-5" onSubmit={(e) => {
             e.preventDefault()
             saveUsuario()
           }}>
-            <label className="flex gap-2">
+            <label className="flex flex-wrap gap-2">
               <Phone />
-              <input type="text" id="phone" name="phone" disabled={!isEditing} placeholder={"Telefone"} value={userData.telefone} onChange={(e) => setuserData({...userData, telefone: e.target.value })} />
+              <input type="text" id="phone" name="phone" disabled={!isEditing} placeholder={"Telefone"} value={userData.telefone} onChange={(e) => setuserData({...userData, telefone: e.target.value })} className="sm:text-sm" />
             </label>
-            <label className="flex gap-2">
+            <label className="flex flex-wrap gap-2">
               <Mail />
-              <input type="email" id="email" name="email" disabled={!isEditing} placeholder={"E-mail"} value={userData.email} onChange={(e) => setuserData({...userData, email: e.target.value })} />
+              <input type="email" id="email" name="email" disabled={!isEditing} placeholder={"E-mail"} value={userData.email} onChange={(e) => setuserData({...userData, email: e.target.value })} className="sm:text-sm" />
             </label>
-            <label className="flex gap-2">
+            <label className="flex flex-wrap gap-2">
               <MapPin />
-              <input type="text" id="block" name="block" disabled={!isEditing} placeholder={"Bairro"} value={userData.bairro} onChange={(e) => setuserData({...userData, bairro: e.target.value })} />
+              <input type="text" id="block" name="block" disabled={!isEditing} placeholder={"Bairro"} value={userData.bairro} onChange={(e) => setuserData({...userData, bairro: e.target.value })} className="sm:text-sm" />
             </label>
-            <label className="flex gap-2">
+            <label className="flex flex-wrap gap-2">
               <MapPin />
-              <input type="text" id="city" name="city" disabled={!isEditing} placeholder={"Cidade"} value={userData.cidade} onChange={(e) => setuserData({...userData, cidade: e.target.value })} />
+              <input type="text" id="city" name="city" disabled={!isEditing} placeholder={"Cidade"} value={userData.cidade} onChange={(e) => setuserData({...userData, cidade: e.target.value })} className="sm:text-sm" />
             </label>
-            <label className="flex gap-2">
+            <label className="flex flex-wrap gap-2">
               <MapPin />
-              <input type="text" id="state" name="state" disabled={!isEditing} placeholder={"Estado"} value={userData.estado} onChange={(e) => setuserData({...userData, estado: e.target.value })} />
+              <input type="text" id="state" name="state" disabled={!isEditing} placeholder={"Estado"} value={userData.estado} onChange={(e) => setuserData({...userData, estado: e.target.value })} className="sm:text-sm" />
             </label>
           </form>
           

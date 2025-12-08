@@ -4,7 +4,7 @@ import { useUser } from "../../contexts/UserContext";
 import PdfViewer from "./PdfViewer";
 import Vagas from "./Vagas";
 
-export default function DocsContent() {
+export default function DocsContent({darkMode}) {
   const { role } = useRole();
   const {user, setUser} = useUser()
   const {token} = useToken()
@@ -86,7 +86,7 @@ export default function DocsContent() {
   console.log(trueUrl)
   return (
     <div className="w-full h-full">
-      {role === "recrutador" && (<Vagas />)}
+      {role === "recrutador" && (<Vagas darkMode={darkMode} />)}
       {role === "candidato" && (
         <div className="w-full h-full flex flex-col">
           <PdfViewer fileUrl={`${API_URL}/api/file/${trueUrl}`} />
