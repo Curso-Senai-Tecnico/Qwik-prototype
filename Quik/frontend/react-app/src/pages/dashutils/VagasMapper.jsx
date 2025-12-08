@@ -1,7 +1,7 @@
 import React from "react";
 import { MapPin, DollarSign, Briefcase, Calendar } from "lucide-react";
 
-export default function VagasMapper({ vagas = [], gridView = true, listView = false }) {
+export default function VagasMapper({ vagas = [], view, darkMode}) {
   // formata R$ X e R$ X
   const formatSalario = (v) => Number(v).toLocaleString("pt-BR", {
     style: "currency",
@@ -9,11 +9,11 @@ export default function VagasMapper({ vagas = [], gridView = true, listView = fa
   });
 
   return (
-    <div className={`${gridView ? "grid grid-cols-1 md:grid-cols-2 gap-6 mt-4" : "flex flex-col gap-4"}`}>
+    <div className={`${view ? "grid grid-cols-1 md:grid-cols-2 gap-6 mt-4" : "flex flex-col gap-4 mt-4"}`}>
       {vagas.map((vaga, idx) => (
         <div
           key={idx}
-          className="border border-orange-300 bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all cursor-pointer"
+          className={`border border-orange-300 ${darkMode ? "bg-black text-white" : "bg-white text-black"} rounded-xl p-4 shadow-md hover:shadow-lg transition-all cursor-pointer`}
         >
           {/* Título + etiqueta CLT/PJ */}
           <div className="flex justify-between items-start">

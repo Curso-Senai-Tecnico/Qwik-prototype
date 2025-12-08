@@ -19,3 +19,6 @@ urlpatterns = [
     path('perfis/<int:perfil_id>/add_tag/', AddTagPerfilView.as_view(), name='perfil-add-tag'),
     path('vagas/<int:vaga_id>/add_tag/', AddTagVagaView.as_view(), name='vaga-add-tag'),
 ]
+
+
+

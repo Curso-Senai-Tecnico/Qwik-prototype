@@ -18,7 +18,7 @@ export default function DashNav({ darkMode, activeTab, onNavClick }) {
 
   return (
     <nav
-      className={`flex flex-col gap-6 border-r min-h-dvh w-2/12  items-center justify-center  ${
+      className={`flex flex-col gap-6 border-r min-h-dvh max-h-screen w-2/12  items-center justify-center  ${
         darkMode
           ? "bg-[#22303c] text-white border-r-white"
           : "bg-white text-black"

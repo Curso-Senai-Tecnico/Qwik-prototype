@@ -45,7 +45,6 @@ def VerificarCpfView(request):
 
 class CandidatoViewSet(viewsets.ModelViewSet): 
     
-                             #viewset para CRUD completo de Candidatos
     queryset = Candidato.objects.all()
     
 
@@ -61,7 +60,7 @@ class CandidatoViewSet(viewsets.ModelViewSet):
 
 class RecrutadorViewSet(viewsets.ModelViewSet):
    
-                             #Viewset para CRUD completo de Recrutadores
+
     queryset = Recrutador.objects.all()
 
     def get_serializer_class(self):                                      # Define o serializer a ser usado com base na ação
@@ -75,9 +74,9 @@ class RecrutadorViewSet(viewsets.ModelViewSet):
 
 class VagaViewSet(viewsets.ModelViewSet):
     
-                             #Viewset para CRUD completo de Vagas
+
     queryset = Vaga.objects.all()
-    serializer_class =  VagaSerializer # Usa o serializer de recrutador para as vagas
+    serializer_class =  VagaSerializer 
 
     def get_serializer_class(self):                                      # Define o serializer a ser usado com base na ação
         if self.action == 'create':
@@ -85,11 +84,11 @@ class VagaViewSet(viewsets.ModelViewSet):
         
         return VagaSerializer
         
-                                           # Retorna o serializer padrão de vaga
+
 
 class PerfilViewSet(viewsets.ModelViewSet):
      
-                             #Viewset para CRUD completo de Perfis
+
     queryset = Perfil.objects.all()
     serializer_class = PerfilSerializer                                  # Usa o serializer de perfil
 
@@ -99,7 +98,7 @@ class PerfilViewSet(viewsets.ModelViewSet):
         
         return PerfilSerializer 
         
-                                 # Retorna o serializer padrão de perfil
+
 
 class MeView(APIView):
     permission_classes = [IsAuthenticated]

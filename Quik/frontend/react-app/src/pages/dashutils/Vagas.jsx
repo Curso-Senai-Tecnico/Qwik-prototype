@@ -4,9 +4,9 @@ import Modal from './Modal'
 import CadastrarVagas from '../recrutador/CadastrarVagas'
 import VagasMapper from './VagasMapper'
 
-export default function Vagas() {
+export default function Vagas({darkMode}) {
 
-    const [view, setView] = useState("grid"); // grid | list
+    const [view, setView] = useState(false); // grid | list
     const [searchTerm, setSearchTerm] = useState("");
     const [modal, setModal] = useState(false);
 
@@ -79,15 +79,15 @@ export default function Vagas() {
                         <span className='font-inter font-light'>Visualizar:</span>
                         <div className='flex items-center gap-2 bg-orange-200 rounded-lg p-1.5'>
                             <button 
-                                className={`bg-white rounded-lg font-inter p-2 text-sm border border-white transition-colors duration-200 ease-in-out cursor-pointer hover:border hover:border-orange-400 ${view === "grid" ? "text-orange-300" : "text-black"}`}
-                                onClick={() => setView("grid")}
+                                className={`bg-white rounded-lg font-inter p-2 text-sm border border-white transition-colors duration-200 ease-in-out cursor-pointer hover:border hover:border-orange-400 ${view === true ? "text-orange-300" : "text-black"}`}
+                                onClick={() => setView(true)}
                             >
                                 Grade
                             </button>
 
                             <button 
-                                className={`bg-white rounded-lg font-inter p-2 text-sm border border-white transition-colors duration-200 ease-in-out cursor-pointer hover:border hover:border-orange-400 ${view === "list" ? "text-orange-300" : "text-black"}`}
-                                onClick={() => setView("list")}
+                                className={`bg-white rounded-lg font-inter p-2 text-sm border border-white transition-colors duration-200 ease-in-out cursor-pointer hover:border hover:border-orange-400 ${view === false ? "text-orange-300" : "text-black"}`}
+                                onClick={() => setView(false)}
                             >
                                 Lista
                             </button>
@@ -99,6 +99,7 @@ export default function Vagas() {
                 <VagasMapper
                     vagas={vagasFiltradas}
                     view={view}
+                    darkMode={darkMode}
                 />
 
             </main>
