@@ -43,60 +43,8 @@ export default function VideoChamada() {
 
   const refuseCall = () => {
     setActiveCall(false)
+    endCall()
   }
-
- 
-
-  useEffect(() => {
-    let mounted = true;
-
-    const startLocalMedia = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: true,
-        });
-
-        if (!mounted) return;
-
-        localStreamRef.current = stream;
-        if (localVideoRef.current) localVideoRef.current.srcObject = stream;
-      } catch (err) {
-        console.error("Erro ao acessar câmera/microfone:", err);
-      }
-    };
-
-    const connectWebSocket = () => {
-      const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
-      const wsUrl = `${wsScheme}://${window.location.host}/ws/signaling/${roomName}/`;
-      socketRef.current = new WebSocket(wsUrl);
-
-      socketRef.current.onopen = () => {
-        console.log("WebSocket conectado");
-      };
-
-      socketRef.current.onmessage = (message) => {
-        const data = JSON.parse(message.data);
-        console.log("Mensagem recebida:", data);
-      };
-
-      socketRef.current.onclose = () => {
-        console.log("WebSocket desconectado");
-      };
-
-    startLocalMedia();
-    connectWebSocket();
-
-    return () => {
-      mounted = false;
-      if (localStreamRef.current) {
-        localStreamRef.current.getTracks().forEach((t) => t.stop());}
-      if (socketRef.current) socketRef.current.close();
-      if (peerConnectionRef.current) {
-        peerConnectionRef.current.close();}
-      }
-    };
-  }, []);
 
   const handleSocketMessage = async (event) => {
     const data = JSON.parse(event.data);
@@ -114,6 +62,48 @@ export default function VideoChamada() {
   if (data.type === "answer") await handleAnswer(data);
   if (data.type === "candidate") await handleCandidate(data);
 };
+ 
+
+  useEffect(() => {
+  let mounted = true;
+
+  const startLocalMedia = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+
+      if (!mounted) return;
+
+      localStreamRef.current = stream;
+      if (localVideoRef.current) 
+        localVideoRef.current.srcObject = stream;
+
+    } catch (err) {
+      console.error("Erro ao acessar câmera/mic:", err);
+    }
+  };
+
+  const connectWebSocket = () => {
+    const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+    const wsUrl = `${wsScheme}://${window.location.host}/ws/signaling/${roomName}/`;
+    socketRef.current = new WebSocket(wsUrl);
+
+    socketRef.current.onmessage = handleSocketMessage;
+  };
+
+  startLocalMedia();
+  connectWebSocket();
+
+  return () => {
+    mounted = false;
+    localStreamRef.current?.getTracks().forEach((t) => t.stop());
+    socketRef.current?.close();
+    peerConnectionRef.current?.close();
+  };
+}, []);
+
 
   const createPeerConnection = () => {
     if (peerConnectionRef.current) return;
@@ -168,6 +158,19 @@ export default function VideoChamada() {
       console.log(activeCall)
     },5000);
   };
+
+  const handleCandidate = async (data) => {
+  try {
+    if (peerConnectionRef.current) {
+      await peerConnectionRef.current.addIceCandidate(
+        new RTCIceCandidate(data.candidate)
+      );
+    }
+  } catch (err) {
+    console.error("Erro ao adicionar ICE candidate:", err);
+  }
+};
+
   
   const handleOffer = async (data) => {
     setCallStatus("receiving");
@@ -175,10 +178,6 @@ export default function VideoChamada() {
 
     createPeerConnection();
 
-    const remoteDesc = new RTCSessionDescription({
-      type: "offer",
-      sdp: data.sdp,
-    });
     await peerConnectionRef.current.setRemoteDescription(new RTCSessionDescription({type: "offer", sdp: data.sdp}));
   };
 
@@ -192,15 +191,19 @@ export default function VideoChamada() {
         sdp: answer.sdp,
       })
     );
-    setCallStatus("connected");
+   
     setActiveCall(false);
+    setCallStatus("connected");
   };
 
   const handleAnswer = async (data) => {
     try {
       if (peerConnectionRef.current) {
-        await peerConnectionRef.current.addIceCandidate(
-          new RTCIceCandidate(data.candidate)
+        await peerConnectionRef.current.setRemoteDescription(
+          new RTCSessionDescription({
+            type: "answer",
+            sdp: data.sdp,
+          })
         );
       }
     } catch (err) {
@@ -215,7 +218,7 @@ export default function VideoChamada() {
     }
     setActiveCall(false);
     setCallStatus("idle");
-    window.location.reload();
+    localStreamRef.current?.getTracks().forEach((t) => t.stop());
   }
 
   const changeMic = () => {
@@ -244,7 +247,7 @@ export default function VideoChamada() {
     <div className="bg-black w-9/12 h-9/12 rounded-md mt-4 flex justify-center items-center">
       <div className="relative bg-[rgb(26,26,26,100)] w-11/12 h-11/12 flex flex-col justify-between group">
         <video
-          ref={localStreamRef}
+          ref={localVideoRef}
           autoPlay
           playsInline
           muted
@@ -290,7 +293,7 @@ export default function VideoChamada() {
                 <div className="flex h-full w-full justify-center items-center gap-[5%]">
                 <VagaDemo />
                 <div className="flex flex-col gap-10">
-                  <button onClick={refuseCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
+                  <button onClick={acceptCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
                     Aceitar chamada
                   </button>
                   <button onClick={refuseCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
@@ -303,7 +306,7 @@ export default function VideoChamada() {
                 <div className="flex h-full w-full justify-center items-center gap-[5%]">
                   <PdfViewer fileUrl={`${API_URL}/api/file/curriculos/PedroCardosoCVenUS_sFhigql.pdf`} />
                   <div className="flex flex-col gap-10">
-                  <button onClick={refuseCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
+                  <button onClick={acceptCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
                     Aceitar chamada
                   </button>
                   <button onClick={refuseCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
