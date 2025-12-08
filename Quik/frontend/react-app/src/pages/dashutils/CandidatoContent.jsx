@@ -228,7 +228,7 @@ function handleFileChange(e) {
           <br/>
           <span className="font-inter font-semibold text-xl">Habilidades</span>
           <div className="flex w-full gap-6 mt-2">  
-          <AddTagsButton />
+          <AddTagsButton darkMode={darkMode} />
           </div>
           <h2 className="mt-10 font-inter font-bold" style={{borderBottom: '2px solid #FF8C00', paddingBottom: '5px'}}>Informações de Usuário</h2>
           <form id="infoUser" className="grid grid-cols-2 grid-rows-4 gap-y-8 sm:grid-cols-1 justify-between mt-5" onSubmit={(e) => {
@@ -260,8 +260,8 @@ function handleFileChange(e) {
 
           {isEditing && (
             <div className="flex justify-end items-center gap-5">
-                <button type="submit" form="infoUser" className="bg-orange-400 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer"> Salvar </button>
-                <button className="bg-orange-400 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
+                <button type="submit" form="infoUser" className="bg-gradient-to-b from-orange-400 to-orange-500 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer"> Salvar </button>
+                <button className="bg-gradient-to-b from-orange-400 to-orange-500 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
             </div>
           )}
           <h1 className="mt-10 font-inter font-bold" style={{borderBottom: '2px solid #FF8C00', paddingBottom: '5px'}}>Informações de Candidato</h1>
@@ -296,8 +296,8 @@ function handleFileChange(e) {
           </form>
           {isEditing && (
             <div className="flex justify-end items-center gap-5">
-                <button type="submit" form="infoCandidato" className="bg-orange-400 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer"> Salvar </button>
-                <button className="bg-orange-400 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
+                <button type="submit" form="infoCandidato" className="bg-gradient-to-b from-orange-400 to-orange-500 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer"> Salvar </button>
+                <button className="bg-gradient-to-b from-orange-400 to-orange-500 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
             </div>
           )}
         </main>

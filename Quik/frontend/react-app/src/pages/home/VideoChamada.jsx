@@ -7,6 +7,8 @@ import LogoLoading from "./LogoLoading";
 import Logo from "/logoNova.png";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRole } from "../../contexts/RoleContext";
+import PdfViewer from "../dashutils/PdfViewer";
+import VagaDemo from "../dashutils/VagaDemo";
 
 export default function VideoChamada() {
   const {role} = useRole()
@@ -15,6 +17,7 @@ export default function VideoChamada() {
   const [video, setVideo] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [activeCall, setActiveCall] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL
   
 
 
@@ -108,7 +111,7 @@ export default function VideoChamada() {
 
           {!isLoading ? (
             <button
-              className="self-center opacity-0 group-hover:opacity-100 transition-all duration-300 text-white font-inter text-2xl font-bold bg-orange-400 p-5 rounded-full cursor-pointer"
+              className="self-center opacity-0 group-hover:opacity-100 transition-all duration-300 text-white font-inter text-2xl font-bold bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/40 border border-orange-600 p-5 rounded-full cursor-pointer"
               onClick={startCall}
             >
               Faça um Quik
@@ -138,13 +141,26 @@ export default function VideoChamada() {
               transition={{duration:0.3, ease: "easeInOut"}}
               >
                {role === "candidato" && (
-                <div className="flex h-full w-full justify-center items-center gap-10">
-                <img src="/vaga.png" className=" w-full h-full rounded-xl"/>
+                <div className="flex h-full w-full justify-center items-center gap-[5%]">
+                <VagaDemo />
                 <div className="flex flex-col gap-10">
-                  <button onClick={refuseCall} className="bg-orange-400 rounded-lg text-white p-2 cursor-pointer hover:bg-orange-500 active:scale-90 transition-transform duration-200 ease-in-out">
+                  <button onClick={refuseCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
                     Aceitar chamada
                   </button>
-                  <button onClick={refuseCall} className="bg-orange-400 rounded-lg text-white p-2 cursor-pointer hover:bg-orange-500 active:scale-90 transition-transform duration-200 ease-in-out">
+                  <button onClick={refuseCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
+                    Recusar Chamada
+                  </button>
+                </div>
+                </div>
+               )}
+               {role === "recrutador" && (
+                <div className="flex h-full w-full justify-center items-center gap-[5%]">
+                  <PdfViewer fileUrl={`${API_URL}/api/file/curriculos/PedroCardosoCVenUS_sFhigql.pdf`} />
+                  <div className="flex flex-col gap-10">
+                  <button onClick={refuseCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
+                    Aceitar chamada
+                  </button>
+                  <button onClick={refuseCall} className="bg-gradient-to-b from-orange-400 to-orange-500 shadow-inner shadow-white/30 border border-orange-600 rounded-lg text-white p-2 cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out">
                     Recusar Chamada
                   </button>
                 </div>

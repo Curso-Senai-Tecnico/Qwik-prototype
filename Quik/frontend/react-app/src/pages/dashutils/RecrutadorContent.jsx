@@ -178,7 +178,7 @@ export default function RecrutadorContent({darkMode}){
             </>
             )}
           </form>
-          {isEditing === false && <button className="bg-orange-400 border border-orange-600 gap-2 flex p-3 rounded-lg shadow-2xl shadow-black/50 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(true)}>
+          {isEditing === false && <button className="bg-gradient-to-b from-orange-400 to-orange-500 border border-orange-600 gap-2 flex p-3 rounded-lg shadow-2xl shadow-black/50 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(true)}>
           <PencilLine color="white" size={15}/>
           <span className="font-inter text-white text-sm">Editar Perfil</span>
           </button>}
@@ -229,8 +229,8 @@ export default function RecrutadorContent({darkMode}){
         </form>
         {isEditing && (
             <div className="flex justify-end items-center gap-5">
-                <button type="submit" form="infoUser" className="bg-orange-400 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer"> Salvar </button>
-                <button className="bg-orange-400 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
+                <button type="submit" form="infoUser" className="bg-gradient-to-b from-orange-400 to-orange-500 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer"> Salvar </button>
+                <button className="bg-gradient-to-b from-orange-400 to-orange-500 border border-orange-600 text-white font-inter p-2 rounded-lg shadow-2xl shadow-black/60 hover:scale-110 active:scale-90 transition-transform duration-200 ease-in-out cursor-pointer" onClick={() => setEditing(false)}> Cancelar </button>
             </div>
           )}
           <div>

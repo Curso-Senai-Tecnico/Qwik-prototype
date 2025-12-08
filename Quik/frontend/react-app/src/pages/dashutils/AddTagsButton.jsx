@@ -3,7 +3,7 @@ import { useUser } from "../../contexts/UserContext";
 import { useToken } from "../../contexts/TokenContext";
 import { X } from "lucide-react";
 
-export default function AddTagsButton() {
+export default function AddTagsButton({darkMode}) {
   const { user, setUser } = useUser();
   const { token } = useToken();
   const API_URL = import.meta.env.VITE_API_URL;
@@ -59,8 +59,8 @@ export default function AddTagsButton() {
     <div className="flex flex-col mt-4 relative">
       <div className="flex flex-wrap gap-6">
         {userTags.map(tag => (
-          <div key={tag} className="bg-white flex gap-2 items-center border shadow shadow-black border-orange-300 p-2 rounded-full hover:scale-110 transition-transform duration-300 ease-in-out group">
-            <span className="font-inter text-orange-400">{tag}</span>
+          <div key={tag} className={`${darkMode ? "bg-[22303c]" : "bg-white"} flex gap-2 items-center border shadow shadow-black border-orange-600 p-2 rounded-full hover:scale-110 transition-transform duration-300 ease-in-out group`}>
+            <span className="font-inter font-semibold text-orange-400">{tag}</span>
             <X color="orange" size={15} className="cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out" />
           </div>
         ))} 

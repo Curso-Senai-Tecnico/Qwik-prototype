@@ -13,7 +13,7 @@ export default function VagasMapper({ vagas = [], view, darkMode}) {
       {vagas.map((vaga, idx) => (
         <div
           key={idx}
-          className={`border border-orange-300 ${darkMode ? "bg-black text-white" : "bg-white text-black"} rounded-xl p-4 shadow-md hover:shadow-lg transition-all cursor-pointer`}
+          className={`border border-orange-300 ${darkMode ? "bg-black text-white" : "bg-white text-black"} rounded-xl p-4 shadow-md hover:shadow-lg transition-all cursor-pointer font-inter`}
         >
           {/* Título + etiqueta CLT/PJ */}
           <div className="flex justify-between items-start">
@@ -22,6 +22,8 @@ export default function VagasMapper({ vagas = [], view, darkMode}) {
               {vaga.contrato}
             </span>
           </div>
+
+          <p >{vaga.tipo}</p>
 
           {/* Nome Fake da Empresa */}
           <p className="text-orange-700 font-medium mt-1">{vaga.empresa || "Empresa Confidencial"}</p>

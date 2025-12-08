@@ -9,6 +9,8 @@ import { useRole } from "../../contexts/RoleContext";
 import { useUser } from "../../contexts/UserContext";
 import { useState } from "react";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
+import { LogOut } from "lucide-react";
+import { useToken } from "../../contexts/TokenContext";
 
 
 // COMENTANDO UM MONTE DE COISA PQ O BACKEND TA TODO BUGADO
@@ -21,6 +23,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   const [profile, setProfile] = useState(user?.perfil)
   const [openNotif, setOpenNotif] = useState(false)
   const API_URL = import.meta.env.VITE_API_URL
+  const {logout} = useToken()
   
   
   const notificacoes = [{
@@ -109,7 +112,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
             </div>
             <button
               onClick={() => !loadingUser && navigate(`/${role}/dashboard`)}
-              className={`flex w-fit border hover:border-orange-600 rounded-4xl h-full justify-between items-center pl-2.5 pr-2.5 cursor-pointer active:scale-95 transition-all duration-200 ease-in-out ${
+              className={`flex w-fit border hover:border-orange-600 rounded-4xl h-full justify-between items-center pl-2.5 pr-2.5 cursor-pointer active:scale-95 transition-all duration-200 ease-in-out gap-2 ${
                 darkMode
                   ? "dark:hover:bg-gray-900"
                   : "hover:bg-gray-100 border-black text-black"
@@ -126,6 +129,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
     <>
       {user?.perfil?.foto ? <img src={`${API_URL}/${user?.perfil?.foto}`} className="rounded-full w-[90px] h-[90px]" /> : <img src="/qwikpadrao.png" width={80} height={80} className="rounded-full" />}
       <span className="ml-3">{user?.usuario.nome}</span>
+      <LogOut className="hover:scale-110" onClick={logout} />
     </>
   )}
             </button>
