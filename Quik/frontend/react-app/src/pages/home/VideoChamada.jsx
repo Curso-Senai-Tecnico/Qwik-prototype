@@ -308,7 +308,7 @@ export default function VideoChamada() {
                         : "bg-gray-600 cursor-not-allowed opacity-50"}`}
                 onClick={startCall}
             >
-                {canCall ? "Faça um Quik" : "Aguardando..."}
+                {canCall ? "Faça um Quik" : <LogoLoading />}
             </button>
             ) : (
             <div className="flex flex-col justify-center items-center">

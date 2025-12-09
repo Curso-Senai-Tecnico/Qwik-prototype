@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)k@^4f3-o_0ijc-uw**sg38kn)zp*r0bca49rqcr4s2x93yeqc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*", "backend", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -99,8 +99,8 @@ DATABASES = {
         'NAME': 'qwik',
         'USER': 'root',                 
         'PASSWORD': 'admin',
-        'HOST': '127.0.0.1',            
-        'PORT': '3308',                 
+        'HOST': 'db',            
+        'PORT': '3306',                 
         'OPTIONS': {
             'ssl': {'disabled': True},
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'" # meio q diz pro django “Assim que conectar, execute esse comando SQL para deixar o MySQL mais rigoroso e seguro"
@@ -169,14 +169,14 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [("localhost", 6379)],
+            'hosts': [("redis", 6379)],
     },
 }}
 
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://localhost:6379/1',
+        'LOCATION': 'redis://redis:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
     }

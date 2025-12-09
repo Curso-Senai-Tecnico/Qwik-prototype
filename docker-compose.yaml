@@ -39,6 +39,8 @@ services:
       - "8080:80"
     env_file:
       - ./Quik/frontend/react-app/.env
+    depends_on:
+      - backend
     networks:
       - backend
     restart: always
