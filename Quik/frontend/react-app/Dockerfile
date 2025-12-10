@@ -26,4 +26,5 @@ COPY --from=builder /react-vite-app/dist ./dist
 EXPOSE $PORT
 
 # Comando para rodar o servidor
-CMD ["sh", "-c", "serve -s dist -l 0.0.0.0:$PORT"]
+CMD ["sh", "-c", "serve -s dist -l $PORT"]
+
