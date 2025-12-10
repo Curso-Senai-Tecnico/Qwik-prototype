@@ -14,5 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+# Railway ignora EXPOSE, mas pode ficar
 EXPOSE 8000
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "projeto.asgi:application"]
+
+CMD ["sh", "-c", "python manage.py migrate && daphne -b 0.0.0.0 -p ${PORT} projeto.asgi:application"]
