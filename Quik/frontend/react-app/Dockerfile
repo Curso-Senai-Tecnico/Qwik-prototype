@@ -1,3 +1,4 @@
+# Etapa 1: build do React
 FROM node:20-alpine AS builder
 
 WORKDIR /react-vite-app
@@ -10,12 +11,19 @@ COPY . .
 
 RUN npm run build
 
-FROM docker.io/library/nginx:alpine
+# Etapa 2: servir a build com "serve"
+FROM node:20-alpine
 
-COPY --from=builder /react-vite-app/dist /usr/share/nginx/html
+WORKDIR /app
 
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+# Instala o pacote serve globalmente
+RUN npm install -g serve
 
-EXPOSE 80
+# Copia a build
+COPY --from=builder /react-vite-app/dist ./dist
 
-CMD ["nginx", "-g", "daemon off;"]
+# Porta que o Railway vai expor
+EXPOSE 4173
+
+# Comando para rodar o servidor
+CMD ["serve", "-s", "dist", "-l", "4173"]
