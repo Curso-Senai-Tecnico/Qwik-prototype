@@ -49,7 +49,7 @@ export default function VideoChamada() {
     // Conexão WebSocket
     const connectWebSocket = () => {
       // Se estiver rodando localmente, mas acessando via IP da rede, mude '127.0.0.1' para seu IP
-      const wsUrl = `ws://127.0.0.1:8000/ws/call/${roomName}/`;
+      const wsUrl = `wss://quik.up.railway.app/ws/call/${roomName}/`;
       
       socketRef.current = new WebSocket(wsUrl);
 
