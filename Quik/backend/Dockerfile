@@ -14,6 +14,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# force rebuild
+COPY wait-for-it.sh .
+RUN chmod +x wait-for-it.sh
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+CMD ["./entrypoint.sh"]
 
-CMD ["daphne", "-b", "0.0.0.0", "-p", "$PORT", "projeto.asgi:application"]
