@@ -23,7 +23,7 @@ RUN npm install -g serve
 COPY --from=builder /react-vite-app/dist ./dist
 
 # Porta que o Railway vai expor
-EXPOSE 4173
+EXPOSE $PORT
 
 # Comando para rodar o servidor
-CMD ["serve", "-s", "dist", "-l", "4173"]
+CMD ["sh", "-c", "serve", "-s", "dist", "-l", "$PORT"]
