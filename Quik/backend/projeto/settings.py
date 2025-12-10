@@ -84,6 +84,9 @@ TEMPLATES = [
     },
 ]
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media'
 
@@ -163,7 +166,26 @@ AUTH_USER_MODEL = 'api.Usuario'
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "authorization",
+    "content-type",
+    "origin",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
@@ -172,6 +194,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8080",
     "https://quikempregos.up.railway.app",
 
+]
+
+CORS_EXPOSE_HEADERS = [
+    "Content-Type",
+    "Authorization"
 ]
 
 REDIS_URL = os.getenv("REDIS_URL")
