@@ -169,8 +169,8 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
-    "quikempregos.up.railway.app",
-    "quik.up.railway.app",
+    "https://quikempregos.up.railway.app",
+    "https://quik.up.railway.app",
     "http://localhost:8000",
     "http://localhost:8080",
     "http://localhost:4173"
