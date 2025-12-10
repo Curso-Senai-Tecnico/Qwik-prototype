@@ -16,4 +16,4 @@ COPY . .
 
 # force rebuild
 
-CMD ["sh", "-c", "python manage.py migrate && daphne -b 0.0.0.0 -p ${PORT} projeto.asgi:application"]
+CMD ["sh", "-c", "python manage.py migrate sessions && python manage.py migrate contenttypes && python manage.py migrate authtoken && python manage.py migrate auth && python manage.py migrate admin && python manage.py migrate api --fake   && daphne -b 0.0.0.0 -p ${PORT} projeto.asgi:application"]
