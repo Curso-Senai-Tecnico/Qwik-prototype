@@ -166,7 +166,9 @@ AUTH_USER_MODEL = 'api.Usuario'
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "https://quikempregos.up.railway.app",
+]
 
 CORS_ALLOW_METHODS = [
     "GET",
@@ -184,16 +186,6 @@ CORS_ALLOW_HEADERS = [
     "origin",
     "x-csrftoken",
     "x-requested-with",
-]
-
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-    "https://quikempregos.up.railway.app",
-
 ]
 
 CORS_EXPOSE_HEADERS = [
