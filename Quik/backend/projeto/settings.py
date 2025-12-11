@@ -3,7 +3,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = "+!x7)zw$1z-iv7a@s1^2qs!n83b_dgxk84mvj9q%gv9l%f%7&w"
 
 # ============================
 # 🔥 AMBIENTE
@@ -15,13 +15,9 @@ DEBUG = os.getenv("DEBUG", "True") == "True"
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    ".ngrok-free.dev",
-    ".ngrok.io",
-    "https://prepituitary-hyperbarbarously-twila.ngrok-free.dev",
+    "prepituitary-hyperbarbarously-twila.ngrok-free.dev",
 
     # coloque aqui seu backend futuro
-    "quik.up.railway.app",
-    "quikempregos.up.railway.app",
 ]
 
 # Necessário para Vercel/Ngrok sobre HTTPS reverso
@@ -101,7 +97,7 @@ ASGI_APPLICATION = "projeto.asgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "quik",
+        "NAME": "qwik",
         "USER": "root",
         "PASSWORD": "admin",
         "HOST": "127.0.0.1",
@@ -148,15 +144,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8080",
 
     # vercel
-    "https://*.vercel.app",
-    "https://qwik-frontend-sandy.vercel.app/",
+    "https://qwik-frontend-sandy.vercel.app",
 
     # railway frontend antigo
-    "https://quik.up.railway.app",
-    "https://quikempregos.up.railway.app",
 
     # ngrok
-    "https://*.ngrok.io",
     "https://prepituitary-hyperbarbarously-twila.ngrok-free.dev"
 ]
 

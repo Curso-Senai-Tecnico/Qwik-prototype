@@ -26,6 +26,8 @@ export function UserProvider({ children }) {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Token ${token}`,
+            "ngrok-skip-browser-warning": "true"
+
           },
         });
 
