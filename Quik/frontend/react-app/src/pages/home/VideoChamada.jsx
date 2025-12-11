@@ -31,6 +31,7 @@ export default function VideoChamada() {
   const localStreamRef = useRef(null);
   const peerConnectionRef = useRef(null);
   const socketRef = useRef(null);
+  const BASE = import.meta.env.VITE_API_URL
 
   // --- FUNÇÃO SEGURA PARA ENVIAR MENSAGENS ---
   // Isso resolve o "InvalidStateError"
@@ -49,7 +50,11 @@ export default function VideoChamada() {
     // Conexão WebSocket
     const connectWebSocket = () => {
       // Se estiver rodando localmente, mas acessando via IP da rede, mude '127.0.0.1' para seu IP
-      const wsUrl = `wss://quik.up.railway.app/ws/call/${roomName}/`;
+      const wsUrl = BASE
+      .replace("https://", "wss://")
+      .replace("http://", "ws://") 
+      + `/ws/call/${roomName}/`;
+
       
       socketRef.current = new WebSocket(wsUrl);
 
