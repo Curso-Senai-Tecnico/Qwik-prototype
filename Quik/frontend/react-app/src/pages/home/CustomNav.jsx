@@ -127,7 +127,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   ) : (
     
     <>
-      {user?.perfil?.foto ? <img src={`${API_URL}${user?.perfil?.foto}`} className="rounded-full w-[90px] h-[90px]" /> : <img src="/qwikpadrao.png" width={80} height={80} className="rounded-full" />}
+      {user?.perfil?.foto ? <img src={`${API_URL}/api/file/${user?.perfil?.foto}`} className="rounded-full w-[90px] h-[90px]" /> : <img src="/qwikpadrao.png" width={80} height={80} className="rounded-full" />}
       <span className="ml-3">{user?.usuario.nome}</span>
       <LogOut className="hover:scale-110" onClick={logout} />
     </>
