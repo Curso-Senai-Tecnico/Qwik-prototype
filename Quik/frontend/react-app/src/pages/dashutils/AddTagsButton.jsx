@@ -17,7 +17,7 @@ export default function AddTagsButton({darkMode}) {
  
   useEffect(() => {
     fetch(`${API_URL}/api/tags/`, {
-      headers: { Authorization: `Token ${token}`, "ngrok-skip-browser-warning": "true"
+      headers: { Authorization: `Token ${token}`, 
  }
     })
       .then(res => res.json())

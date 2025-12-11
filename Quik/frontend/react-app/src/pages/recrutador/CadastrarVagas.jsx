@@ -125,7 +125,7 @@ export default function CadastrarVagas({ darkMode, setDarkMode, onClose}) {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${token}`,
-          "ngrok-skip-browser-warning": "true"
+          
         },
         body: JSON.stringify(payload)
       });

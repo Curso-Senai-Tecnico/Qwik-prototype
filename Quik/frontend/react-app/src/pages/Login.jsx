@@ -26,7 +26,6 @@ export default function Login() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "ngrok-skip-browser-warning": "true",
         },
         body: JSON.stringify({username: email, password}),
       });

@@ -21,7 +21,7 @@ export default function Vagas({darkMode}) {
                 const response = await fetch(`${API_URL}/api/vagas/`, {
                     headers: {
                         Authorization: `Token ${token}`,
-                        "ngrok-skip-browser-warning": "true"
+                        
 
                     }
                 });

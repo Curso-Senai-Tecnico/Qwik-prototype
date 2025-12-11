@@ -26,7 +26,7 @@ export default function DocsContent({darkMode}) {
         method: "PATCH",
         headers: {
           Authorization: `Token ${token}`,
-          "ngrok-skip-browser-warning": "true"
+          
 
         },
         body: formData,

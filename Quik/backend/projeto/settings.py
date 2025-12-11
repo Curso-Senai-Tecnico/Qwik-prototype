@@ -17,6 +17,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "prepituitary-hyperbarbarously-twila.ngrok-free.dev",
+    "assure-encoding-ecommerce-alfred.trycloudflare.com",
 
     # coloque aqui seu backend futuro
 ]
@@ -150,7 +151,8 @@ CORS_ALLOWED_ORIGINS = [
     # railway frontend antigo
 
     # ngrok
-    "https://prepituitary-hyperbarbarously-twila.ngrok-free.dev"
+    "https://prepituitary-hyperbarbarously-twila.ngrok-free.dev",
+    "https://assure-encoding-ecommerce-alfred.trycloudflare.com",
 ]
 
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]

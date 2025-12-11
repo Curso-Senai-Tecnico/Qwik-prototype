@@ -100,7 +100,7 @@ export default function CandidatoContent({darkMode}) {
     try {
     const response = await fetch (`${API_URL}/api/candidatos/${user?.usuario?.id}/`, {
       method: "PATCH",
-      headers: {Authorization: `Token ${token}`, "Content-Type": "application/json", "ngrok-skip-browser-warning": "true"
+      headers: {Authorization: `Token ${token}`, "Content-Type": "application/json", 
 },
       body: JSON.stringify(cleanData)
     })

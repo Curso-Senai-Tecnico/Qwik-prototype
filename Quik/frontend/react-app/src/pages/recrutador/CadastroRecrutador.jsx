@@ -22,7 +22,7 @@ export default function Cadastro() {
     try {
       const response = await fetch(`${API_URL}/api/recrutadores/`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true"
+        headers: { "Content-Type": "application/json",
  },
         body: JSON.stringify({
           usuario: {
