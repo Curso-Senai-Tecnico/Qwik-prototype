@@ -17,7 +17,7 @@ export function RoleProvider({ children }) {
   } else {
     localStorage.removeItem("role")
   }
-  }, [token, user]);
+  }, [token, user?.usuario?.role]);
 
   return (
     <RoleContext.Provider value={{ role, setRole }}>
