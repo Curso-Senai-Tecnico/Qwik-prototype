@@ -100,7 +100,8 @@ export default function CandidatoContent({darkMode}) {
     try {
     const response = await fetch (`${API_URL}/api/candidatos/${user?.usuario?.id}/`, {
       method: "PATCH",
-      headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
+      headers: {Authorization: `Token ${token}`, "Content-Type": "application/json", "ngrok-skip-browser-warning": "true"
+},
       body: JSON.stringify(cleanData)
     })
 
@@ -135,7 +136,8 @@ export default function CandidatoContent({darkMode}) {
     try {
     const response = await fetch(`${API_URL}/api/candidatos/${user?.usuario?.id}/`, {
       method: "PATCH",
-      headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
+      headers: {Authorization: `Token ${token}`, "Content-Type": "application/json", "ngrok-skip-browser-warning": "true"
+},
       body: JSON.stringify(cleanData)
     })
 
@@ -161,6 +163,8 @@ export default function CandidatoContent({darkMode}) {
       method: "PATCH",
       headers: {
         Authorization: `Token ${token}`,
+        "ngrok-skip-browser-warning": "true"
+
       },
       body: formData
     })

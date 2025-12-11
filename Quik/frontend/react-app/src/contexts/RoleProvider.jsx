@@ -15,6 +15,7 @@ export function RoleProvider({ children }) {
           headers: {
             Authorization: `Token ${token}`,
             "Content-Type": "application/json",
+            "User-Agent": "qwik-app",
           }
         });
         
