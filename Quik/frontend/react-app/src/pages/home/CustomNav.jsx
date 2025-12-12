@@ -7,7 +7,7 @@ import { Lightbulb } from "lucide-react";
 import Logo from "/logoSvg.svg";
 import { useRole } from "../../contexts/RoleContext";
 import { useUser } from "../../contexts/UserContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import { LogOut } from "lucide-react";
 import { useToken } from "../../contexts/TokenContext";
@@ -24,23 +24,32 @@ export default function CustomNav({ darkMode, setDarkMode }) {
   const [openNotif, setOpenNotif] = useState(false)
   const API_URL = import.meta.env.VITE_API_URL
   const {logout} = useToken()
+  const [notificacoes, setNotificacoes] = useState([])
   
+  const hasNull = (obj) => {
+  if (!obj) return false;
+  return Object.values(obj).some(v => v == null || v === "");
+};
   
-  const notificacoes = [{
-    id: 1,
-    icon: "/isquiloperfil.png",
-    text: "Você precisa completar seu perfil.",
-    path: `${user?.usuario?.role}/dashboard`
-  }, 
-    {
-    id:2,
-    icon: "/saibamais.png",
-    text: "Quer saber mais sobre a equipe? Clique aqui!",
-    path: "/saibamais" 
-  }]
+  useEffect(() => {
+  if (hasNull(user?.usuario)) {
+    setNotificacoes([
+      {
+        id: 1,
+        icon: "/isquiloperfil.png",
+        text: "Você precisa completar seu perfil.",
+        path: `/${user?.usuario?.role}/dashboard`
+      }
+    ]);
+  } else {
+    setNotificacoes([]);
+  }
+}, [user]);
   const toggleTheme = () => {
     setDarkMode((prevMode) => !prevMode);
   };
+
+  
  
   return (
     <header>
@@ -88,6 +97,11 @@ export default function CustomNav({ darkMode, setDarkMode }) {
               color={darkMode ? "white" : "black"}
               onClick={() => setOpenNotif((prev) => !prev)}
             />
+            {notificacoes.length > 0 && (
+              <div className=" absolute bottom-6 left-5 bg-red-500 rounded-full h-5 w-5 text-white text-base">
+                <span className="flex items-center justify-center">1</span>
+              </div>
+            )}
             <AnimatePresence>
             {openNotif && (
               <motion.div 
@@ -95,7 +109,7 @@ export default function CustomNav({ darkMode, setDarkMode }) {
               animate={{opacity: 1, y: 0, filter: "blur(0px)"}}
               exit={{opacity: 0, y: 9, filter: "blur(10px)"}}
               transition={{duration: 0.25, ease: easeInOut}}
-              className={`absolute top-10 right-0 w-60 h-full bg-none z-10`}
+              className={`absolute top-10 right-0 w-60 h-full bg-none z-60`}
               >
                 <div className={`flex flex-col bg-none shadow`}>
                   <div className={`rounded-t border-b p-1 ${darkMode ? "bg-[#23405a] text-white" : "bg-gray-50 text-black"} font-inter`}>Notificações</div>
