@@ -109,10 +109,11 @@ export default function CustomNav({ darkMode, setDarkMode }) {
               animate={{opacity: 1, y: 0, filter: "blur(0px)"}}
               exit={{opacity: 0, y: 9, filter: "blur(10px)"}}
               transition={{duration: 0.25, ease: easeInOut}}
-              className={`absolute top-10 right-0 w-60 h-full bg-none z-60`}
+              className={`absolute top-10 right-0 w-60 min-h-20 rounded-md h-full bg-gray-300/90 z-60`}
               >
                 <div className={`flex flex-col bg-none shadow`}>
                   <div className={`rounded-t border-b p-1 ${darkMode ? "bg-[#23405a] text-white" : "bg-gray-50 text-black"} font-inter`}>Notificações</div>
+                  {notificacoes.length === 0 && <p className="font-inter text-center text-gray-600">Nada por aqui...</p>}
                   {notificacoes.map((notifs) => (
                     <div key={notifs.id} className={`gap-2 p-3 cursor-pointer flex shadow-inner ${darkMode ? "bg-[#22303c] text-white" : "bg-white text-black"}`} onClick={() => navigate(notifs.path)}>
                       <img src={notifs.icon} width={40} height={40} className="rounded"/>

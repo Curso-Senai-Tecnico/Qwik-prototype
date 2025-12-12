@@ -194,10 +194,10 @@ function handleFileChange(e) {
       <>
         <header className=" flex bg-gradient-to-r from-orange-400 to-orange-500 w-full h-1/12">
         <div className="relative w-40 h-40 top-0 left-3 group">
-          <img src={user != null && user?.perfil?.foto != null ? `${API_URL}${user?.perfil?.foto}` : "/qwikpadrao.png"} className="rounded-full w-full h-full object-cover group-active:scale-90 cursor-pointer transition-all duration-200 ease-in-out" onClick={handleImageClick}/>
-          <div onClick={handleImageClick} className="absolute inset-0 rounded-full bg-black/30 backdrop-blur-xs 
+          <img src={user != null && user?.perfil?.foto != null ? `${API_URL}${user?.perfil?.foto}?refresh=${Date.now()}` : "/qwikpadrao.png"} className="rounded-full w-full h-full object-cover group-active:scale-90 cursor-pointer transition-all duration-200 ease-in-out" onClick={handleImageClick}/>
+          <div onClick={handleImageClick} className="absolute inset-5 rounded-full bg-black/30 backdrop-blur-xs 
                opacity-0 group-hover:opacity-100 flex justify-center items-center 
-               transition-all duration-200 ease-in-out w-40 h-40 cursor-pointer pointer-events-none group-hover:pointer-events-auto group-active:scale-90">
+               transition-all duration-200 ease-in-out w-30 h-30 cursor-pointer pointer-events-none group-hover:pointer-events-auto group-active:scale-90">
                 <PencilLine size={28}/>
           </div>
           <input
