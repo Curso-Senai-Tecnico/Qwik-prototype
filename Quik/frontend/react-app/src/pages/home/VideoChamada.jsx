@@ -14,7 +14,7 @@ const iceConfiguration = {
 
 export default function VideoChamada() {
   const { role } = useRole();
-  const roomName = "sala-teste"; // DICA: Em produção, gere IDs únicos
+  const roomName = "sala-teste5"; // DICA: Em produção, gere IDs únicos
 
   // Estados
   const [mic, setMic] = useState(true);
@@ -243,6 +243,7 @@ export default function VideoChamada() {
 
   // Controles
   const changeMic = () => {
+    console.log("O estado de mic é: " + mic)
     setMic((prev) => {
       const newState = !prev;
       localStreamRef.current?.getAudioTracks().forEach((t) => (t.enabled = newState));

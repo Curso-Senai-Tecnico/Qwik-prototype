@@ -3,6 +3,7 @@ import { Users, Search } from 'lucide-react'
 import Modal from './Modal'
 import CadastrarVagas from '../recrutador/CadastrarVagas'
 import VagasMapper from './VagasMapper'
+import { useUser } from '../../contexts/UserContext'
 
 export default function Vagas({darkMode}) {
 
@@ -13,6 +14,7 @@ export default function Vagas({darkMode}) {
     const [vagas, setVagas] = useState([]);
     const API_URL = import.meta.env.VITE_API_URL;
     const token = localStorage.getItem("token");
+    const {user} = useUser()
 
     // Buscar vagas ao carregar a página
     useEffect(() => {
@@ -24,7 +26,8 @@ export default function Vagas({darkMode}) {
                     }
                 });
                 const data = await response.json();
-                setVagas(data);
+                console.log(data)
+                setVagas(Array.isArray(data) ? data : []);
             } catch (err) {
                 console.error("Erro ao buscar vagas:", err);
             }
@@ -32,11 +35,13 @@ export default function Vagas({darkMode}) {
         fetchVagas();
     }, []);
 
-    // FILTRO
-    const vagasFiltradas = vagas.filter(v =>
-        v.cargo.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
+    
+    let vagasFiltradas = []
+    if (vagas !== null) {
+        vagasFiltradas = vagas.filter(v =>
+        v.cargo.toLowerCase().includes(searchTerm.toLowerCase()) && v.recrutador === user?.usuario?.id
+    )}
+    
     return (
         <div className='flex flex-col h-full'>
             <header className="flex items-center justify-between p-4 bg-gradient-to-b from-orange-400 to-orange-600 h-1/12 shadow-black/40 shadow-2xl">
@@ -96,11 +101,11 @@ export default function Vagas({darkMode}) {
                 </div>
 
                 {/* AQUI RENDERIZA AS VAGAS */}
-                <VagasMapper
+                {vagasFiltradas.length >= 1 ? <VagasMapper
                     vagas={vagasFiltradas}
                     view={view}
                     darkMode={darkMode}
-                />
+                /> : <p className='text-center'>Nenhuma vaga encontrada. Crie uma nova vaga!</p>}
 
             </main>
 

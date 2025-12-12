@@ -10,7 +10,7 @@ export default function VagasMapper({ vagas = [], view, darkMode}) {
 
   return (
     <div className={`${view ? "grid grid-cols-1 md:grid-cols-2 gap-6 mt-4" : "flex flex-col gap-4 mt-4"}`}>
-      {vagas.map((vaga, idx) => (
+      {vagas !== null && vagas.map((vaga, idx) => (
         <div
           key={idx}
           className={`border border-orange-300 ${darkMode ? "bg-black text-white" : "bg-white text-black"} rounded-xl p-4 shadow-md hover:shadow-lg transition-all cursor-pointer font-inter`}
