@@ -18,7 +18,8 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "prepituitary-hyperbarbarously-twila.ngrok-free.dev",
     "assure-encoding-ecommerce-alfred.trycloudflare.com",
-    "evaluation-scheduled-poem-morris.trycloudflare.com"
+    "evaluation-scheduled-poem-morris.trycloudflare.com",
+    "electronics-reforms-improvement-industries.trycloudflare.com"
 
     # coloque aqui seu backend futuro
 ]
@@ -155,6 +156,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://prepituitary-hyperbarbarously-twila.ngrok-free.dev",
     "https://assure-encoding-ecommerce-alfred.trycloudflare.com",
     "https://evaluation-scheduled-poem-morris.trycloudflare.com",
+    "https://electronics-reforms-improvement-industries.trycloudflare.com"
 ]
 
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]

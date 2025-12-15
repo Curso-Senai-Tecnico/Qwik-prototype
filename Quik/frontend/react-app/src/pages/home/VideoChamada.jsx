@@ -14,7 +14,7 @@ const iceConfiguration = {
 
 export default function VideoChamada() {
   const { role } = useRole();
-  const roomName = "sala-teste2"; // DICA: Em produção, gere IDs únicos
+  const roomName = "sala-teste3"; // DICA: Em produção, gere IDs únicos
 
   // Estados
   const [mic, setMic] = useState(true);
