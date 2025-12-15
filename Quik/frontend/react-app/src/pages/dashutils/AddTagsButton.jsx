@@ -60,7 +60,7 @@ export default function AddTagsButton({darkMode}) {
     <div className="flex flex-col mt-4 relative">
       <div className="flex flex-wrap gap-6">
         {userTags.map(tag => (
-          <div key={tag} className={`${darkMode ? "bg-[22303c]" : "bg-white"} flex gap-2 items-center border shadow shadow-black border-orange-600 p-2 rounded-full hover:scale-110 transition-transform duration-300 ease-in-out group`}>
+          <div key={tag} className={`${darkMode ? "bg-[#22303c]" : "bg-white"} flex gap-2 items-center border shadow shadow-black border-orange-600 p-2 rounded-full hover:scale-110 transition-transform duration-300 ease-in-out group`}>
             <span className="font-inter font-semibold text-orange-400">{tag}</span>
             <X color="orange" size={15} className="cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out" />
           </div>
@@ -70,7 +70,7 @@ export default function AddTagsButton({darkMode}) {
         {userTags.length < 5 && (
           <button
             onClick={() => setShowDropdown(prev => !prev)}
-            className="bg-white border border-orange-300 shadow shadow-black p-2 rounded-full hover:scale-110 transition-transform duration-300 ease-in-out font-inter text-orange-400 cursor-pointer active:scale-90"
+            className={`${darkMode ? "bg-[#2203c]" : "bg-white"} border border-orange-300 shadow shadow-black p-2 rounded-full hover:scale-110 transition-transform duration-300 ease-in-out font-inter text-orange-400 cursor-pointer active:scale-90`}
           >
             + Adicionar Tags
           </button>

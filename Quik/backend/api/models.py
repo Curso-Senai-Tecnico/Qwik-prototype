@@ -111,7 +111,7 @@ class Recrutador(models.Model):
     # Ligação um-para-um com Usuario
     usuario = models.OneToOneField('Usuario', on_delete=models.CASCADE, primary_key=True)
     cnpj = models.CharField(max_length=18, unique=True)# Formato: 00.000.000/0000-00
-    perfil_recrutador = models.CharField(max_length=100, null=False, default='padrao')
+    perfil_recrutador = models.CharField(max_length=100, null=False)
 
     class Meta:
         db_table = 'recrutador'

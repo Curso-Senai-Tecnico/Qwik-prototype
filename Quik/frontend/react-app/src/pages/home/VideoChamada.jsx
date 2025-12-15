@@ -5,6 +5,7 @@ import LogoLoading from "./LogoLoading";
 import Logo from "/logoNova.png";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRole } from "../../contexts/RoleContext";
+import VagasMapper from "../dashutils/VagasMapper";
 
 const iceConfiguration = {
   iceServers: [
@@ -14,7 +15,7 @@ const iceConfiguration = {
 
 export default function VideoChamada() {
   const { role } = useRole();
-  const roomName = "sala-teste2"; // DICA: Em produção, gere IDs únicos
+  const roomName = "sala-teste5"; // DICA: Em produção, gere IDs únicos
 
   // Estados
   const [mic, setMic] = useState(true);
@@ -32,6 +33,80 @@ export default function VideoChamada() {
   const peerConnectionRef = useRef(null);
   const socketRef = useRef(null);
   const BASE = import.meta.env.VITE_API_URL
+
+  const vagas = [{
+    "recrutador": 6,
+    "tipo": "Estágio",
+    "contrato": "Parcial",
+    "cargo": "Assistente Administrativo",
+    "resumo": "Suporte a tarefas administrativas.",
+    "responsabilidades": "Organização de documentos, atendimento telefônico.",
+    "requisitos": "Pacote Office, Boa comunicação",
+    "beneficios": "Bolsa Auxílio, Recesso Remunerado",
+    "salario": "1500.00",
+    "quantidade": 3,
+    "localizacao": "Rio de Janeiro - RJ",
+    "data_publicacao": "2025-10-22",
+    "status": "Ativa",
+    "tags": [
+        {
+            "id": 1,
+            "nome": "HTML"
+        },
+        {
+            "id": 4,
+            "nome": "Java"
+        },
+        {
+            "id": 6,
+            "nome": "Desenvolvimento de Sistemas"
+        },
+        {
+            "id": 7,
+            "nome": "Análise de Dados"
+        },
+        {
+            "id": 9,
+            "nome": "Frontend"
+        }
+    ]
+}, {
+    "recrutador": 6,
+    "tipo": "CLT",
+    "contrato": "Integral",
+    "cargo": "Gerente de Vendas",
+    "resumo": "Gestão de equipe e metas de vendas.",
+    "responsabilidades": "Liderar equipe, planejar estratégias.",
+    "requisitos": "Experiência em liderança, Negociação",
+    "beneficios": "Comissão, Carro da empresa, Plano Odontológico",
+    "salario": "10000.00",
+    "quantidade": 1,
+    "localizacao": "Belo Horizonte - MG",
+    "data_publicacao": "2025-10-15",
+    "status": "Expirada",
+    "tags": [
+        {
+            "id": 2,
+            "nome": "CSS"
+        },
+        {
+            "id": 3,
+            "nome": "Javascript"
+        },
+        {
+            "id": 5,
+            "nome": "Python"
+        },
+        {
+            "id": 8,
+            "nome": "Ciência de Dados"
+        },
+        {
+            "id": 10,
+            "nome": "Backend"
+        }
+    ]
+}]
 
   // --- FUNÇÃO SEGURA PARA ENVIAR MENSAGENS ---
   // Isso resolve o "InvalidStateError"
@@ -248,6 +323,7 @@ export default function VideoChamada() {
 
   // Controles
   const changeMic = () => {
+    console.log("O estado de mic é: " + mic)
     setMic((prev) => {
       const newState = !prev;
       localStreamRef.current?.getAudioTracks().forEach((t) => (t.enabled = newState));
@@ -340,6 +416,10 @@ export default function VideoChamada() {
               >
                 <div className="flex h-full w-full justify-center items-center gap-10">
                   {role === "candidato" && (
+                    <VagasMapper vagas={vagas} view={true} />
+                  )}
+
+                  {role === "recrutador" && (
                     <iframe src="/curriculo_alexandre.pdf" className="w-1/2 h-full rounded-xl bg-white" />
                   )}
                   <div className="flex flex-col gap-10 items-center text-white">
