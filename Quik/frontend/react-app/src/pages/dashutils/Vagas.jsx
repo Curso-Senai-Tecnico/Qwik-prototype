@@ -22,7 +22,9 @@ export default function Vagas({darkMode}) {
             try {
                 const response = await fetch(`${API_URL}/api/vagas/`, {
                     headers: {
-                        Authorization: `Token ${token}`
+                        Authorization: `Token ${token}`,
+                        
+
                     }
                 });
                 const data = await response.json();

@@ -17,7 +17,8 @@ export default function AddTagsButton({darkMode}) {
  
   useEffect(() => {
     fetch(`${API_URL}/api/tags/`, {
-      headers: { Authorization: `Token ${token}` }
+      headers: { Authorization: `Token ${token}`, 
+ }
     })
       .then(res => res.json())
       .then(data => setTagsDisponiveis(data))

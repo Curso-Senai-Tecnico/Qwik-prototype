@@ -125,6 +125,7 @@ export default function CadastrarVagas({ darkMode, setDarkMode, onClose}) {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${token}`,
+          
         },
         body: JSON.stringify(payload)
       });

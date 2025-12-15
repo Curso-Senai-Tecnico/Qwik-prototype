@@ -102,7 +102,8 @@ export default function InfoContent({darkMode}) {
     try {
     const response = await fetch (`${API_URL}/api/candidatos/${user?.usuario?.id}/`, {
       method: "PATCH",
-      headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
+      headers: {Authorization: `Token ${token}`, "Content-Type": "application/json", 
+},
       body: JSON.stringify(cleanData)
     })
 
@@ -137,7 +138,8 @@ export default function InfoContent({darkMode}) {
     try {
     const response = await fetch(`${API_URL}/api/candidatos/${user?.usuario?.id}/`, {
       method: "PATCH",
-      headers: {Authorization: `Token ${token}`, "Content-Type": "application/json"},
+      headers: {Authorization: `Token ${token}`, "Content-Type": "application/json", 
+},
       body: JSON.stringify(cleanData)
     })
 
@@ -163,6 +165,8 @@ export default function InfoContent({darkMode}) {
       method: "PATCH",
       headers: {
         Authorization: `Token ${token}`,
+        
+
       },
       body: formData
     })

@@ -21,7 +21,8 @@ export default function Cadastro() {
     try {
       const response = await fetch(`${API_URL}/api/candidatos/`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+ },
         body: JSON.stringify({
           usuario: {
           nome: data.nome,

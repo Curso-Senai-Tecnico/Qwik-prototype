@@ -26,6 +26,8 @@ export default function DocsContent({darkMode}) {
         method: "PATCH",
         headers: {
           Authorization: `Token ${token}`,
+          
+
         },
         body: formData,
       })
@@ -53,6 +55,8 @@ export default function DocsContent({darkMode}) {
       method: "PATCH",
       headers: {
         Authorization: `Token ${localStorage.getItem("token")}`,
+        "ngrok-skip-browser-warning": "true"
+
       },
       body: formData,
     });

@@ -14,7 +14,7 @@ export function RoleProvider({ children }) {
         const res = await fetch(`${API_URL}/api/me/`, {
           headers: {
             Authorization: `Token ${token}`,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           }
         });
         
@@ -40,7 +40,7 @@ export function RoleProvider({ children }) {
   } else {
     localStorage.removeItem("role")
   }
-  }, [role]);
+  }, [token]);
 
   return (
     <RoleContext.Provider value={{ role, setRole }}>
